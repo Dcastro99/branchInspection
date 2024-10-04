@@ -1,0 +1,6 @@
+@genscoSQLProject1_HostAddress = http://localhost:5022
+
+GET {{genscoSQLProject1_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
