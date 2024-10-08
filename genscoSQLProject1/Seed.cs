@@ -26,7 +26,7 @@ namespace genscoSQLProject1
                 };
 
                 _dataContext.Roles.AddRange(roles);
-                _dataContext.SaveChanges(); // Ensure roles are saved first
+                _dataContext.SaveChanges(); 
             }
 
             var adminRoleId = _dataContext.Roles.FirstOrDefault(r => r.RoleDescription == "Admin")?.RoleId;
@@ -56,7 +56,7 @@ namespace genscoSQLProject1
                 };
 
                 _dataContext.Users.AddRange(users);
-                _dataContext.SaveChanges(); // Save users after ensuring roles exist
+                _dataContext.SaveChanges();
             }
 
             if(!_dataContext.Branches.Any())
@@ -77,6 +77,9 @@ namespace genscoSQLProject1
                 _dataContext.Branches.AddRange(branches); 
                 _dataContext.SaveChanges();
             }
+
+            
+
         }
 
 
