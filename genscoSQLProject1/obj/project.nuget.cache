@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "I6I6+lCey2A=",
+  "dgSpecHash": "WVEigM5QDCo=",
   "success": true,
   "projectFilePath": "C:\\Users\\dcastro\\source\\repos\\genscoSQLProject1\\genscoSQLProject1\\genscoSQLProject1.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\dcastro\\.nuget\\packages\\automapper\\13.0.1\\automapper.13.0.1.nupkg.sha512",
     "C:\\Users\\dcastro\\.nuget\\packages\\azure.core\\1.40.0\\azure.core.1.40.0.nupkg.sha512",
     "C:\\Users\\dcastro\\.nuget\\packages\\azure.identity\\1.12.1\\azure.identity.1.12.1.nupkg.sha512",
     "C:\\Users\\dcastro\\.nuget\\packages\\dotnetenv\\3.1.1\\dotnetenv.3.1.1.nupkg.sha512",
