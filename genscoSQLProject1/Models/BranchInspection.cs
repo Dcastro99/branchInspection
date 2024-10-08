@@ -2,18 +2,19 @@
 {
     public class BranchInspection
     {
-        public int branchInspectionId { get; set; }
-        public string companyId { get; set; }
-        public int branchId { get; set; }
-        public int createdByUserId { get; set; }
-        public int approvedByUserId { get; set; }
-        public DateTime revisedDate { get; set; }
-        public DateTime createdDate { get; set; }
-        public DateTime dateLastMaintained { get; set; }
-        public string deleteFlag { get; set; }
-        public DateTime submittedDate { get; set; }
-        public DateTime approvedDate { get; set; }
+        public int BranchInspectionId { get; set; }
+        public  string CompanyId { get; set; }
+        public int BranchId { get; set; }
+        public int CreatedByUserId { get; set; }
+        public int ApprovedByUserId { get; set; }
+        public DateTime RevisedDate { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public DateTime DateLastMaintained { get; set; }
+        public  string DeleteFlag { get; set; }
+        public DateTime SubmittedDate { get; set; }
+        public DateTime ApprovedDate { get; set; }
 
-        public ICollection<Category> Categories { get; set; }
+        public  ICollection<Category> Categories { get; set; }
     }
 }
+

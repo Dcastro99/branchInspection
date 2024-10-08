@@ -2,18 +2,20 @@
 {
     public class User
     {
-        public int userId { get; set; }
-        public string firstName { get; set; }
-        public string lastName { get; set; }
-        public string mi { get; set; }
-        public string email { get; set; }
-        public string password { get; set; }
-        public int defaultLocationId { get; set; }
-        public string companyId { get; set; }
-        public int roleId { get; set; }
-        public string createdByUserId { get; set; }
-        public DateTime createdDate { get; set; }
-        public string activeInd { get; set; }
+        public int UserId { get; set; }
 
+        public  string FirstName { get; set; } = string.Empty;
+        public  string LastName { get; set; } = string.Empty;
+        public string? Mi { get; set; } 
+        public  string Email { get; set; } = string.Empty;
+        public  string Password { get; set; } = string.Empty;
+        public string DefaultLocationId { get; set; } = string.Empty;
+        public  string CompanyId { get; set; } = string.Empty;
+        public int RoleId { get; set; }
+        public Role? Role { get; set; } 
+        public  string CreatedByUserId { get; set; } = string.Empty;
+        public  DateTime CreatedDate { get; set; }
+        public  string ActiveInd { get; set; } = string.Empty;
     }
 }
+

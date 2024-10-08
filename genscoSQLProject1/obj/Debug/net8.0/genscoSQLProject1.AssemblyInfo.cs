@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("genscoSQLProject1")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7e6cb009c0b414727598cac37e3108860359112a")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+84e9dabe0bff541d043f2fc8aa218521902bc202")]
 [assembly: System.Reflection.AssemblyProductAttribute("genscoSQLProject1")]
 [assembly: System.Reflection.AssemblyTitleAttribute("genscoSQLProject1")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
