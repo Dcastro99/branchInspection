@@ -4,7 +4,7 @@ namespace genscoSQLProject1.Interfaces
 {
     public interface ICommentsRepository
     {
-        ICollection<Comments> GetComments();
+        ICollection<Comments> GetAllComments();
         Comments GetComment(int commentId);
         ICollection<Comments> GetCommentByCategory(int categoryId);
         bool CommentExists(int commentId);

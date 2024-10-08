@@ -4,7 +4,7 @@ namespace genscoSQLProject1.Interfaces
 {
     public interface IBranchInspectionRepository
     {
-        ICollection<BranchInspection> GetBranchInspections();
+        ICollection<BranchInspection> GetAllBranchInspections();
         BranchInspection GetBranchInspection(int branchInspectionId);
         ICollection<BranchInspection> GetBranchInspectionByBranch(int branchId);
         ICollection<BranchInspection> GetBranchInspectionsByMonth(DateTime month);

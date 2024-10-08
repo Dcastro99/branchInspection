@@ -4,7 +4,7 @@ namespace genscoSQLProject1.Interfaces
 {
     public interface ICategoryRepository
     {
-        ICollection<Category> GetCategories();
+        ICollection<Category> GetAllCategories();
         Category GetCategory(int categoryId);
         ICollection<Category> GetCategoryByBranchInspection(int branchInspectionId);
         bool CategoryExists(int categoryId);
