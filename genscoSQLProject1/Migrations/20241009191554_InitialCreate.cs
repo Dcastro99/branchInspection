@@ -26,28 +26,6 @@ namespace genscoSQLProject1.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "BranchInspections",
-                columns: table => new
-                {
-                    BranchInspectionId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CompanyId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    BranchId = table.Column<int>(type: "int", nullable: false),
-                    CreatedByUserId = table.Column<int>(type: "int", nullable: false),
-                    ApprovedByUserId = table.Column<int>(type: "int", nullable: false),
-                    RevisedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DateLastMaintained = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DeleteFlag = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SubmittedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ApprovedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_BranchInspections", x => x.BranchInspectionId);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Roles",
                 columns: table => new
                 {
@@ -65,23 +43,31 @@ namespace genscoSQLProject1.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Categories",
+                name: "BranchInspections",
                 columns: table => new
                 {
-                    CategoryId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CategoryName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     BranchInspectionId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CompanyId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BranchId = table.Column<int>(type: "int", nullable: true),
+                    CreatedByUserId = table.Column<int>(type: "int", nullable: true),
+                    ApprovedByUserId = table.Column<int>(type: "int", nullable: true),
+                    RevisedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DateLastMaintained = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeleteFlag = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SubmittedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ApprovedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Categories", x => x.CategoryId);
+                    table.PrimaryKey("PK_BranchInspections", x => x.BranchInspectionId);
                     table.ForeignKey(
-                        name: "FK_Categories_BranchInspections_BranchInspectionId",
-                        column: x => x.BranchInspectionId,
-                        principalTable: "BranchInspections",
-                        principalColumn: "BranchInspectionId",
-                        onDelete: ReferentialAction.Restrict);
+                        name: "FK_BranchInspections_Branches_BranchId",
+                        column: x => x.BranchId,
+                        principalTable: "Branches",
+                        principalColumn: "BranchId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -93,14 +79,14 @@ namespace genscoSQLProject1.Migrations
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Mi = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DefaultLocationId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CompanyId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    RoleId = table.Column<int>(type: "int", nullable: false),
-                    CreatedByUserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ActiveInd = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DefaultLocationId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CompanyId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    RoleId = table.Column<int>(type: "int", nullable: true),
+                    CreatedByUserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ActiveInd = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -110,6 +96,26 @@ namespace genscoSQLProject1.Migrations
                         column: x => x.RoleId,
                         principalTable: "Roles",
                         principalColumn: "RoleId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Categories",
+                columns: table => new
+                {
+                    CategoryId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CategoryName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BranchInspectionId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Categories", x => x.CategoryId);
+                    table.ForeignKey(
+                        name: "FK_Categories_BranchInspections_BranchInspectionId",
+                        column: x => x.BranchInspectionId,
+                        principalTable: "BranchInspections",
+                        principalColumn: "BranchInspectionId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -147,7 +153,7 @@ namespace genscoSQLProject1.Migrations
                 {
                     CommentId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Comment = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Comment = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CategoryId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -168,14 +174,15 @@ namespace genscoSQLProject1.Migrations
                     ChecklistItemId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CheckedFlag = table.Column<bool>(type: "bit", nullable: false),
-                    DatePosted = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LastMeetingDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DateCartridgeInstalled = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LoadCapacity = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    NotApplicable = table.Column<bool>(type: "bit", nullable: false),
+                    CheckedFlag = table.Column<bool>(type: "bit", nullable: true),
+                    DatePosted = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LastMeetingDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DateCartridgeInstalled = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LoadCapacity = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    NotApplicable = table.Column<bool>(type: "bit", nullable: true),
                     CategoryId = table.Column<int>(type: "int", nullable: false),
-                    AssetId = table.Column<int>(type: "int", nullable: false)
+                    AssetId = table.Column<int>(type: "int", nullable: true),
+                    ItemType = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -203,6 +210,11 @@ namespace genscoSQLProject1.Migrations
                 name: "IX_Assets_CategoryId",
                 table: "Assets",
                 column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BranchInspections_BranchId",
+                table: "BranchInspections",
+                column: "BranchId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Categories_BranchInspectionId",
@@ -249,13 +261,13 @@ namespace genscoSQLProject1.Migrations
                 name: "Roles");
 
             migrationBuilder.DropTable(
-                name: "Branches");
-
-            migrationBuilder.DropTable(
                 name: "Categories");
 
             migrationBuilder.DropTable(
                 name: "BranchInspections");
+
+            migrationBuilder.DropTable(
+                name: "Branches");
         }
     }
 }

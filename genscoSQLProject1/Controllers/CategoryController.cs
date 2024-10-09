@@ -1,5 +1,5 @@
-﻿
-using AutoMapper;
+﻿using AutoMapper;
+using genscoSQLProject1.Dto;
 using genscoSQLProject1.Interfaces;
 using genscoSQLProject1.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -24,13 +24,89 @@ namespace genscoSQLProject1.Controllers
         [ProducesResponseType(200, Type = typeof(IEnumerable<Category>))]
         public IActionResult GetCategories()
         {
-            var categories = _categoryRepository.GetAllCategories();
+            var categories = _mapper.Map<List<CategoryDto>>(_categoryRepository.GetAllCategories());
 
             if (!ModelState.IsValid)
          
                 return BadRequest(ModelState);
 
             return Ok(categories);
+
+        }
+
+        //--------------GET CATEGORY BY ID----------------//    
+
+        [HttpGet("{categoryId}")]
+        [ProducesResponseType(200, Type = typeof(Category))]
+        [ProducesResponseType(400)]
+
+        public IActionResult GetCategory(int categoryId)
+        {
+            if (!_categoryRepository.CategoryExists(categoryId))
+                return NotFound();
+
+            var category = _mapper.Map<CategoryDto>(_categoryRepository.GetCategory(categoryId));
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            return Ok(category);
+        }
+
+        //--------------GET CATEGORY BY BRANCH INSPECTION ID----------------//
+
+        [HttpGet("branchInspection/{branchInspectionId}")]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<Category>))]
+        [ProducesResponseType(400)]
+
+        public IActionResult GetCategoryByBranchInspection(int branchInspectionId)
+        {
+            if (!_categoryRepository.CategoryExists(branchInspectionId))
+                return NotFound();
+
+            var categories = _mapper.Map<List<CategoryDto>>(_categoryRepository.GetCategoryByBranchInspection(branchInspectionId));
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            return Ok(categories);
+        }
+
+        //--------------CREATE CATEGORY----------------//
+
+        [HttpPost]
+        [ProducesResponseType(201, Type = typeof(Category))]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(500)]
+
+        public IActionResult CreateCategory([FromBody] CategoryDto categoryToCreate)
+        {
+            if (categoryToCreate == null)
+                return BadRequest(ModelState);
+
+            var category = _categoryRepository.GetAllCategories()
+              .Where(c => c.CategoryName.Trim().ToUpper() == categoryToCreate.CategoryName.Trim().ToUpper())
+              .FirstOrDefault();
+
+            if (category != null)
+            {
+                ModelState.AddModelError("", $"Category {categoryToCreate.CategoryName} already exists");
+                return StatusCode(404, ModelState);
+            }
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var categoryMap = _mapper.Map<Category>(categoryToCreate);
+
+            if (!_categoryRepository.CreateCategory(categoryMap))
+            {
+                ModelState.AddModelError("", $"Something went wrong saving {categoryMap.CategoryName}");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("Successfuly Created");
+
 
         }
     }

@@ -50,7 +50,7 @@ namespace genscoSQLProject1.Repository
 
         public ICollection<BranchInspection> GetBranchInspectionsByMonth(DateTime month)
         {
-            return _context.BranchInspections.Where(bi => bi.ApprovedDate.Month == month.Month).ToList();
+            return _context.BranchInspections.Where(bi => bi.ApprovedDate.Value.Month == month.Month).ToList();
         }
 
         public BranchInspection GetMostRecentBranchInspectionByBranch(int branchId)

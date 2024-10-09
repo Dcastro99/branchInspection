@@ -19,6 +19,7 @@ namespace genscoSQLProject1.Repository
 
         public bool CreateCategory(Category category)
         {
+
             _context.Categories.Add(category);
             return Save();
         }
