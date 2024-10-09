@@ -1,6 +1,8 @@
-﻿namespace genscoSQLProject1.Models
+﻿using genscoSQLProject1.Models;
+
+namespace genscoSQLProject1.Dto
 {
-    public class ChecklistItem
+    public class ChecklistItemDto
     {
         public int ChecklistItemId { get; set; }
         public string Name { get; set; }
@@ -11,18 +13,7 @@
         public string? LoadCapacity { get; set; }
         public bool? NotApplicable { get; set; }
         public int CategoryId { get; set; }
-        public Category Category { get; set; }  // Navigation property
         public int? AssetId { get; set; }
-        public Asset Asset { get; set; }  // Navigation property to Asset
         public ChecklistItemType ItemType { get; set; }
     }
 }
-
-    public enum ChecklistItemType
-    {
-        GeneralWarehouse, //0
-        Forklift,//1
-        OrderPicker,//2
-        DeliveryVehicle,//3
-        OtherEquipment //4
-    }

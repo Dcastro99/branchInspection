@@ -1,6 +1,7 @@
 ﻿using genscoSQLProject1.Data;
 using genscoSQLProject1.Models;
-using Microsoft.EntityFrameworkCore;
+using genscoSQLProject1.SeedData;
+
 
 namespace genscoSQLProject1
 {
@@ -78,7 +79,21 @@ namespace genscoSQLProject1
                 _dataContext.SaveChanges();
             }
 
-            
+            // Seed categories if none exist
+            if (!_dataContext.Categories.Any())
+            {
+                var categories = CategoryData.CategoryNames
+                    .Select(name => new Category { CategoryName = name })
+                    .ToList();
+
+                _dataContext.Categories.AddRange(categories);
+                _dataContext.SaveChanges();
+            }
+
+
+
+
+
 
         }
 

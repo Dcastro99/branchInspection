@@ -82,39 +82,39 @@ namespace genscoSQLProject1.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BranchInspectionId"));
 
-                    b.Property<int>("ApprovedByUserId")
+                    b.Property<int?>("ApprovedByUserId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("ApprovedDate")
+                    b.Property<DateTime?>("ApprovedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("BranchId")
+                    b.Property<int?>("BranchId")
                         .HasColumnType("int");
 
                     b.Property<string>("CompanyId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("CreatedByUserId")
+                    b.Property<int?>("CreatedByUserId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("CreatedDate")
+                    b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DateLastMaintained")
+                    b.Property<DateTime?>("DateLastMaintained")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("DeleteFlag")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("RevisedDate")
+                    b.Property<DateTime?>("RevisedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("SubmittedDate")
+                    b.Property<DateTime?>("SubmittedDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("BranchInspectionId");
+
+                    b.HasIndex("BranchId");
 
                     b.ToTable("BranchInspections");
                 });
@@ -127,7 +127,7 @@ namespace genscoSQLProject1.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CategoryId"));
 
-                    b.Property<int>("BranchInspectionId")
+                    b.Property<int?>("BranchInspectionId")
                         .HasColumnType("int");
 
                     b.Property<string>("CategoryName")
@@ -149,33 +149,35 @@ namespace genscoSQLProject1.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ChecklistItemId"));
 
-                    b.Property<int>("AssetId")
+                    b.Property<int?>("AssetId")
                         .HasColumnType("int");
 
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("CheckedFlag")
+                    b.Property<bool?>("CheckedFlag")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime>("DateCartridgeInstalled")
+                    b.Property<DateTime?>("DateCartridgeInstalled")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DatePosted")
+                    b.Property<DateTime?>("DatePosted")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("LastMeetingDate")
+                    b.Property<int>("ItemType")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("LastMeetingDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("LoadCapacity")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("NotApplicable")
+                    b.Property<bool?>("NotApplicable")
                         .HasColumnType("bit");
 
                     b.HasKey("ChecklistItemId");
@@ -199,7 +201,6 @@ namespace genscoSQLProject1.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Comment")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("CommentId");
@@ -249,26 +250,21 @@ namespace genscoSQLProject1.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"));
 
                     b.Property<string>("ActiveInd")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CompanyId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CreatedByUserId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("CreatedDate")
+                    b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("DefaultLocationId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
@@ -283,10 +279,9 @@ namespace genscoSQLProject1.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("RoleId")
+                    b.Property<int?>("RoleId")
                         .HasColumnType("int");
 
                     b.HasKey("UserId");
@@ -313,13 +308,20 @@ namespace genscoSQLProject1.Migrations
                     b.Navigation("Category");
                 });
 
+            modelBuilder.Entity("genscoSQLProject1.Models.BranchInspection", b =>
+                {
+                    b.HasOne("genscoSQLProject1.Models.Branch", null)
+                        .WithMany()
+                        .HasForeignKey("BranchId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("genscoSQLProject1.Models.Category", b =>
                 {
                     b.HasOne("genscoSQLProject1.Models.BranchInspection", "BranchInspection")
                         .WithMany("Categories")
                         .HasForeignKey("BranchInspectionId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("BranchInspection");
                 });
@@ -329,8 +331,7 @@ namespace genscoSQLProject1.Migrations
                     b.HasOne("genscoSQLProject1.Models.Asset", "Asset")
                         .WithMany("ChecklistItems")
                         .HasForeignKey("AssetId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("genscoSQLProject1.Models.Category", "Category")
                         .WithMany("ChecklistItems")
@@ -359,8 +360,7 @@ namespace genscoSQLProject1.Migrations
                     b.HasOne("genscoSQLProject1.Models.Role", "Role")
                         .WithMany("Users")
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Role");
                 });

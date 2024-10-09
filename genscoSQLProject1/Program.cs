@@ -2,6 +2,8 @@ using DotNetEnv;
 using genscoSQLProject1.Data;
 using genscoSQLProject1;
 using Microsoft.EntityFrameworkCore;
+using genscoSQLProject1.Interfaces;
+using genscoSQLProject1.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +16,11 @@ var connectionString = Environment.GetEnvironmentVariable("SQL_API");
 
 builder.Services.AddControllers();
 builder.Services.AddTransient<Seed>();
+
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<IChecklistItemRepository, ChecklistItemRepository>();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

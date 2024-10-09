@@ -58,16 +58,23 @@ namespace genscoSQLProject1.Data
                 .HasForeignKey(co => co.CategoryId)
                 .OnDelete(DeleteBehavior.Restrict); // Prevent cascading delete
 
-            // Optional: Asset and ChecklistItem relationship (if needed)
+            // Asset and ChecklistItem relationship
             modelBuilder.Entity<ChecklistItem>()
                 .HasOne(ci => ci.Asset)
                 .WithMany(a => a.ChecklistItems)
                 .HasForeignKey(ci => ci.AssetId)
+                .IsRequired(false) // Optional
                 .OnDelete(DeleteBehavior.Restrict); // Prevent cascading delete
+
+
+            // BranchInspection and Branch relationship
+            modelBuilder.Entity<BranchInspection>()
+                .HasOne<Branch>() // Specify the type for the foreign key
+                .WithMany() // Assuming you don't need navigation property back to Branch from BranchInspection
+                .HasForeignKey(bi => bi.BranchId) // Foreign key
+                .OnDelete(DeleteBehavior.Cascade); // Define delete behavior, if necessary
         }
-
-
-
     }
+
 
 }
