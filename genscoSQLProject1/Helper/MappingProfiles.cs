@@ -18,6 +18,8 @@ namespace genscoSQLProject1.Helper
             CreateMap<BranchDto, Branch>();
             CreateMap<User, UserDto>();
             CreateMap<UserDto, User>();
+            CreateMap<Role, RoleDto>();
+            CreateMap<RoleDto, Role>();
 
         }
     }

@@ -62,7 +62,7 @@ namespace genscoSQLProject1.Controllers
 
             if (user != null)
             {
-                ModelState.AddModelError("", $"User {userToCreate.FirstName} {userToCreate.LastName} with employee number {userToCreate.EmployeeId} already exists");
+                ModelState.AddModelError("", $"A User with employee number {userToCreate.EmployeeId} already exists");
                 return StatusCode(400, ModelState);
             }
 
