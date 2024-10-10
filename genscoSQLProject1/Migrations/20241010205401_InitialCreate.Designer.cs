@@ -12,8 +12,8 @@ using genscoSQLProject1.Data;
 namespace genscoSQLProject1.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20241010204259_boolDeleteFlag")]
-    partial class boolDeleteFlag
+    [Migration("20241010205401_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

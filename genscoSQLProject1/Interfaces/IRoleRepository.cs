@@ -5,7 +5,7 @@ namespace genscoSQLProject1.Interfaces
     public interface IRoleRepository
     {
         ICollection<Role> GetRoles();
-        Role GetRole(int roleId);
+        Role GetRole(string roleDescription);
         bool RoleExists(int roleId);
         bool CreateRole(Role role);
         bool UpdateRole(Role role);

@@ -35,7 +35,7 @@ namespace genscoSQLProject1.Migrations
                     CreatedByUserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DateLastMaintained = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DeleteFlag = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    DeleteFlag = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
