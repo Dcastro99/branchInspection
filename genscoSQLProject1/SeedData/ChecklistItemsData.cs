@@ -633,11 +633,582 @@ namespace genscoSQLProject1.SeedData
             },
               new ChecklistItemDto
             {
-                Name = "",
-                CategoryId = 15,
+                Name = "Load capacity signs are posted and accurate for each aisle",
+                CategoryId = 16,
                 CheckedFlag = false,
                 ItemType = ChecklistItemType.GeneralWarehouse
             },
+              new ChecklistItemDto
+            {
+                Name = "Load on shelves DO NOT exceed the capacity of the beams",
+                CategoryId = 16,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+              new ChecklistItemDto
+            {
+                Name = "Load beams are free from damage and are using proper locking mechanisms",
+                CategoryId = 16,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+              new ChecklistItemDto
+            {
+                Name = "Uprights are free from damage with at least 2 floor bolts per foot and installed in the proper orientation",
+                CategoryId = 16,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+              new ChecklistItemDto
+            {
+                Name = "Cantilever is free from damage with containment device on each level (e.g. - chains, extended pins)",
+                CategoryId = 16,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+              new ChecklistItemDto
+            {
+                Name = "Product reside within the staging zones (NOT overflowing into main aisles)",
+                CategoryId = 17,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+              new ChecklistItemDto
+            {
+                Name = "Product does NOT lean into aisles, over racking, or over the marked staging lines",
+                CategoryId = 17,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+              new ChecklistItemDto
+            {
+                Name = "Open box tops are cut off (With the EXCEPTION of air filters)",
+                CategoryId = 17,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+              new ChecklistItemDto
+            {
+                Name = "Boxes containing new product are undamaged",
+                CategoryId = 17,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+              new ChecklistItemDto
+            {
+                Name = "Product is stacked with no danger of falling or collapsing",
+                CategoryId = 17,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+              new ChecklistItemDto
+            {
+                Name = "Product is NOT stacked too high or in places where team members cannot safely stock/pull product",
+                CategoryId = 17,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+              new ChecklistItemDto
+            {
+                Name = "Literature wall/section is organized and stock is replenished regularly",
+                CategoryId = 18,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+              new ChecklistItemDto
+            {
+                Name = "Equipment display is clean, appealing, and containing relevant literature for the display",
+                CategoryId = 18,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+              new ChecklistItemDto
+            {
+                Name = "Supplies display is clean, appealing, and containing relevant literature for the display",
+                CategoryId = 18,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+              new ChecklistItemDto
+            {
+                Name = "Gensco catalogs are readily available to customers",
+                CategoryId = 18,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+              new ChecklistItemDto
+            {
+                Name = "Monthly chronicle is displayed in a neat orderly fashion, and is current",
+                CategoryId = 18,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+              new ChecklistItemDto
+            {
+                Name = "Old banners, displays, and clutter are not present in the showroom",
+                CategoryId = 18,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+              new ChecklistItemDto
+            {
+                Name = "",
+                CategoryId = 19,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+              new ChecklistItemDto
+            {
+                Name = "Product on shelves are clean and organized",
+                CategoryId = 19,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+              new ChecklistItemDto
+            {
+                Name = "ISR stations and back counter are clean and organized",
+                CategoryId = 19,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+              new ChecklistItemDto
+            {
+                Name = "Coffee station is clean and sanitary",
+                CategoryId = 19,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+              new ChecklistItemDto
+            {
+                Name = "Sink is free of leaks",
+                CategoryId = 19,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+              new ChecklistItemDto
+            {
+                Name = "Carpet is free from stains and damage",
+                CategoryId = 20,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+              new ChecklistItemDto
+            {
+                Name = "Tables, chairs, and other office furniture is in good condition",
+                CategoryId = 20,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+              new ChecklistItemDto
+            {
+                Name = "Floors, counters, furniture, and cabinets are clean",
+                CategoryId = 21,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+              new ChecklistItemDto
+            {
+                Name = "Refrigerator is clean, organized, and does NOT contain outdated or Spoiled food",
+                CategoryId = 21,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+              new ChecklistItemDto
+            {
+                Name = "Microwave is cleaned regularly",
+                CategoryId = 21,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+              new ChecklistItemDto
+            {
+                Name = "Oven is cleaned regularly and does NOT have built up baked-on food",
+                CategoryId = 21,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+              new ChecklistItemDto
+            {
+                Name = "Sink is free of leaks",
+                CategoryId = 21,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+              new ChecklistItemDto
+            {
+                Name = "Workstations are kept clean and organized",
+                CategoryId = 22,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+              new ChecklistItemDto
+            {
+                Name = "Empty pallets are not left in stocking locations",
+                CategoryId = 22,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+              new ChecklistItemDto
+            {
+                Name = "Floors are clear of debris",
+                CategoryId = 22,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+              new ChecklistItemDto
+            {
+                Name = "Parking lot is kept clean and clear of debris",
+                CategoryId = 23,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+              new ChecklistItemDto
+            {
+                Name = "Pallets, cradles, and skids are organized",
+                CategoryId = 23,
+                CheckedFlag = false,
+                NotApplicable = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+              new ChecklistItemDto
+            {
+                Name = "No weeds or vegetation within 15 ft of items stored outside",
+                CategoryId = 23,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+              new ChecklistItemDto
+            {
+                Name = "Landscaping is maintained regularly to make building presentable",
+                CategoryId = 23,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+              new ChecklistItemDto
+            {
+                Name = "All Operators are certified to operate respective MHE and documentation is on file",
+                CategoryId = 24,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+              new ChecklistItemDto
+            {
+                Name = "All team members use fall protection, fall protection is in good condition, and is less than 5 years old",
+                CategoryId = 24,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+              new ChecklistItemDto
+            {
+                Name = "Team members inspect MHE prior to use each day and/or shift",
+                CategoryId = 24,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+              new ChecklistItemDto
+            {
+                Name = "Batteries are charged in a well ventilated area free of combustible material",
+                CategoryId = 24,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+              new ChecklistItemDto
+            {
+                Name = "Spill kit is available to clean up hazardous material",
+                CategoryId = 24,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+              new ChecklistItemDto
+            {
+                Name = "Inspected Daily",
+                CategoryId = 25,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+              new ChecklistItemDto
+            {
+                Name = "Horn is operational",
+                CategoryId = 25,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+              new ChecklistItemDto
+            {
+                Name = "Seat belt is in good condition",
+                CategoryId = 25,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+              new ChecklistItemDto
+            {
+                Name = "Load capacity chart is legible",
+                CategoryId = 25,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+              new ChecklistItemDto
+            {
+                Name = "Batteries are watered regularly",
+                CategoryId = 25,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+              new ChecklistItemDto
+            {
+                Name = "Paint and appearance is in good condition",
+                CategoryId = 25,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+              new ChecklistItemDto
+            {
+                Name = "Inspected Daily",
+                CategoryId = 26,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+              new ChecklistItemDto
+            {
+                Name = "Horn is operational",
+                CategoryId = 26,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+              new ChecklistItemDto
+            {
+                Name = "Lanyard is in good condition",
+                CategoryId = 26,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+              new ChecklistItemDto
+            {
+                Name = "Load capacity chart is legible",
+                CategoryId = 26,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+              new ChecklistItemDto
+            {
+                Name = "Batteries are watered regularly",
+                CategoryId = 26,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+              new ChecklistItemDto
+            {
+                Name = "Paint and appearance is in good condition",
+                CategoryId = 26,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+              new ChecklistItemDto
+            {
+                Name = "Inspected regularly",
+                CategoryId = 27,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+              new ChecklistItemDto
+            {
+                Name = "Maintained regularly",
+                CategoryId = 27,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+              new ChecklistItemDto
+            {
+                Name = "Appearance is in good condition",
+                CategoryId = 27,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+              new ChecklistItemDto
+            {
+                Name = "Interior/Exterior is in good condition",
+                CategoryId = 28,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+              new ChecklistItemDto
+            {
+                Name = "Wind shield is free of cracks or chips",
+                CategoryId = 28,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+              new ChecklistItemDto
+            {
+                Name = "Bumpers and step downs are treated with slip-resistant tape or paint",
+                CategoryId = 28,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+
+              new ChecklistItemDto
+            {
+                Name = "Wide turn stickers are on rear roll-up door",
+                CategoryId = 28,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+
+              new ChecklistItemDto
+            {
+                Name = "DOT Annual Vehicle Inspection Date",
+                CategoryId = 28,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+
+              new ChecklistItemDto
+            {
+                Name = "Current registration for vehicle",
+                CategoryId = 28,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+
+              new ChecklistItemDto
+            {
+                Name = "Current year's insurance information",
+                CategoryId = 28,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+
+              new ChecklistItemDto
+            {
+                Name = "DOT UA Chain of Custody form (CDL vehicles ONLY)",
+                CategoryId = 28,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+
+              new ChecklistItemDto
+            {
+                Name = "Truck box height sticker in cab",
+                CategoryId = 28,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+
+              new ChecklistItemDto
+            {
+                Name = "Phone mount",
+                CategoryId = 28,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+
+              new ChecklistItemDto
+            {
+                Name = "Dashcam connected and properly placed",
+                CategoryId = 28,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+
+              new ChecklistItemDto
+            {
+                Name = "Cell control present and connected",
+                CategoryId = 28,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+
+              new ChecklistItemDto
+            {
+                Name = "Buckled in storage",
+                CategoryId = 28,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+
+              new ChecklistItemDto
+            {
+                Name = "ResQme tool",
+                CategoryId = 28,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+
+              new ChecklistItemDto
+            {
+                Name = "Pre-trip inspections completed daily",
+                CategoryId = 28,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+
+              new ChecklistItemDto
+            {
+                Name = "Hours of service log (Manually)",
+                CategoryId = 28,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+
+              new ChecklistItemDto
+            {
+                Name = "Hours of service log (ELD)",
+                CategoryId = 28,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+
+              new ChecklistItemDto
+            {
+                Name = "Fire extinguisher present and checked monthly",
+                CategoryId = 28,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+
+              new ChecklistItemDto
+            {
+                Name = "First aid kit",
+                CategoryId = 28,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+
+              new ChecklistItemDto
+            {
+                Name = "Blood borne pathogen kit (unused)",
+                CategoryId = 28,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+
+              new ChecklistItemDto
+            {
+                Name = "Emergency roadside reflectors",
+                CategoryId = 28,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+
+              new ChecklistItemDto
+            {
+                Name = "Hard hat",
+                CategoryId = 28,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            },
+
+              new ChecklistItemDto
+            {
+                Name = "Reflective vest",
+                CategoryId = 28,
+                CheckedFlag = false,
+                ItemType = ChecklistItemType.GeneralWarehouse
+            }
+
+              
+
+         
+
 
 
 

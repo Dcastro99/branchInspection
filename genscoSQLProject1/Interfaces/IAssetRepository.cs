@@ -4,9 +4,9 @@ namespace genscoSQLProject1.Interfaces
 {
     public interface IAssetRepository
     {
-        ICollection<Asset> GetAssets();
+        ICollection<Asset> GetAllAssets();
         Asset GetAsset(int assetId);
-        ICollection<Asset> GetAssetByBranch(int branchId);
+        ICollection<Asset> GetAssetByBranch(int branchNumber);
         ICollection<Branch> GetBranchByAsset(int assetId);
         bool AssetExists(int assetId);
         bool CreateAsset(Asset asset);

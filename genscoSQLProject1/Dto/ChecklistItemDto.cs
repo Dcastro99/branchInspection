@@ -11,6 +11,7 @@ namespace genscoSQLProject1.Dto
         public DateTime? LastMeetingDate { get; set; }
         public DateTime? DateCartridgeInstalled { get; set; }
         public string? LoadCapacity { get; set; }
+        public string? DotInspectionDate { get; set; }
         public bool? NotApplicable { get; set; }
         public int CategoryId { get; set; }
         public int? AssetId { get; set; }

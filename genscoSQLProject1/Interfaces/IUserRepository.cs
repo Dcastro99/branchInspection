@@ -4,10 +4,10 @@ namespace genscoSQLProject1.Interfaces
 {
     public interface IUserRepository
     {
-        ICollection<User> GetUsers();
-        User GetUser(int userId);
+        ICollection<User> GetAllUsers();
+        User GetUser(int empId);
         ICollection<User> GetUsersByRoleId(int roleId);
-        bool UserExists(int userId);
+        bool UserExists(int empId);
         bool CreateUser(User user);
         bool UpdateUser(User user);
         bool DeleteUser(User user);

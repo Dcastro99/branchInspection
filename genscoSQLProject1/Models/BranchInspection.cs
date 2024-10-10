@@ -4,7 +4,7 @@
     {
         public int BranchInspectionId { get; set; }
         public  string? CompanyId { get; set; }
-        public int? BranchId { get; set; }
+        public int BranchNumber { get; set; }
         public int? CreatedByUserId { get; set; }
         public int? ApprovedByUserId { get; set; }
         public DateTime? RevisedDate { get; set; }

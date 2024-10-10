@@ -24,12 +24,12 @@ namespace genscoSQLProject1.Repository
             return Save();
         }
 
-        public User GetUser(int userId)
+        public User GetUser(int empId)
         {
-            return _context.Users.FirstOrDefault(u => u.UserId == userId);
+            return _context.Users.FirstOrDefault(u => u.EmployeeId == empId);
         }
 
-        public ICollection<User> GetUsers()
+        public ICollection<User> GetAllUsers()
         {
             return _context.Users.ToList();
         }
@@ -50,9 +50,9 @@ namespace genscoSQLProject1.Repository
             return Save();
         }
 
-        public bool UserExists(int userId)
+        public bool UserExists(int empId)
         {
-            return _context.Users.Any(u => u.UserId == userId);
+            return _context.Users.Any(u => u.EmployeeId == empId);
         }
     }
 }

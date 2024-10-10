@@ -16,7 +16,7 @@ namespace genscoSQLProject1
 
         public void SeedDataContext()
         {
-            // Seed roles if none exist
+            //--------- Seed roles if none exist ----------//
             if (!_dataContext.Roles.Any())
             {
                 var roles = new List<Role>
@@ -33,7 +33,7 @@ namespace genscoSQLProject1
             var adminRoleId = _dataContext.Roles.FirstOrDefault(r => r.RoleDescription == "Admin")?.RoleId;
             var userRoleId = _dataContext.Roles.FirstOrDefault(r => r.RoleDescription == "User")?.RoleId;
 
-            // Seed users if none exist
+            //---------- Seed users if none exist ----------//
             if (!_dataContext.Users.Any())
             {
                 var users = new List<User>
@@ -44,7 +44,11 @@ namespace genscoSQLProject1
                     LastName = "Bros",
                     Mi = "M", // Optional
                     Email = "mario@bros.com",
-                    RoleId = adminRoleId.Value 
+                    RoleId = adminRoleId.Value,
+                    DefaultLocationId = "1",
+                    CompanyId = "GEN",
+                    EmployeeId = 2024,
+                    ActiveInd = "Y"
                  },
                  new User
                  {
@@ -52,7 +56,11 @@ namespace genscoSQLProject1
                     LastName = "Bros",
                     Mi = "L", // Optional
                     Email = "luigi@bros.com",
-                    RoleId = adminRoleId.Value 
+                    RoleId = userRoleId.Value,
+                    DefaultLocationId = "1",
+                    CompanyId = "GEN",
+                    EmployeeId = 2025,
+                    ActiveInd = "Y"
                  }
                 };
 
@@ -60,26 +68,25 @@ namespace genscoSQLProject1
                 _dataContext.SaveChanges();
             }
 
-            if(!_dataContext.Branches.Any())
+            //---------- Seed checklist items -----------//
+            if (!_dataContext.Branches.Any())
             {
-                var branches = new List<Branch>
-                {
-                    new Branch
+                var branches = BranchData.Branches
+                    .Select(ci => new Branch
+
                     {
-                        BranchName = "Tacoma",
-                        BranchNumber = "1"
-                    },
-                    new Branch
-                    {
-                        BranchName = "Vancouver",
-                        BranchNumber = "21"
-                    }
-                };
-                _dataContext.Branches.AddRange(branches); 
+                        BranchName = ci.BranchName,
+                        BranchNumber = ci.BranchNumber
+                    })
+                    .ToList();
+
+
+
+                _dataContext.Branches.AddRange(branches);
                 _dataContext.SaveChanges();
             }
 
-            // Seed categories if none exist
+            //---------- Seed categories -----------//
             if (!_dataContext.Categories.Any())
             {
                 var categories = CategoryData.CategoryNames
@@ -87,6 +94,25 @@ namespace genscoSQLProject1
                     .ToList();
 
                 _dataContext.Categories.AddRange(categories);
+                _dataContext.SaveChanges();
+            }
+
+            //---------- Seed checklist items -----------//
+            if (!_dataContext.ChecklistItems.Any())
+            {
+                var checklistItems = ChecklistItemsData.ChecklistItems
+                    .Select(ci => new ChecklistItem
+                    {
+                        Name = ci.Name,
+                        CategoryId = ci.CategoryId,
+                        ItemType = ci.ItemType,
+                        CheckedFlag = ci.CheckedFlag,
+                        NotApplicable = ci.NotApplicable
+
+                    })
+                    .ToList();
+
+                _dataContext.ChecklistItems.AddRange(checklistItems);
                 _dataContext.SaveChanges();
             }
 
