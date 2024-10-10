@@ -18,7 +18,7 @@ namespace genscoSQLProject1.Migrations
                     BranchId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     BranchName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    BranchNumber = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    BranchNumber = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -49,7 +49,7 @@ namespace genscoSQLProject1.Migrations
                     BranchInspectionId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CompanyId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    BranchId = table.Column<int>(type: "int", nullable: true),
+                    BranchNumber = table.Column<int>(type: "int", nullable: false),
                     CreatedByUserId = table.Column<int>(type: "int", nullable: true),
                     ApprovedByUserId = table.Column<int>(type: "int", nullable: true),
                     RevisedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -63,8 +63,8 @@ namespace genscoSQLProject1.Migrations
                 {
                     table.PrimaryKey("PK_BranchInspections", x => x.BranchInspectionId);
                     table.ForeignKey(
-                        name: "FK_BranchInspections_Branches_BranchId",
-                        column: x => x.BranchId,
+                        name: "FK_BranchInspections_Branches_BranchNumber",
+                        column: x => x.BranchNumber,
                         principalTable: "Branches",
                         principalColumn: "BranchId",
                         onDelete: ReferentialAction.Cascade);
@@ -86,7 +86,8 @@ namespace genscoSQLProject1.Migrations
                     RoleId = table.Column<int>(type: "int", nullable: true),
                     CreatedByUserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    ActiveInd = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    ActiveInd = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    EmployeeId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -127,8 +128,9 @@ namespace genscoSQLProject1.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     AssetNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     AssetType = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CategoryId = table.Column<int>(type: "int", nullable: false),
-                    BranchId = table.Column<int>(type: "int", nullable: false)
+                    CategoryId = table.Column<int>(type: "int", nullable: true),
+                    BranchId = table.Column<int>(type: "int", nullable: true),
+                    BranchNumber = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -137,8 +139,7 @@ namespace genscoSQLProject1.Migrations
                         name: "FK_Assets_Branches_BranchId",
                         column: x => x.BranchId,
                         principalTable: "Branches",
-                        principalColumn: "BranchId",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "BranchId");
                     table.ForeignKey(
                         name: "FK_Assets_Categories_CategoryId",
                         column: x => x.CategoryId,
@@ -179,6 +180,7 @@ namespace genscoSQLProject1.Migrations
                     LastMeetingDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DateCartridgeInstalled = table.Column<DateTime>(type: "datetime2", nullable: true),
                     LoadCapacity = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DotInspectionDate = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     NotApplicable = table.Column<bool>(type: "bit", nullable: true),
                     CategoryId = table.Column<int>(type: "int", nullable: false),
                     AssetId = table.Column<int>(type: "int", nullable: true),
@@ -212,9 +214,9 @@ namespace genscoSQLProject1.Migrations
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BranchInspections_BranchId",
+                name: "IX_BranchInspections_BranchNumber",
                 table: "BranchInspections",
-                column: "BranchId");
+                column: "BranchNumber");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Categories_BranchInspectionId",

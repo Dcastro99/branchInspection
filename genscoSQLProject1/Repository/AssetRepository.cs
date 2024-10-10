@@ -33,12 +33,12 @@ namespace genscoSQLProject1.Repository
             return _context.Assets.Where(a => a.AssetId == assetId).FirstOrDefault();
         }
 
-        public ICollection<Asset> GetAssetByBranch(int branchId)
+        public ICollection<Asset> GetAssetByBranch(int branchNumber)
         {
-            return _context.Assets.Where(a => a.BranchId == branchId).ToList();
+            return _context.Assets.Where(a => a.BranchNumber == branchNumber).ToList();
         }
 
-        public ICollection<Asset> GetAssets()
+        public ICollection<Asset> GetAllAssets()
         {
             return _context.Assets.ToList();
         }

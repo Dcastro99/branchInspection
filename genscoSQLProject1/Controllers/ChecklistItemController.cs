@@ -26,6 +26,10 @@ namespace genscoSQLProject1.Controllers
 
         public IActionResult GetChecklistItems()
         {
+            //var checklistItems = _checklistItemRepository.GetAllChecklistItems().Take(100).ToList();
+
+            //var checklistItemDtos = _mapper.Map<List<ChecklistItemDto>>(checklistItems);
+
             var checklistItems = _mapper.Map<List<ChecklistItemDto>>(_checklistItemRepository.GetAllChecklistItems());
 
             if (!ModelState.IsValid)
@@ -101,7 +105,7 @@ namespace genscoSQLProject1.Controllers
             // Map to ChecklistItem and handle AssetId
             var checklistItemMap = _mapper.Map<ChecklistItem>(checklistItemToCreate);
 
-         
+          
             // Attempt to create the checklist item
             if (!_checklistItemRepository.CreateChecklistItem(checklistItemMap))
             {

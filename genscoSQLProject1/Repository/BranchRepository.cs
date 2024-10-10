@@ -13,9 +13,9 @@ namespace genscoSQLProject1.Repository
         {
             _context = context;
         }
-        public bool BranchExists(int branchId)
+        public bool BranchExists(int branchNumber)
         {
-            return _context.Branches.Any(b => b.BranchId == branchId);
+            return _context.Branches.Any(b => b.BranchNumber == branchNumber);
         }
 
         public bool CreateBranch(Branch branch)
@@ -30,9 +30,9 @@ namespace genscoSQLProject1.Repository
             return Save();
         }
 
-        public Branch GetBranch(int branchId)
+        public Branch GetBranch(int branchNumber)
         {
-            return _context.Branches.Where(b => b.BranchId == branchId).FirstOrDefault();
+            return _context.Branches.Where(b => b.BranchNumber == branchNumber).FirstOrDefault();
         }
 
         public ICollection<Branch> GetBranches()
@@ -40,9 +40,9 @@ namespace genscoSQLProject1.Repository
             return _context.Branches.ToList();
         }
 
-        public ICollection<Asset> GetAssetsByBranch(int branchId)
+        public ICollection<Asset> GetAssetsByBranch(int branchNumber)
         {
-            return _context.Assets.Where(a => a.BranchId == branchId).ToList();
+            return _context.Assets.Where(a => a.BranchNumber == branchNumber).ToList();
         }
 
         public bool Save()

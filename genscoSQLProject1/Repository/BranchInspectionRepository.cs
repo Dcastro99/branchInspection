@@ -33,9 +33,9 @@ namespace genscoSQLProject1.Repository
             return _context.BranchInspections.FirstOrDefault(bi => bi.BranchInspectionId == branchInspectionId);
         }
 
-        public ICollection<BranchInspection> GetBranchInspectionByBranch(int branchId)
+        public ICollection<BranchInspection> GetBranchInspectionByBranch(int BranchNumber)
         {
-            return _context.BranchInspections.Where(bi => bi.BranchId == branchId).ToList();
+            return _context.BranchInspections.Where(bi => bi.BranchNumber == BranchNumber).ToList();
         }
 
         public ICollection<BranchInspection> GetAllBranchInspections()
@@ -53,9 +53,9 @@ namespace genscoSQLProject1.Repository
             return _context.BranchInspections.Where(bi => bi.ApprovedDate.Value.Month == month.Month).ToList();
         }
 
-        public BranchInspection GetMostRecentBranchInspectionByBranch(int branchId)
+        public BranchInspection GetMostRecentBranchInspectionByBranch(int BranchNumber)
         {
-            return _context.BranchInspections.Where(bi => bi.BranchId == branchId).OrderByDescending(bi => bi.CreatedDate).FirstOrDefault();
+            return _context.BranchInspections.Where(bi => bi.BranchNumber == BranchNumber).OrderByDescending(bi => bi.CreatedDate).FirstOrDefault();
         }
 
         public bool Save()

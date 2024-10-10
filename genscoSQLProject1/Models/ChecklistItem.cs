@@ -9,6 +9,7 @@
         public DateTime? LastMeetingDate { get; set; }
         public DateTime? DateCartridgeInstalled { get; set; }
         public string? LoadCapacity { get; set; }
+        public string? DotInspectionDate { get; set; }
         public bool? NotApplicable { get; set; }
         public int CategoryId { get; set; }
         public Category Category { get; set; }  // Navigation property

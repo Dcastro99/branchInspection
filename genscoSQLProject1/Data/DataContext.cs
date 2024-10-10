@@ -66,15 +66,14 @@ namespace genscoSQLProject1.Data
                 .IsRequired(false) // Optional
                 .OnDelete(DeleteBehavior.Restrict); // Prevent cascading delete
 
-
             // BranchInspection and Branch relationship
             modelBuilder.Entity<BranchInspection>()
                 .HasOne<Branch>() // Specify the type for the foreign key
                 .WithMany() // Assuming you don't need navigation property back to Branch from BranchInspection
-                .HasForeignKey(bi => bi.BranchId) // Foreign key
+                .HasForeignKey(bi => bi.BranchNumber) // Foreign key
                 .OnDelete(DeleteBehavior.Cascade); // Define delete behavior, if necessary
         }
-    }
 
+    }
 
 }

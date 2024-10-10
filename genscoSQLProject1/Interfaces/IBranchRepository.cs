@@ -5,7 +5,7 @@ namespace genscoSQLProject1.Interfaces
     public interface IBranchRepository
     {
         ICollection<Branch> GetAllBranches();
-        Branch GetBranch(int branchId);
+        Branch GetBranch(int branchNumber);
         bool BranchExists(int branchId);
         bool CreateBranch(Branch branch);
         bool UpdateBranch(Branch branch);

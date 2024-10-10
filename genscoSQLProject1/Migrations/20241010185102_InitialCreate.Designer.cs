@@ -12,7 +12,7 @@ using genscoSQLProject1.Data;
 namespace genscoSQLProject1.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20241009191554_InitialCreate")]
+    [Migration("20241010185102_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -41,10 +41,13 @@ namespace genscoSQLProject1.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("BranchId")
+                    b.Property<int?>("BranchId")
                         .HasColumnType("int");
 
-                    b.Property<int>("CategoryId")
+                    b.Property<int>("BranchNumber")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("CategoryId")
                         .HasColumnType("int");
 
                     b.HasKey("AssetId");
@@ -68,9 +71,8 @@ namespace genscoSQLProject1.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("BranchNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("BranchNumber")
+                        .HasColumnType("int");
 
                     b.HasKey("BranchId");
 
@@ -91,7 +93,7 @@ namespace genscoSQLProject1.Migrations
                     b.Property<DateTime?>("ApprovedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("BranchId")
+                    b.Property<int>("BranchNumber")
                         .HasColumnType("int");
 
                     b.Property<string>("CompanyId")
@@ -117,7 +119,7 @@ namespace genscoSQLProject1.Migrations
 
                     b.HasKey("BranchInspectionId");
 
-                    b.HasIndex("BranchId");
+                    b.HasIndex("BranchNumber");
 
                     b.ToTable("BranchInspections");
                 });
@@ -166,6 +168,9 @@ namespace genscoSQLProject1.Migrations
 
                     b.Property<DateTime?>("DatePosted")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("DotInspectionDate")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ItemType")
                         .HasColumnType("int");
@@ -270,6 +275,9 @@ namespace genscoSQLProject1.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -298,15 +306,12 @@ namespace genscoSQLProject1.Migrations
                 {
                     b.HasOne("genscoSQLProject1.Models.Branch", null)
                         .WithMany("Assets")
-                        .HasForeignKey("BranchId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("BranchId");
 
                     b.HasOne("genscoSQLProject1.Models.Category", "Category")
                         .WithMany("Assets")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Category");
                 });
@@ -315,8 +320,9 @@ namespace genscoSQLProject1.Migrations
                 {
                     b.HasOne("genscoSQLProject1.Models.Branch", null)
                         .WithMany()
-                        .HasForeignKey("BranchId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("BranchNumber")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("genscoSQLProject1.Models.Category", b =>

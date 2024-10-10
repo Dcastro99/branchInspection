@@ -12,6 +12,13 @@ namespace genscoSQLProject1.Helper
             CreateMap<CategoryDto, Category>();
             CreateMap<ChecklistItem, ChecklistItemDto>();
             CreateMap<ChecklistItemDto, ChecklistItem>();
+            CreateMap<Asset, AssetDto>();
+            CreateMap<AssetDto, Asset>();
+            CreateMap<Branch, BranchDto>();
+            CreateMap<BranchDto, Branch>();
+            CreateMap<User, UserDto>();
+            CreateMap<UserDto, User>();
+
         }
     }
 }

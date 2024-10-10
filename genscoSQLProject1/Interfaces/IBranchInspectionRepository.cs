@@ -6,10 +6,10 @@ namespace genscoSQLProject1.Interfaces
     {
         ICollection<BranchInspection> GetAllBranchInspections();
         BranchInspection GetBranchInspection(int branchInspectionId);
-        ICollection<BranchInspection> GetBranchInspectionByBranch(int branchId);
+        ICollection<BranchInspection> GetBranchInspectionByBranch(int BranchNumber);
         ICollection<BranchInspection> GetBranchInspectionsByMonth(DateTime month);
         ICollection<BranchInspection> GetBranchInspectionsByDateRange(DateTime startDate, DateTime endDate);
-        BranchInspection GetMostRecentBranchInspectionByBranch(int branchId);
+        BranchInspection GetMostRecentBranchInspectionByBranch(int BranchNumber);
         bool BranchInspectionExists(int branchInspectionId);
         bool CreateBranchInspection(BranchInspection branchInspection);
         bool UpdateBranchInspection(BranchInspection branchInspection);
