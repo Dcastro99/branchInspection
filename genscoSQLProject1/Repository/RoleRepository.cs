@@ -27,9 +27,9 @@ namespace genscoSQLProject1.Repository
             return Save();
         }
 
-        public Role GetRole(int roleId)
+        public Role GetRole(string roleDescription)
         {
-            return _context.Roles.FirstOrDefault(r => r.RoleId == roleId);
+            return _context.Roles.FirstOrDefault(r => r.RoleDescription == roleDescription);
         }
 
         public ICollection<Role> GetRoles()

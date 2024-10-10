@@ -22,8 +22,10 @@ namespace genscoSQLProject1
                 var roles = new List<Role>
                 {
                  new Role {  RoleDescription = "Admin" },
-                 new Role {  RoleDescription = "User" },
-                 new Role {  RoleDescription = "Ops" }
+                 new Role {  RoleDescription = "Teammember" },
+                 new Role {  RoleDescription = "Ops" },
+                 new Role {  RoleDescription = "Manager" }
+
                 };
 
                 _dataContext.Roles.AddRange(roles);
@@ -31,7 +33,7 @@ namespace genscoSQLProject1
             }
 
             var adminRoleId = _dataContext.Roles.FirstOrDefault(r => r.RoleDescription == "Admin")?.RoleId;
-            var userRoleId = _dataContext.Roles.FirstOrDefault(r => r.RoleDescription == "User")?.RoleId;
+            var userRoleId = _dataContext.Roles.FirstOrDefault(r => r.RoleDescription == "Teammember")?.RoleId;
 
             //---------- Seed users if none exist ----------//
             if (!_dataContext.Users.Any())
@@ -115,7 +117,22 @@ namespace genscoSQLProject1
                 _dataContext.ChecklistItems.AddRange(checklistItems);
                 _dataContext.SaveChanges();
             }
+            //--------- Seed Comments if none exist ----------//
+            if (!_dataContext.Comments.Any())
+            {
+                var comments = new List<Comments>
+                {
+                 new Comments
+                 {
+                    Comment = "Fire EVERYWHERE!!!",
+                    CategoryId = 5
+                 },
+                 
+                };
 
+                _dataContext.Comments.AddRange(comments);
+                _dataContext.SaveChanges();
+            }
 
 
 
