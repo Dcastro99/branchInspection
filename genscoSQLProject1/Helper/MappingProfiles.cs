@@ -20,9 +20,7 @@ namespace genscoSQLProject1.Helper
             CreateMap<UserDto, User>();
             CreateMap<Role, RoleDto>();
             CreateMap<RoleDto, Role>();
-            CreateMap<Comments, CommentsDto>();
-            CreateMap<CommentsDto, CommentsDto>();
-
+        
         }
     }
 }

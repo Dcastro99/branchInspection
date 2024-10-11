@@ -107,32 +107,14 @@ namespace genscoSQLProject1
                     {
                         Name = ci.Name,
                         CategoryId = ci.CategoryId,
-                        ItemType = ci.ItemType,
-                        CheckedFlag = ci.CheckedFlag,
-                        NotApplicable = ci.NotApplicable
-
+        
                     })
                     .ToList();
 
                 _dataContext.ChecklistItems.AddRange(checklistItems);
                 _dataContext.SaveChanges();
             }
-            //--------- Seed Comments if none exist ----------//
-            if (!_dataContext.Comments.Any())
-            {
-                var comments = new List<Comments>
-                {
-                 new Comments
-                 {
-                    Comment = "Fire EVERYWHERE!!!",
-                    CategoryId = 5
-                 },
-                 
-                };
-
-                _dataContext.Comments.AddRange(comments);
-                _dataContext.SaveChanges();
-            }
+           
 
 
 

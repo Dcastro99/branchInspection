@@ -11,68 +11,84 @@ namespace genscoSQLProject1.Data
         }
 
         public DbSet<Asset> Assets { get; set; }
-        public DbSet<Category> Categories { get; set; }
-        public DbSet<Comments> Comments { get; set; }
+        public DbSet<AssetItems> AssetItems { get; set; }
         public DbSet<Branch> Branches { get; set; }
         public DbSet<BranchInspection> BranchInspections { get; set; }
+        public DbSet<Category> Categories { get; set; }
         public DbSet<ChecklistItem> ChecklistItems { get; set; }
+        public DbSet<FormAssets> FormAssets { get; set; }
+        public DbSet<FormCategory> FormCategories { get; set; }
+        public DbSet<FormItems> FormItems { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<User> Users { get; set; }
 
+        //-----------ON MODEL CREATING METHOD------------//
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // User and Role relationship
+            // Asset -> Branch (Many-to-One)
+            modelBuilder.Entity<Asset>()
+                .HasOne(a => a.Branch)
+                .WithMany(b => b.Assets)
+                .HasForeignKey(a => a.BranchId);
+
+            // AssetItems -> FormAssets (Many-to-One)
+            modelBuilder.Entity<AssetItems>()
+                .HasOne(ai => ai.FormAssets)
+                .WithMany(fa => fa.AssetItems)
+                .HasForeignKey(ai => ai.FormAssetsId);
+
+            // AssetItems -> ChecklistItem (One-to-One)
+            modelBuilder.Entity<AssetItems>()
+                .HasOne(ai => ai.ChecklistItem)
+                .WithOne(ci => ci.AssetItems)
+                .HasForeignKey<AssetItems>(ai => ai.ChecklistItemId);
+
+            // BranchInspection -> Branch (Many-to-One)
+            modelBuilder.Entity<BranchInspection>()
+                .HasOne(bi => bi.Branch)
+                .WithMany(b => b.BranchInspections)
+                .HasForeignKey(bi => bi.BranchId);
+
+            // BranchInspection -> FormAssets (One-to-Many)
+            modelBuilder.Entity<BranchInspection>()
+                .HasMany(bi => bi.FormAssets)
+                .WithOne(fa => fa.BranchInspection)
+                .HasForeignKey(fa => fa.BranchInspectionId);
+
+            // BranchInspection -> FormItems (One-to-Many)
+            modelBuilder.Entity<BranchInspection>()
+                .HasMany(bi => bi.FormItems)
+                .WithOne(fi => fi.BranchInspection)
+                .HasForeignKey(fi => fi.BranchInspectionId);
+
+            // BranchInspection -> FormCategory (One-to-Many)
+            modelBuilder.Entity<BranchInspection>()
+                .HasMany(bi => bi.FormCategory)
+                .WithOne(fc => fc.BranchInspection)
+                .HasForeignKey(fc => fc.BranchInspectionId);
+
+            // FormItems -> ChecklistItem (One-to-One)
+            modelBuilder.Entity<FormItems>()
+                .HasOne(fi => fi.ChecklistItem)
+                .WithOne(ci => ci.FormItem)
+                .HasForeignKey<FormItems>(fi => fi.ChecklistItemId);
+
+            // FormCategory -> Category (One-to-One)
+            modelBuilder.Entity<FormCategory>()
+                .HasOne(fc => fc.Category)
+                .WithOne(c => c.FormCategory)
+                .HasForeignKey<FormCategory>(fc => fc.CategoryId);
+
+            // User -> Role (Many-to-One)
             modelBuilder.Entity<User>()
                 .HasOne(u => u.Role)
                 .WithMany(r => r.Users)
-                .HasForeignKey(u => u.RoleId)
-                .OnDelete(DeleteBehavior.Restrict); // Prevent cascading delete
-
-            // BranchInspection and Category relationship
-            modelBuilder.Entity<Category>()
-                .HasOne(c => c.BranchInspection)
-                .WithMany(bi => bi.Categories)
-                .HasForeignKey(c => c.BranchInspectionId)
-                .OnDelete(DeleteBehavior.Restrict); // Prevent cascading delete
-
-            // Category and Asset relationship
-            modelBuilder.Entity<Asset>()
-                .HasOne(a => a.Category)
-                .WithMany(c => c.Assets)
-                .HasForeignKey(a => a.CategoryId)
-                .OnDelete(DeleteBehavior.Restrict); // Prevent cascading delete
-
-            // Category and ChecklistItem relationship
-            modelBuilder.Entity<ChecklistItem>()
-                .HasOne(ci => ci.Category)
-                .WithMany(c => c.ChecklistItems)
-                .HasForeignKey(ci => ci.CategoryId)
-                .OnDelete(DeleteBehavior.Restrict); // Prevent cascading delete
-
-            // Category and Comments relationship
-            modelBuilder.Entity<Comments>()
-                .HasKey(co => co.CommentId); // Specify the primary key
-            modelBuilder.Entity<Comments>()
-                .HasOne(co => co.Category)
-                .WithMany(c => c.Comments)
-                .HasForeignKey(co => co.CategoryId)
-                .OnDelete(DeleteBehavior.Restrict); // Prevent cascading delete
-
-            // Asset and ChecklistItem relationship
-            modelBuilder.Entity<ChecklistItem>()
-                .HasOne(ci => ci.Asset)
-                .WithMany(a => a.ChecklistItems)
-                .HasForeignKey(ci => ci.AssetId)
-                .IsRequired(false) // Optional
-                .OnDelete(DeleteBehavior.Restrict); // Prevent cascading delete
-
-            // BranchInspection and Branch relationship
-            modelBuilder.Entity<BranchInspection>()
-                .HasOne<Branch>() // Specify the type for the foreign key
-                .WithMany() // Assuming you don't need navigation property back to Branch from BranchInspection
-                .HasForeignKey(bi => bi.BranchNumber) // Foreign key
-                .OnDelete(DeleteBehavior.Cascade); // Define delete behavior, if necessary
+                .HasForeignKey(u => u.RoleId);
         }
+
+
+
 
     }
 

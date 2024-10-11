@@ -6,7 +6,6 @@ namespace genscoSQLProject1.Interfaces
     {
         ICollection<Category> GetAllCategories();
         Category GetCategory(int categoryId);
-        ICollection<Category> GetCategoryByBranchInspection(int branchInspectionId);
         bool CategoryExists(int categoryId);
         bool CreateCategory(Category category);
         bool UpdateCategory(Category category);

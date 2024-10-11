@@ -40,10 +40,7 @@ namespace genscoSQLProject1.Repository
             return _context.Categories.FirstOrDefault(c => c.CategoryId == categoryId);
         }
 
-        public ICollection<Category> GetCategoryByBranchInspection(int branchInspectionId)
-        {
-            return _context.Categories.Where(c => c.BranchInspectionId == branchInspectionId).ToList();
-        }
+    
 
         public bool Save()
         {

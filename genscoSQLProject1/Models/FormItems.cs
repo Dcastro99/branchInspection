@@ -1,20 +1,20 @@
-﻿using genscoSQLProject1.Models;
-
-namespace genscoSQLProject1.Dto
+﻿namespace genscoSQLProject1.Models
 {
-    public class ChecklistItemDto
+    public class FormItems
     {
+        public int FormItemsId { get; set; }
         public int ChecklistItemId { get; set; }
-        public string Name { get; set; }
+        public int BranchInspectionId { get; set; }
         public bool? CheckedFlag { get; set; }
         public DateTime? DatePosted { get; set; }
         public DateTime? LastMeetingDate { get; set; }
         public DateTime? DateCartridgeInstalled { get; set; }
         public string? LoadCapacity { get; set; }
-        public string? DotInspectionDate { get; set; }
         public bool? NotApplicable { get; set; }
-        public int CategoryId { get; set; }
-        public int? AssetId { get; set; }
+
+        //-----------Navigation Properties-------------//
+        public ChecklistItem ChecklistItem { get; set; }  
+        public BranchInspection BranchInspection { get; set; }  
 
     }
 }
