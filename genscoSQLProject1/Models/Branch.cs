@@ -6,7 +6,10 @@
         public string BranchName { get; set; }
         public int BranchNumber { get; set; }
 
-        public ICollection<Asset> Assets { get; set; }  // Navigation property
+
+        //----------------Navigation Properties-----------------//
+        public ICollection<BranchInspection> BranchInspections { get; set; } 
+        public ICollection<Asset> Assets { get; set; }  
     }
 
 }

@@ -11,11 +11,15 @@
         public string? DefaultLocationId { get; set; } 
         public  string? CompanyId { get; set; } 
         public int? RoleId { get; set; }
-        public Role? Role { get; set; } 
         public  string? CreatedByUserId { get; set; } 
         public  DateTime? CreatedDate { get; set; }
         public  string? ActiveInd { get; set; } 
         public int EmployeeId { get; set; }
+
+
+        //----------------Navigation Properties-----------------//
+        public Role? Role { get; set; }
+        public ICollection<BranchInspection> BranchInspections { get; set; }
     }
 }
 

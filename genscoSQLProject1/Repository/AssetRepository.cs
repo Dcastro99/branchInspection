@@ -33,9 +33,9 @@ namespace genscoSQLProject1.Repository
             return _context.Assets.Where(a => a.AssetId == assetId).FirstOrDefault();
         }
 
-        public ICollection<Asset> GetAssetByBranch(int branchNumber)
+        public ICollection<Asset> GetAssetByBranch(int branchId)
         {
-            return _context.Assets.Where(a => a.BranchNumber == branchNumber).ToList();
+            return _context.Assets.Where(a => a.BranchId == branchId).ToList();
         }
 
         public ICollection<Asset> GetAllAssets()

@@ -53,25 +53,7 @@ namespace genscoSQLProject1.Controllers
             return Ok(category);
         }
 
-        //--------------GET CATEGORY BY BRANCH INSPECTION ID----------------//
-
-        [HttpGet("branchInspection/{branchInspectionId}")]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<Category>))]
-        [ProducesResponseType(400)]
-
-        public IActionResult GetCategoryByBranchInspection(int branchInspectionId)
-        {
-            if (!_categoryRepository.CategoryExists(branchInspectionId))
-                return NotFound();
-
-            var categories = _mapper.Map<List<CategoryDto>>(_categoryRepository.GetCategoryByBranchInspection(branchInspectionId));
-
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            return Ok(categories);
-        }
-
+      
         //--------------CREATE CATEGORY----------------//
 
         [HttpPost]
