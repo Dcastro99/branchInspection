@@ -12,7 +12,7 @@ using genscoSQLProject1.Data;
 namespace genscoSQLProject1.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20241011181809_initialCreate")]
+    [Migration("20241011205904_initialCreate")]
     partial class initialCreate
     {
         /// <inheritdoc />
@@ -144,14 +144,11 @@ namespace genscoSQLProject1.Migrations
                     b.Property<DateTime?>("SubmittedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("BranchInspectionId");
 
                     b.HasIndex("BranchId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("CreatedByUserId");
 
                     b.ToTable("BranchInspections");
                 });
@@ -409,11 +406,14 @@ namespace genscoSQLProject1.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("genscoSQLProject1.Models.User", null)
+                    b.HasOne("genscoSQLProject1.Models.User", "CreatedByUser")
                         .WithMany("BranchInspections")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("CreatedByUserId")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Branch");
+
+                    b.Navigation("CreatedByUser");
                 });
 
             modelBuilder.Entity("genscoSQLProject1.Models.ChecklistItem", b =>

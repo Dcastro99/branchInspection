@@ -68,6 +68,17 @@ namespace genscoSQLProject1.Data
                 .WithOne(fc => fc.BranchInspection)
                 .HasForeignKey(fc => fc.BranchInspectionId);
 
+            // BranchInspection -> CreatedByUser (Many-to-One)
+            modelBuilder.Entity<BranchInspection>()
+                .HasOne(b => b.CreatedByUser)
+                .WithMany(u => u.BranchInspections)
+                .HasForeignKey(b => b.CreatedByUserId)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            // BranchInspection -> ApprovedByUser (Many-to-One)
+            modelBuilder.Entity<BranchInspection>()
+                .Ignore(b => b.ApprovedByUser);
+
             // FormItems -> ChecklistItem (One-to-One)
             modelBuilder.Entity<FormItems>()
                 .HasOne(fi => fi.ChecklistItem)
@@ -85,6 +96,8 @@ namespace genscoSQLProject1.Data
                 .HasOne(u => u.Role)
                 .WithMany(r => r.Users)
                 .HasForeignKey(u => u.RoleId);
+
+          
         }
 
 

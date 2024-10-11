@@ -35,19 +35,13 @@ namespace genscoSQLProject1.Repository
             return _context.FormAssets.ToList();
         }
 
-        public ICollection<Asset> GetAssetByFormAssets(int formAssetsId)
+        public ICollection<Asset> GetAssetsByBranchInspectionId(int branchInspectionId)
         {
-            return _context.Assets.Where(a => a.AssetId == formAssetsId).ToList();
-        }
-
-        public FormAssets GetFormAssets(int formAssetsId)
-        {
-            return _context.FormAssets.Where(f => f.FormAssetsId == formAssetsId).FirstOrDefault();
-        }
-
-        public ICollection<FormAssets> GetFormAssetsByAssetId(int assetId)
-        {
-            return _context.FormAssets.Where(f => f.AssetId == assetId).ToList();
+            return _context.FormAssets
+                .Where(fa => fa.BranchInspectionId == branchInspectionId)
+                .Select(fa => fa.Assets)
+                .SelectMany(a => a) 
+                .ToList();
         }
 
         public bool Save()

@@ -119,8 +119,7 @@ namespace genscoSQLProject1.Migrations
                     DateLastMaintained = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DeleteFlag = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     SubmittedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    ApprovedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UserId = table.Column<int>(type: "int", nullable: true)
+                    ApprovedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -132,10 +131,11 @@ namespace genscoSQLProject1.Migrations
                         principalColumn: "BranchId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_BranchInspections_Users_UserId",
-                        column: x => x.UserId,
+                        name: "FK_BranchInspections_Users_CreatedByUserId",
+                        column: x => x.CreatedByUserId,
                         principalTable: "Users",
-                        principalColumn: "UserId");
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.SetNull);
                 });
 
             migrationBuilder.CreateTable(
@@ -298,9 +298,9 @@ namespace genscoSQLProject1.Migrations
                 column: "BranchId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BranchInspections_UserId",
+                name: "IX_BranchInspections_CreatedByUserId",
                 table: "BranchInspections",
-                column: "UserId");
+                column: "CreatedByUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ChecklistItems_CategoryId",

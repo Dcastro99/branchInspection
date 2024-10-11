@@ -14,8 +14,11 @@
         public DateTime? SubmittedDate { get; set; }
         public DateTime? ApprovedDate { get; set; }
 
+
         //-----------Navigation Properties-------------//
         public Branch Branch { get; set; }
+        public User CreatedByUser { get; set; }  
+        public User ApprovedByUser { get; set; }
         public ICollection<FormAssets> FormAssets { get; set; }
         public ICollection<FormItems> FormItems { get; set; }
         public ICollection<FormCategory> FormCategory { get; set; }

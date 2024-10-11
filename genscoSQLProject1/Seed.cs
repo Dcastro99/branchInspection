@@ -29,7 +29,7 @@ namespace genscoSQLProject1
                 };
 
                 _dataContext.Roles.AddRange(roles);
-                _dataContext.SaveChanges(); 
+                _dataContext.SaveChanges();
             }
 
             var adminRoleId = _dataContext.Roles.FirstOrDefault(r => r.RoleDescription == "Admin")?.RoleId;
@@ -107,21 +107,41 @@ namespace genscoSQLProject1
                     {
                         Name = ci.Name,
                         CategoryId = ci.CategoryId,
-        
+
                     })
                     .ToList();
 
                 _dataContext.ChecklistItems.AddRange(checklistItems);
                 _dataContext.SaveChanges();
             }
-           
+
+            //---------- Seed Branch Inspections -----------//
+            if (!_dataContext.BranchInspections.Any())
+            {
+                var branchInspections = new List<BranchInspection>
+                {
+                    new BranchInspection
+                    {
+                       
+                        BranchId = 1,
+                        ApprovedDate = DateTime.Now,
+                        CreatedDate = DateTime.Now,
+                        DateLastMaintained = DateTime.Now,
+                        SubmittedDate = DateTime.Now,
+                        CompanyId = "GEN",
+                        CreatedByUserId = 2,
+                        ApprovedByUserId = 1,
+                        DeleteFlag = "N",
+                        RevisedDate = DateTime.Now,
+                     
 
 
-
-
-
+                    }
+                };
+              
+                _dataContext.BranchInspections.AddRange(branchInspections);
+                _dataContext.SaveChanges();
+            }
         }
-
-
     }
 }

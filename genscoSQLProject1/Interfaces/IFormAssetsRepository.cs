@@ -5,9 +5,7 @@ namespace genscoSQLProject1.Interfaces
     public interface IFormAssetsRepository
     {
         ICollection<FormAssets> GetAllFormAssets();
-        FormAssets GetFormAssets(int formAssetsId);
-        ICollection<FormAssets> GetFormAssetsByAssetId(int assetId);
-        ICollection<Asset> GetAssetByFormAssets(int formAssetsId);
+        ICollection<Asset> GetAssetsByBranchInspectionId(int branchInspectionId);
         bool FormAssetsExists(int formAssetsId);
         bool CreateFormAssets(FormAssets formAssets);
         bool UpdateFormAssets(FormAssets formAssets);
