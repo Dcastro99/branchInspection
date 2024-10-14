@@ -8,9 +8,9 @@
 
 
         //---------NAVIGATION PROPERTIES-----------//
-        public FormItems FormItem { get; set; }
+        public ICollection<FormItems> FormItems { get; set; }
         public Category Category { get; set; }
-        public AssetItems AssetItems { get; set; }
+        public ICollection<AssetItems> AssetItems { get; set; }
 
     }
 }

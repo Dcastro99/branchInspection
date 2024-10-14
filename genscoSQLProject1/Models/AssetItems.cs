@@ -2,15 +2,15 @@
 {
     public class AssetItems
     {
-        public int AssetItemsId { get; set; }
-        public int FormAssetsId { get; set; }
         public int ChecklistItemId { get; set; }
+        public int AssetId { get; set; }
+        public int BranchInspectionId { get; set; }
         public bool? CheckedFlag { get; set; }
         public DateTime? DotInspectionDate { get; set; }
 
-        //---------NAVIGATION PROPERTIES-----------//
+        // Navigation Properties
+        public ChecklistItem ChecklistItem { get; set; }
         public FormAssets FormAssets { get; set; }
-        public ChecklistItem ChecklistItem { get; set; }  
-       
     }
+
 }

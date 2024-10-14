@@ -8,7 +8,7 @@
              
       //-----------NAVIGATION PROPERTIES------------//
         public  ICollection<ChecklistItem> ChecklistItems { get; set; }  
-        public FormCategory FormCategory { get; set; }
+        public ICollection<FormCategory> FormCategory { get; set; }
 
 
     }
