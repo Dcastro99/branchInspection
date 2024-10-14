@@ -22,12 +22,25 @@ namespace genscoSQLProject1.Helper
             CreateMap<RoleDto, Role>();
             CreateMap<BranchInspection, BranchInspectionDto>();
             CreateMap<BranchInspectionDto, BranchInspection>();
-            //CreateMap<AssetItems, AssetItemsDto>();
-            //CreateMap<AssetItemsDto, AssetItems>();
-            //CreateMap<FormAssets, FormAssetsDto>();
-            //CreateMap<FormAssetsDto, FormAssets>();
+            CreateMap<AssetItems, AssetItemsDto>();
+            CreateMap<AssetItemsDto, AssetItems>();
+            CreateMap<FormAssets, FormAssetsDto>();
+            CreateMap<FormAssetsDto, FormAssets>();
             CreateMap<FormCategory, FormCategoryDto>();
             CreateMap<FormCategoryDto, FormCategory>();
+            CreateMap<FormItems, FormItemsDto>();
+            CreateMap<FormItemsDto, FormItems>();
+            CreateMap<FormDto, BranchInspection>();
+            CreateMap<BranchInspection, FormDto>();
+
+            CreateMap<FormDto, BranchInspection>()
+           .ForMember(dest => dest.FormItems, opt => opt.MapFrom(src => src.FormItems))
+           .ForMember(dest => dest.FormAssets, opt => opt.MapFrom(src => src.FormAssets));
+
+            CreateMap<BranchInspection, FormDto>()
+                .ForMember(dest => dest.FormItems, opt => opt.MapFrom(src => src.FormItems))
+                .ForMember(dest => dest.FormAssets, opt => opt.MapFrom(src => src.FormAssets));
+
 
         }
     }

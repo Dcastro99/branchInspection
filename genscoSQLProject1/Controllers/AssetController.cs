@@ -37,6 +37,7 @@ namespace genscoSQLProject1.Controllers
             return Ok(assets);
         }
 
+
         //--------------GET ASSET BY ID----------------//
         [HttpGet("{assetId}")]
         [ProducesResponseType(200, Type = typeof(Asset))]

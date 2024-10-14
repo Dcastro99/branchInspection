@@ -106,7 +106,7 @@ namespace genscoSQLProject1
                     .Select(ci => new ChecklistItem
                     {
                         Name = ci.Name,
-                        CategoryId = _dataContext.Categories.FirstOrDefault()?.CategoryId ?? 1
+                        CategoryId = ci.CategoryId
 
                     })
                     .ToList();
