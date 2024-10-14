@@ -56,6 +56,26 @@ namespace genscoSQLProject1.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Assets",
+                columns: table => new
+                {
+                    AssetId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AssetNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AssetType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BranchId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Assets", x => x.AssetId);
+                    table.ForeignKey(
+                        name: "FK_Assets_Branches_BranchId",
+                        column: x => x.BranchId,
+                        principalTable: "Branches",
+                        principalColumn: "BranchId");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ChecklistItems",
                 columns: table => new
                 {
@@ -134,22 +154,25 @@ namespace genscoSQLProject1.Migrations
                         name: "FK_BranchInspections_Users_CreatedByUserId",
                         column: x => x.CreatedByUserId,
                         principalTable: "Users",
-                        principalColumn: "UserId",
-                        onDelete: ReferentialAction.SetNull);
+                        principalColumn: "UserId");
                 });
 
             migrationBuilder.CreateTable(
                 name: "FormAssets",
                 columns: table => new
                 {
-                    FormAssetsId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
                     BranchInspectionId = table.Column<int>(type: "int", nullable: false),
                     AssetId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_FormAssets", x => x.FormAssetsId);
+                    table.PrimaryKey("PK_FormAssets", x => new { x.AssetId, x.BranchInspectionId });
+                    table.ForeignKey(
+                        name: "FK_FormAssets_Assets_AssetId",
+                        column: x => x.AssetId,
+                        principalTable: "Assets",
+                        principalColumn: "AssetId",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_FormAssets_BranchInspections_BranchInspectionId",
                         column: x => x.BranchInspectionId,
@@ -166,7 +189,7 @@ namespace genscoSQLProject1.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     BranchInspectionId = table.Column<int>(type: "int", nullable: false),
                     CategoryId = table.Column<int>(type: "int", nullable: false),
-                    CategoryComment = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    CategoryComment = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -221,16 +244,15 @@ namespace genscoSQLProject1.Migrations
                 name: "AssetItems",
                 columns: table => new
                 {
-                    AssetItemsId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    FormAssetsId = table.Column<int>(type: "int", nullable: false),
                     ChecklistItemId = table.Column<int>(type: "int", nullable: false),
+                    AssetId = table.Column<int>(type: "int", nullable: false),
+                    BranchInspectionId = table.Column<int>(type: "int", nullable: false),
                     CheckedFlag = table.Column<bool>(type: "bit", nullable: true),
                     DotInspectionDate = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AssetItems", x => x.AssetItemsId);
+                    table.PrimaryKey("PK_AssetItems", x => new { x.ChecklistItemId, x.AssetId, x.BranchInspectionId });
                     table.ForeignKey(
                         name: "FK_AssetItems_ChecklistItems_ChecklistItemId",
                         column: x => x.ChecklistItemId,
@@ -238,59 +260,22 @@ namespace genscoSQLProject1.Migrations
                         principalColumn: "ChecklistItemId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_AssetItems_FormAssets_FormAssetsId",
-                        column: x => x.FormAssetsId,
+                        name: "FK_AssetItems_FormAssets_AssetId_BranchInspectionId",
+                        columns: x => new { x.AssetId, x.BranchInspectionId },
                         principalTable: "FormAssets",
-                        principalColumn: "FormAssetsId",
+                        principalColumns: new[] { "AssetId", "BranchInspectionId" },
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "Assets",
-                columns: table => new
-                {
-                    AssetId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    AssetNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AssetType = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    BranchId = table.Column<int>(type: "int", nullable: true),
-                    FormAssetsId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Assets", x => x.AssetId);
-                    table.ForeignKey(
-                        name: "FK_Assets_Branches_BranchId",
-                        column: x => x.BranchId,
-                        principalTable: "Branches",
-                        principalColumn: "BranchId");
-                    table.ForeignKey(
-                        name: "FK_Assets_FormAssets_FormAssetsId",
-                        column: x => x.FormAssetsId,
-                        principalTable: "FormAssets",
-                        principalColumn: "FormAssetsId");
-                });
-
             migrationBuilder.CreateIndex(
-                name: "IX_AssetItems_ChecklistItemId",
+                name: "IX_AssetItems_AssetId_BranchInspectionId",
                 table: "AssetItems",
-                column: "ChecklistItemId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_AssetItems_FormAssetsId",
-                table: "AssetItems",
-                column: "FormAssetsId");
+                columns: new[] { "AssetId", "BranchInspectionId" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Assets_BranchId",
                 table: "Assets",
                 column: "BranchId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Assets_FormAssetsId",
-                table: "Assets",
-                column: "FormAssetsId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_BranchInspections_BranchId",
@@ -320,8 +305,7 @@ namespace genscoSQLProject1.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_FormCategories_CategoryId",
                 table: "FormCategories",
-                column: "CategoryId",
-                unique: true);
+                column: "CategoryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_FormItems_BranchInspectionId",
@@ -331,8 +315,7 @@ namespace genscoSQLProject1.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_FormItems_ChecklistItemId",
                 table: "FormItems",
-                column: "ChecklistItemId",
-                unique: true);
+                column: "ChecklistItemId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_RoleId",
@@ -347,9 +330,6 @@ namespace genscoSQLProject1.Migrations
                 name: "AssetItems");
 
             migrationBuilder.DropTable(
-                name: "Assets");
-
-            migrationBuilder.DropTable(
                 name: "FormCategories");
 
             migrationBuilder.DropTable(
@@ -360,6 +340,9 @@ namespace genscoSQLProject1.Migrations
 
             migrationBuilder.DropTable(
                 name: "ChecklistItems");
+
+            migrationBuilder.DropTable(
+                name: "Assets");
 
             migrationBuilder.DropTable(
                 name: "BranchInspections");

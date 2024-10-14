@@ -22,8 +22,12 @@ namespace genscoSQLProject1.Helper
             CreateMap<RoleDto, Role>();
             CreateMap<BranchInspection, BranchInspectionDto>();
             CreateMap<BranchInspectionDto, BranchInspection>();
-            CreateMap<AssetItems, AssetItemsDto>();
-            CreateMap<AssetItemsDto, AssetItems>();
+            //CreateMap<AssetItems, AssetItemsDto>();
+            //CreateMap<AssetItemsDto, AssetItems>();
+            //CreateMap<FormAssets, FormAssetsDto>();
+            //CreateMap<FormAssetsDto, FormAssets>();
+            CreateMap<FormCategory, FormCategoryDto>();
+            CreateMap<FormCategoryDto, FormCategory>();
 
         }
     }

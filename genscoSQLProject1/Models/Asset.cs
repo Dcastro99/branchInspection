@@ -9,7 +9,7 @@
 
         //----------------Navigation Properties-----------------//
         public Branch Branch { get; set; }
-
+        public ICollection<FormAssets> FormAssets { get; set; }
  
     }
 }

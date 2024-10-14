@@ -26,79 +26,40 @@ namespace genscoSQLProject1.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Asset -> Branch (Many-to-One)
-            modelBuilder.Entity<Asset>()
-                .HasOne(a => a.Branch)
-                .WithMany(b => b.Assets)
-                .HasForeignKey(a => a.BranchId);
+            // FormCategory
+            modelBuilder.Entity<FormAssets>()
+                .HasKey(fa => new { fa.AssetId, fa.BranchInspectionId });
 
-            // AssetItems -> FormAssets (Many-to-One)
+            modelBuilder.Entity<FormAssets>()
+                .HasOne(f => f.Assets)
+                .WithMany(a => a.FormAssets)
+                .HasForeignKey(f => f.AssetId);
+
+            modelBuilder.Entity<FormAssets>()
+                .HasOne(f => f.BranchInspection)
+                .WithMany(b => b.FormAssets)
+                .HasForeignKey(f => f.BranchInspectionId);
+
+            // AssetItems setup (many-to-many between FormAssets and ChecklistItem)
+            modelBuilder.Entity<AssetItems>()
+                .HasKey(ai => new { ai.ChecklistItemId, ai.AssetId, ai.BranchInspectionId });
+
             modelBuilder.Entity<AssetItems>()
                 .HasOne(ai => ai.FormAssets)
                 .WithMany(fa => fa.AssetItems)
-                .HasForeignKey(ai => ai.FormAssetsId);
+                .HasForeignKey(ai => new { ai.AssetId, ai.BranchInspectionId });
 
-            // AssetItems -> ChecklistItem (One-to-One)
             modelBuilder.Entity<AssetItems>()
                 .HasOne(ai => ai.ChecklistItem)
-                .WithOne(ci => ci.AssetItems)
-                .HasForeignKey<AssetItems>(ai => ai.ChecklistItemId);
+                .WithMany(ci => ci.AssetItems)
+                .HasForeignKey(ai => ai.ChecklistItemId);
 
-            // BranchInspection -> Branch (Many-to-One)
+
+            // BranchInspection
             modelBuilder.Entity<BranchInspection>()
-                .HasOne(bi => bi.Branch)
-                .WithMany(b => b.BranchInspections)
-                .HasForeignKey(bi => bi.BranchId);
-
-            // BranchInspection -> FormAssets (One-to-Many)
-            modelBuilder.Entity<BranchInspection>()
-                .HasMany(bi => bi.FormAssets)
-                .WithOne(fa => fa.BranchInspection)
-                .HasForeignKey(fa => fa.BranchInspectionId);
-
-            // BranchInspection -> FormItems (One-to-Many)
-            modelBuilder.Entity<BranchInspection>()
-                .HasMany(bi => bi.FormItems)
-                .WithOne(fi => fi.BranchInspection)
-                .HasForeignKey(fi => fi.BranchInspectionId);
-
-            // BranchInspection -> FormCategory (One-to-Many)
-            modelBuilder.Entity<BranchInspection>()
-                .HasMany(bi => bi.FormCategory)
-                .WithOne(fc => fc.BranchInspection)
-                .HasForeignKey(fc => fc.BranchInspectionId);
-
-            // BranchInspection -> CreatedByUser (Many-to-One)
-            modelBuilder.Entity<BranchInspection>()
-                .HasOne(b => b.CreatedByUser)
-                .WithMany(u => u.BranchInspections)
-                .HasForeignKey(b => b.CreatedByUserId)
-                .OnDelete(DeleteBehavior.SetNull);
-
-            // BranchInspection -> ApprovedByUser (Many-to-One)
-            modelBuilder.Entity<BranchInspection>()
-                .Ignore(b => b.ApprovedByUser);
-
-            // FormItems -> ChecklistItem (One-to-One)
-            modelBuilder.Entity<FormItems>()
-                .HasOne(fi => fi.ChecklistItem)
-                .WithOne(ci => ci.FormItem)
-                .HasForeignKey<FormItems>(fi => fi.ChecklistItemId);
-
-            // FormCategory -> Category (One-to-One)
-            modelBuilder.Entity<FormCategory>()
-                .HasOne(fc => fc.Category)
-                .WithOne(c => c.FormCategory)
-                .HasForeignKey<FormCategory>(fc => fc.CategoryId);
-
-            // User -> Role (Many-to-One)
-            modelBuilder.Entity<User>()
-                .HasOne(u => u.Role)
-                .WithMany(r => r.Users)
-                .HasForeignKey(u => u.RoleId);
-
-          
+                .Ignore(bi => bi.ApprovedByUser);
         }
+
 
 
 

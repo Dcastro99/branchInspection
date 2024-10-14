@@ -30,6 +30,12 @@ namespace genscoSQLProject1.Repository
             return Save();
         }
 
+        public void CreateCategories(List<Category> categories)
+        {
+            _context.Categories.AddRange(categories);
+            _context.SaveChanges();
+        }
+
         public ICollection<Category> GetAllCategories()
         {
             return _context.Categories.ToList();

@@ -4,10 +4,10 @@ using genscoSQLProject1.Models;
 
 namespace genscoSQLProject1.Repository
 {
-    public class FormCategoryrepository: IFormCategoryrepository
+    public class FormCategoryRepository: IFormCategoryRepository
     {
         DataContext _context;
-        public FormCategoryrepository(DataContext context)
+        public FormCategoryRepository(DataContext context)
         {
             _context = context;
         }
@@ -27,6 +27,11 @@ namespace genscoSQLProject1.Repository
         public bool FormCategoryExists(int formCategoryId)
         {
             return _context.FormCategories.Any(f => f.FormCategoryId == formCategoryId);
+        }
+
+        public bool FormCategoriesExists(int categoryId, int branchInspectionId)
+        {
+            return _context.FormCategories.Any(f => f.CategoryId == categoryId && f.BranchInspectionId == branchInspectionId);
         }
 
         public ICollection<FormCategory> GetAllFormCategories()

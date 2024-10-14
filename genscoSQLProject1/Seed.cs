@@ -106,7 +106,7 @@ namespace genscoSQLProject1
                     .Select(ci => new ChecklistItem
                     {
                         Name = ci.Name,
-                        CategoryId = ci.CategoryId,
+                        CategoryId = _dataContext.Categories.FirstOrDefault()?.CategoryId ?? 1
 
                     })
                     .ToList();
@@ -116,32 +116,32 @@ namespace genscoSQLProject1
             }
 
             //---------- Seed Branch Inspections -----------//
-            if (!_dataContext.BranchInspections.Any())
-            {
-                var branchInspections = new List<BranchInspection>
-                {
-                    new BranchInspection
-                    {
+            //if (!_dataContext.BranchInspections.Any())
+            //{
+            //    var branchInspections = new List<BranchInspection>
+            //    {
+            //        new BranchInspection
+            //        {
                        
-                        BranchId = 1,
-                        ApprovedDate = DateTime.Now,
-                        CreatedDate = DateTime.Now,
-                        DateLastMaintained = DateTime.Now,
-                        SubmittedDate = DateTime.Now,
-                        CompanyId = "GEN",
-                        CreatedByUserId = 2,
-                        ApprovedByUserId = 1,
-                        DeleteFlag = "N",
-                        RevisedDate = DateTime.Now,
+            //            BranchId = 1,
+            //            ApprovedDate = DateTime.Now,
+            //            CreatedDate = DateTime.Now,
+            //            DateLastMaintained = DateTime.Now,
+            //            SubmittedDate = DateTime.Now,
+            //            CompanyId = "GEN",
+            //            CreatedByUserId = 2,
+            //            ApprovedByUserId = 1,
+            //            DeleteFlag = "N",
+            //            RevisedDate = DateTime.Now,
                      
 
 
-                    }
-                };
+            //        }
+            //    };
               
-                _dataContext.BranchInspections.AddRange(branchInspections);
-                _dataContext.SaveChanges();
-            }
+            //    _dataContext.BranchInspections.AddRange(branchInspections);
+            //    _dataContext.SaveChanges();
+            //}
         }
     }
 }
