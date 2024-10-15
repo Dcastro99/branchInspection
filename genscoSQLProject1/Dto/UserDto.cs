@@ -13,7 +13,7 @@ namespace genscoSQLProject1.Dto
         public string? DefaultLocationId { get; set; }
         public string? CompanyId { get; set; }
         public int? RoleId { get; set; }
-        public string? CreatedByUserId { get; set; }
+        public int? CreatedByUserId { get; set; }
         public string? ActiveInd { get; set; }
         public int EmployeeId { get; set; }
     }

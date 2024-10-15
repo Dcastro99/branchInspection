@@ -39,23 +39,6 @@ namespace genscoSQLProject1.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Roles",
-                columns: table => new
-                {
-                    RoleId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    RoleDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedByUserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DateLastMaintained = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DeleteFlag = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Roles", x => x.RoleId);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Assets",
                 columns: table => new
                 {
@@ -96,32 +79,24 @@ namespace genscoSQLProject1.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Users",
+                name: "AssetItems",
                 columns: table => new
                 {
-                    UserId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Mi = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DefaultLocationId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CompanyId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    RoleId = table.Column<int>(type: "int", nullable: true),
-                    CreatedByUserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    ActiveInd = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    EmployeeId = table.Column<int>(type: "int", nullable: false)
+                    ChecklistItemId = table.Column<int>(type: "int", nullable: false),
+                    AssetId = table.Column<int>(type: "int", nullable: false),
+                    BranchInspectionId = table.Column<int>(type: "int", nullable: false),
+                    CheckedFlag = table.Column<bool>(type: "bit", nullable: true),
+                    DotInspectionDate = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.UserId);
+                    table.PrimaryKey("PK_AssetItems", x => new { x.ChecklistItemId, x.AssetId, x.BranchInspectionId });
                     table.ForeignKey(
-                        name: "FK_Users_Roles_RoleId",
-                        column: x => x.RoleId,
-                        principalTable: "Roles",
-                        principalColumn: "RoleId");
+                        name: "FK_AssetItems_ChecklistItems_ChecklistItemId",
+                        column: x => x.ChecklistItemId,
+                        principalTable: "ChecklistItems",
+                        principalColumn: "ChecklistItemId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -150,11 +125,6 @@ namespace genscoSQLProject1.Migrations
                         principalTable: "Branches",
                         principalColumn: "BranchId",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_BranchInspections_Users_CreatedByUserId",
-                        column: x => x.CreatedByUserId,
-                        principalTable: "Users",
-                        principalColumn: "UserId");
                 });
 
             migrationBuilder.CreateTable(
@@ -241,30 +211,49 @@ namespace genscoSQLProject1.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AssetItems",
+                name: "Roles",
                 columns: table => new
                 {
-                    ChecklistItemId = table.Column<int>(type: "int", nullable: false),
-                    AssetId = table.Column<int>(type: "int", nullable: false),
-                    BranchInspectionId = table.Column<int>(type: "int", nullable: false),
-                    CheckedFlag = table.Column<bool>(type: "bit", nullable: true),
-                    DotInspectionDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    RoleId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RoleDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedByUserId = table.Column<int>(type: "int", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DateLastMaintained = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DeleteFlag = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AssetItems", x => new { x.ChecklistItemId, x.AssetId, x.BranchInspectionId });
+                    table.PrimaryKey("PK_Roles", x => x.RoleId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    UserId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Mi = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DefaultLocationId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CompanyId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    RoleId = table.Column<int>(type: "int", nullable: true),
+                    CreatedByUserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ActiveInd = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    EmployeeId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.UserId);
                     table.ForeignKey(
-                        name: "FK_AssetItems_ChecklistItems_ChecklistItemId",
-                        column: x => x.ChecklistItemId,
-                        principalTable: "ChecklistItems",
-                        principalColumn: "ChecklistItemId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_AssetItems_FormAssets_AssetId_BranchInspectionId",
-                        columns: x => new { x.AssetId, x.BranchInspectionId },
-                        principalTable: "FormAssets",
-                        principalColumns: new[] { "AssetId", "BranchInspectionId" },
-                        onDelete: ReferentialAction.Cascade);
+                        name: "FK_Users_Roles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "Roles",
+                        principalColumn: "RoleId");
                 });
 
             migrationBuilder.CreateIndex(
@@ -318,14 +307,46 @@ namespace genscoSQLProject1.Migrations
                 column: "ChecklistItemId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Roles_CreatedByUserId",
+                table: "Roles",
+                column: "CreatedByUserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Users_RoleId",
                 table: "Users",
                 column: "RoleId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_AssetItems_FormAssets_AssetId_BranchInspectionId",
+                table: "AssetItems",
+                columns: new[] { "AssetId", "BranchInspectionId" },
+                principalTable: "FormAssets",
+                principalColumns: new[] { "AssetId", "BranchInspectionId" },
+                onDelete: ReferentialAction.Cascade);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_BranchInspections_Users_CreatedByUserId",
+                table: "BranchInspections",
+                column: "CreatedByUserId",
+                principalTable: "Users",
+                principalColumn: "UserId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Roles_Users_CreatedByUserId",
+                table: "Roles",
+                column: "CreatedByUserId",
+                principalTable: "Users",
+                principalColumn: "UserId",
+                onDelete: ReferentialAction.Restrict);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropForeignKey(
+                name: "FK_Roles_Users_CreatedByUserId",
+                table: "Roles");
+
             migrationBuilder.DropTable(
                 name: "AssetItems");
 

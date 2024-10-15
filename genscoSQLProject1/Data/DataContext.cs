@@ -54,6 +54,12 @@ namespace genscoSQLProject1.Data
                 .WithMany(ci => ci.AssetItems)
                 .HasForeignKey(ai => ai.ChecklistItemId);
 
+            modelBuilder.Entity<Role>()
+                .HasOne(r => r.CreatedByUser)
+                .WithMany(u => u.CreatedRoles)
+                .HasForeignKey(r => r.CreatedByUserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
 
             // BranchInspection
             modelBuilder.Entity<BranchInspection>()

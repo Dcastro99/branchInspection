@@ -69,7 +69,7 @@ namespace genscoSQLProject1.Controllers
         [ProducesResponseType(422)]
         [ProducesResponseType(500)]
 
-        public IActionResult CreateRole([FromBody] Role roleToCreate)
+        public IActionResult CreateRole([FromBody] RoleDto roleToCreate)
         {
             if (roleToCreate == null)
                 return BadRequest(ModelState);
@@ -95,7 +95,7 @@ namespace genscoSQLProject1.Controllers
                 return StatusCode(500, ModelState);
             }
 
-            return CreatedAtRoute("GetRole", new { roleId = roleToCreate.RoleId }, roleToCreate);
+            return Ok("Successfully Created");
         }
     }
 }

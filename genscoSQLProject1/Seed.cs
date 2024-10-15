@@ -17,23 +17,21 @@ namespace genscoSQLProject1
         public void SeedDataContext()
         {
             //--------- Seed roles if none exist ----------//
-            if (!_dataContext.Roles.Any())
+            var roles = new List<Role>
             {
-                var roles = new List<Role>
-                {
-                 new Role {  RoleDescription = "Admin" },
-                 new Role {  RoleDescription = "Teammember" },
-                 new Role {  RoleDescription = "Ops" },
-                 new Role {  RoleDescription = "Manager" }
+                new Role { RoleDescription = "Admin", CreatedByUserId = 2, CreatedDate = DateTime.UtcNow, DateLastMaintained = DateTime.UtcNow, DeleteFlag = false },
+                new Role { RoleDescription = "Teammember", CreatedByUserId = 2, CreatedDate = DateTime.UtcNow, DateLastMaintained = DateTime.UtcNow, DeleteFlag = false },
+                new Role { RoleDescription = "Ops", CreatedByUserId = 2, CreatedDate = DateTime.UtcNow, DateLastMaintained = DateTime.UtcNow, DeleteFlag = false },
+                new Role { RoleDescription = "Manager", CreatedByUserId = 2, CreatedDate = DateTime.UtcNow, DateLastMaintained = DateTime.UtcNow, DeleteFlag = false }
+            };
 
-                };
+            _dataContext.Roles.AddRange(roles);
+            _dataContext.SaveChanges();
 
-                _dataContext.Roles.AddRange(roles);
-                _dataContext.SaveChanges();
-            }
-
+            // Get the seeded role IDs for future use
             var adminRoleId = _dataContext.Roles.FirstOrDefault(r => r.RoleDescription == "Admin")?.RoleId;
             var userRoleId = _dataContext.Roles.FirstOrDefault(r => r.RoleDescription == "Teammember")?.RoleId;
+
 
             //---------- Seed users if none exist ----------//
             if (!_dataContext.Users.Any())

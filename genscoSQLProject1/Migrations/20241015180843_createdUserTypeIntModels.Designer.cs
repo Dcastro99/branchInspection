@@ -12,8 +12,8 @@ using genscoSQLProject1.Data;
 namespace genscoSQLProject1.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20241014220113_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20241015180843_createdUserTypeIntModels")]
+    partial class createdUserTypeIntModels
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -271,9 +271,8 @@ namespace genscoSQLProject1.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RoleId"));
 
-                    b.Property<string>("CreatedByUserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("CreatedByUserId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -289,6 +288,8 @@ namespace genscoSQLProject1.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("RoleId");
+
+                    b.HasIndex("CreatedByUserId");
 
                     b.ToTable("Roles");
                 });
@@ -307,8 +308,8 @@ namespace genscoSQLProject1.Migrations
                     b.Property<string>("CompanyId")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("CreatedByUserId")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("CreatedByUserId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -459,6 +460,16 @@ namespace genscoSQLProject1.Migrations
                     b.Navigation("ChecklistItem");
                 });
 
+            modelBuilder.Entity("genscoSQLProject1.Models.Role", b =>
+                {
+                    b.HasOne("genscoSQLProject1.Models.User", "CreatedByUser")
+                        .WithMany("CreatedRoles")
+                        .HasForeignKey("CreatedByUserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("CreatedByUser");
+                });
+
             modelBuilder.Entity("genscoSQLProject1.Models.User", b =>
                 {
                     b.HasOne("genscoSQLProject1.Models.Role", "Role")
@@ -516,6 +527,8 @@ namespace genscoSQLProject1.Migrations
             modelBuilder.Entity("genscoSQLProject1.Models.User", b =>
                 {
                     b.Navigation("BranchInspections");
+
+                    b.Navigation("CreatedRoles");
                 });
 #pragma warning restore 612, 618
         }
