@@ -10,7 +10,7 @@
         public DateTime? RevisedDate { get; set; }
         public DateTime? CreatedDate { get; set; }
         public DateTime? DateLastMaintained { get; set; }
-        public  string? DeleteFlag { get; set; }
+        public  bool DeleteFlag { get; set; }
         public DateTime? SubmittedDate { get; set; }
         public DateTime? ApprovedDate { get; set; }
 
