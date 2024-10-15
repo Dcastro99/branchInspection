@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace genscoSQLProject1.Migrations
 {
     /// <inheritdoc />
-    public partial class initialCreate : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -137,7 +137,7 @@ namespace genscoSQLProject1.Migrations
                     RevisedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DateLastMaintained = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeleteFlag = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DeleteFlag = table.Column<bool>(type: "bit", nullable: false),
                     SubmittedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ApprovedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },

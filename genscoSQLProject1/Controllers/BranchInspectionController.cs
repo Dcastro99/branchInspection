@@ -3,6 +3,7 @@ using genscoSQLProject1.Data;
 using genscoSQLProject1.Dto;
 using genscoSQLProject1.Interfaces;
 using genscoSQLProject1.Models;
+using genscoSQLProject1.Repository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.SqlServer.Server;
@@ -13,14 +14,15 @@ namespace genscoSQLProject1.Controllers
     [Route("api/[controller]")]
     [ApiController]
 
-    
-    public class BranchInspectionController: Controller
+
+    public class BranchInspectionController : Controller
     {
         private readonly IBranchInspectionRepository _branchInspectionRepository;
         private readonly IFormCategoryRepository _formCategoryRepository;
         private readonly IFormItemsRepository _formItemsRepository;
         private readonly IFormAssetsRepository _formAssetsRepository;
         private readonly ICategoryRepository _categoryRepository;
+        private readonly IAssetRepository _assetRepository;
         private readonly IMapper _mapper;
         private readonly DataContext _context;
         private readonly ILogger<BranchInspectionController> _logger;
@@ -30,7 +32,8 @@ namespace genscoSQLProject1.Controllers
             IFormCategoryRepository formCategoryRepository,
             IFormItemsRepository formItemsRepository,
             IFormAssetsRepository formAssetsRepository,
-            ICategoryRepository categoryRepository, 
+            ICategoryRepository categoryRepository,
+            IAssetRepository assetRepository,
             IMapper mapper,
             DataContext context,
             ILogger<BranchInspectionController> logger
@@ -41,9 +44,11 @@ namespace genscoSQLProject1.Controllers
             _formItemsRepository = formItemsRepository;
             _formAssetsRepository = formAssetsRepository;
             _categoryRepository = categoryRepository;
+            _assetRepository = assetRepository;
             _mapper = mapper;
             _context = context;
             _logger = logger;
+
         }
 
         //--------------GET ALL BRANCH INSPECTIONS----------------//
@@ -88,26 +93,9 @@ namespace genscoSQLProject1.Controllers
         [ProducesResponseType(500)]
         public IActionResult CreateBranchInspection([FromBody] FormDto formDto)
         {
-            if (formDto == null || formDto.FormItems == null || !formDto.FormItems.Any() || formDto.FormAssets == null)
+            if (formDto == null || formDto.FormItems == null || !formDto.FormItems.Any() || formDto.FormAssets == null || formDto.FormCategory == null)
                 return BadRequest(ModelState);
 
-            if (formDto == null)
-            {
-                _logger.LogError("FormDto is null");
-                return BadRequest("Invalid form data.");
-            }
-
-            if (formDto.FormItems == null || !formDto.FormItems.Any())
-            {
-                _logger.LogError("FormItems is null or empty");
-                return BadRequest("FormItems cannot be null or empty.");
-            }
-
-            if (formDto.FormAssets == null || !formDto.FormAssets.Any())
-            {
-                _logger.LogError("FormAssets is null or empty");
-                return BadRequest("FormAssets cannot be null or empty.");
-            }
 
 
 
@@ -119,8 +107,7 @@ namespace genscoSQLProject1.Controllers
                 .Where(bi => bi.BranchId == branchId
                             && bi.SubmittedDate.HasValue
                             && bi.SubmittedDate.Value.Year == currentMonth.Year
-                            && bi.SubmittedDate.Value.Month == currentMonth.Month
-                            && bi.DeleteFlag == "N")
+                            && bi.SubmittedDate.Value.Month == currentMonth.Month)
                 .OrderByDescending(bi => bi.SubmittedDate)
                 .FirstOrDefault();
 
@@ -152,9 +139,9 @@ namespace genscoSQLProject1.Controllers
                     var branchInspectionId = branchInspection.BranchInspectionId;
 
                     // Create related entities, including FormItems
-                    CreateRelatedFormEntries(branchInspectionId, formDto.FormItems, formDto.FormAssets);
+                    CreateRelatedFormEntries(branchInspectionId, formDto.FormItems, formDto.FormAssets, formDto.FormCategory, branchId);
 
-                 
+
 
                     // If everything is successful, commit the transaction
                     transaction.Commit();
@@ -175,7 +162,13 @@ namespace genscoSQLProject1.Controllers
 
         //--------------HELPER METHODS----------------//
 
-        private void CreateRelatedFormEntries(int branchInspectionId, List<FormItemsDto> formItemsDtos, List<FormAssetsDto> formAssetsDtos)
+        private void CreateRelatedFormEntries(
+            int branchInspectionId,
+            List<FormItemsDto> formItemsDtos,
+            List<FormAssetsDto> formAssetsDtos,
+            List<FormCategoryDto> formCategoryDtos,
+            int branchId
+            )
         {
 
 
@@ -203,10 +196,16 @@ namespace genscoSQLProject1.Controllers
 
                 if (!existingFormCategory)
                 {
+                    // Find the comment for this categoryId, if available
+                    var categoryDto = formCategoryDtos.FirstOrDefault(c => c.CategoryId == categoryId);
+                    var categoryComment = categoryDto?.CategoryComment;
+
+                    // Create new FormCategory
                     var formCategory = new FormCategory
                     {
                         BranchInspectionId = branchInspectionId,
                         CategoryId = categoryId,
+                        CategoryComment = categoryComment
                     };
 
                     _formCategoryRepository.CreateFormCategory(formCategory);
@@ -215,7 +214,8 @@ namespace genscoSQLProject1.Controllers
 
 
 
-            //------------- Create FormItems based on user input ------------------//
+
+            //------------- Create FormItems ------------------//
 
             foreach (var formItemDto in formItemsDtos)
             {
@@ -229,40 +229,34 @@ namespace genscoSQLProject1.Controllers
 
 
 
-            //----------- Create FormAssets(Optional -currently commented out) ------------//
+            //----------- Create FormAssets ------------//
 
+            foreach (var formAssetDto in formAssetsDtos)
 
-           
-                foreach (var formAssetDto in formAssetsDtos)
+            {
+
+                var asset = _assetRepository.GetAsset(formAssetDto.AssetId);
+
+                if (asset != null && asset.BranchId == branchId)
                 {
-                    //var formAsset = _mapper.Map<FormAssets>(formAssetDto);
-                    //formAsset.BranchInspectionId = branchInspectionId;
-                    //formAsset.AssetId = formAssetDto.AssetId;
-
                     var formAsset = new FormAssets
                     {
                         BranchInspectionId = branchInspectionId,
                         AssetId = formAssetDto.AssetId
                     };
 
-
-                _logger.LogInformation("FormAsset: BranchInspectionId = {BranchInspectionId}, AssetId = {AssetId}", formAsset.BranchInspectionId, formAsset.AssetId);
-
-
-                    try
-                    {
-                        _formAssetsRepository.CreateFormAssets(formAsset);
-                    }
-                    catch (Exception ex)
-                    {
-                        _logger.LogError($"Error inserting form asset: {ex.Message}");
-                        throw; // Re-throw or handle accordingly
-                    }
+                    _formAssetsRepository.CreateFormAssets(formAsset);
                 }
-            
+                else
+                {
+                    ModelState.AddModelError("", $"Asset with ID {formAssetDto.AssetId} not found or does not belong to the branch.");
+                    throw new InvalidOperationException($"Asset with ID {formAssetDto.AssetId} not found or does not belong to the branch.");
+                }
+
+            }
+
         }
 
+
     }
-
-
 }

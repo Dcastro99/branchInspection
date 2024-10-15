@@ -12,8 +12,8 @@ using genscoSQLProject1.Data;
 namespace genscoSQLProject1.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20241014030703_initialCreate")]
-    partial class initialCreate
+    [Migration("20241014220113_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -124,8 +124,8 @@ namespace genscoSQLProject1.Migrations
                     b.Property<DateTime?>("DateLastMaintained")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("DeleteFlag")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<bool>("DeleteFlag")
+                        .HasColumnType("bit");
 
                     b.Property<DateTime?>("RevisedDate")
                         .HasColumnType("datetime2");

@@ -121,8 +121,8 @@ namespace genscoSQLProject1.Migrations
                     b.Property<DateTime?>("DateLastMaintained")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("DeleteFlag")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<bool>("DeleteFlag")
+                        .HasColumnType("bit");
 
                     b.Property<DateTime?>("RevisedDate")
                         .HasColumnType("datetime2");
