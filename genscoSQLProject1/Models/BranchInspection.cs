@@ -19,9 +19,9 @@
         public Branch Branch { get; set; }
         public User CreatedByUser { get; set; }  
         public User ApprovedByUser { get; set; }
-        public ICollection<FormAssets> FormAssets { get; set; }
-        public ICollection<FormItems> FormItems { get; set; }
-        public ICollection<FormCategory> FormCategory { get; set; }
+        public ICollection<Asset> Assets { get; set; }
+        public ICollection<ChecklistItem> ChecklistItems { get; set; }
+        public ICollection<Category> Categories { get; set; }
 
     }
 }

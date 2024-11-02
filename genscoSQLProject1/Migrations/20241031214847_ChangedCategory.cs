@@ -5,7 +5,7 @@
 namespace genscoSQLProject1.Migrations
 {
     /// <inheritdoc />
-    public partial class createdByUserOptional : Migration
+    public partial class ChangedCategory : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

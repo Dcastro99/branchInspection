@@ -6,6 +6,7 @@ namespace genscoSQLProject1.Interfaces
     {
         ICollection<User> GetAllUsers();
         User GetUser(int empId);
+        User GetUserByEmailAndPassword(string email, string passwordHash);
         ICollection<User> GetUsersByRoleId(int roleId);
         bool UserExists(int empId);
         bool CreateUser(User user);

@@ -22,10 +22,9 @@ namespace genscoSQLProject1.Controllers
         //--------------GET ALL BRANCHES----------------//
         [HttpGet]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Branch>))]
-
-        public IActionResult GetBranches()
+        public async Task<IActionResult> GetBranches()
         {
-            var branches = _mapper.Map<List<BranchDto>>(_branchRepository.GetAllBranches());
+            var branches = _mapper.Map<List<BranchDto>>(await _branchRepository.GetAllBranchesAsync());
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -37,12 +36,12 @@ namespace genscoSQLProject1.Controllers
         [HttpGet("{branchNumber}")]
         [ProducesResponseType(200, Type = typeof(Branch))]
         [ProducesResponseType(400)]
-
-        public IActionResult GetBranch(int branchNumber) {
-            if (!_branchRepository.BranchExists(branchNumber))
+        public async Task<IActionResult> GetBranch(int branchNumber)
+        {
+            if (!await _branchRepository.BranchExistsAsync(branchNumber))
                 return NotFound();
 
-            var branch = _mapper.Map<BranchDto>(_branchRepository.GetBranch(branchNumber));
+            var branch = _mapper.Map<BranchDto>(await _branchRepository.GetBranchAsync(branchNumber));
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -50,19 +49,18 @@ namespace genscoSQLProject1.Controllers
             return Ok(branch);
         }
 
-       //----------- CREATE BRANCH ------------//
-       [HttpPost]
+        //----------- CREATE BRANCH ------------//
+        [HttpPost]
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
         [ProducesResponseType(422)]
         [ProducesResponseType(500)]
-
-        public IActionResult CreateBranch([FromBody] BranchDto branchToCreate)
+        public async Task<IActionResult> CreateBranch([FromBody] BranchDto branchToCreate)
         {
             if (branchToCreate == null)
                 return BadRequest(ModelState);
 
-            var branch = _branchRepository.GetAllBranches().Where(b => b.BranchNumber == branchToCreate.BranchNumber).FirstOrDefault();
+            var branch = (await _branchRepository.GetAllBranchesAsync()).FirstOrDefault(b => b.BranchNumber == branchToCreate.BranchNumber);
 
             if (branch != null)
             {
@@ -72,14 +70,15 @@ namespace genscoSQLProject1.Controllers
 
             var branchModel = _mapper.Map<Branch>(branchToCreate);
 
-            if (!_branchRepository.CreateBranch(branchModel))
+            if (!await _branchRepository.CreateBranchAsync(branchModel))
             {
                 ModelState.AddModelError("", $"Something went wrong saving {branchModel.BranchName}");
                 return StatusCode(500, ModelState);
             }
 
             return Ok("Successfully Created");
-
         }
+
     }
 }
+

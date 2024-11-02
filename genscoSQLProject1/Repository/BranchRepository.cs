@@ -1,66 +1,63 @@
-﻿
-using genscoSQLProject1.Data;
+﻿using genscoSQLProject1.Data;
 using genscoSQLProject1.Interfaces;
 using genscoSQLProject1.Models;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace genscoSQLProject1.Repository
 {
-    
     public class BranchRepository : IBranchRepository
     {
-        DataContext _context;
+        private readonly DataContext _context;
+
         public BranchRepository(DataContext context)
         {
             _context = context;
         }
-        public bool BranchExists(int branchNumber)
+
+        public async Task<bool> BranchExistsAsync(int branchNumber)
         {
-            return _context.Branches.Any(b => b.BranchNumber == branchNumber);
+            return await _context.Branches.AnyAsync(b => b.BranchNumber == branchNumber);
         }
 
-        public bool CreateBranch(Branch branch)
+        public async Task<bool> CreateBranchAsync(Branch branch)
         {
-            _context.Add(branch);
-            return Save();
+            await _context.AddAsync(branch);
+            return await SaveAsync();
         }
 
-        public bool DeleteBranch(Branch branch)
+        public async Task<bool> DeleteBranchAsync(Branch branch)
         {
             _context.Remove(branch);
-            return Save();
+            return await SaveAsync();
         }
 
-        public Branch GetBranch(int branchNumber)
+        public async Task<Branch> GetBranchAsync(int branchNumber)
         {
-            return _context.Branches.Where(b => b.BranchNumber == branchNumber).FirstOrDefault();
+            return await _context.Branches.FirstOrDefaultAsync(b => b.BranchNumber == branchNumber);
         }
 
-        public ICollection<Branch> GetBranches()
+        public async Task<ICollection<Branch>> GetAllBranchesAsync()
         {
-            return _context.Branches.ToList();
+            return await _context.Branches.ToListAsync();
         }
 
-        public ICollection<Asset> GetAssetsByBranch(int branchId)
+        public async Task<ICollection<Asset>> GetAssetsByBranchAsync(int branchId)
         {
-            return _context.Assets.Where(a => a.BranchId == branchId).ToList();
+            return await _context.Assets.Where(a => a.BranchId == branchId).ToListAsync();
         }
 
-        public bool Save()
+        public async Task<bool> SaveAsync()
         {
-            return _context.SaveChanges() >= 0 ? true : false;
+            return await _context.SaveChangesAsync() >= 0;
         }
 
-        public bool UpdateBranch(Branch branch)
+        public async Task<bool> UpdateBranchAsync(Branch branch)
         {
             _context.Update(branch);
-            return Save();
-        }
-
-        public ICollection<Branch> GetAllBranches()
-        {
-            return _context.Branches.ToList();
+            return await SaveAsync();
         }
     }
-    
-    
 }

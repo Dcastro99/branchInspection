@@ -1,72 +1,83 @@
-﻿using genscoSQLProject1.Data;
+﻿
+using genscoSQLProject1.Data;
 using genscoSQLProject1.Interfaces;
 using genscoSQLProject1.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace genscoSQLProject1.Repository
 {
     public class BranchInspectionRepository : IBranchInspectionRepository
     {
-        DataContext _context;
+        private readonly DataContext _context;
+
         public BranchInspectionRepository(DataContext context)
         {
             _context = context;
         }
-        public bool BranchInspectionExists(int branchInspectionId)
+
+        public async Task<bool> BranchInspectionExistsAsync(int branchInspectionId)
         {
-            return _context.BranchInspections.Any(bi => bi.BranchInspectionId == branchInspectionId);
+            return await _context.BranchInspections.AnyAsync(bi => bi.BranchInspectionId == branchInspectionId);
         }
 
-        public bool CreateBranchInspection(BranchInspection branchInspection)
+        public async Task<bool> CreateBranchInspectionAsync(BranchInspection branchInspection)
         {
-            _context.BranchInspections.Add(branchInspection);
-            return Save();
+            await _context.BranchInspections.AddAsync(branchInspection);
+            return await SaveAsync();
         }
 
-        public bool DeleteBranchInspection(BranchInspection branchInspection)
+        public async Task<bool> DeleteBranchInspectionAsync(BranchInspection branchInspection)
         {
             _context.BranchInspections.Remove(branchInspection);
-            return Save();
+            return await SaveAsync();
         }
 
-        public BranchInspection GetBranchInspection(int branchInspectionId)
+        public async Task<BranchInspection> GetBranchInspectionAsync(int branchInspectionId)
         {
-            return _context.BranchInspections.FirstOrDefault(bi => bi.BranchInspectionId == branchInspectionId);
+            return await _context.BranchInspections.FirstOrDefaultAsync(bi => bi.BranchInspectionId == branchInspectionId);
         }
 
-        public ICollection<BranchInspection> GetBranchInspectionByBranch(int BranchId)
+        public async Task<ICollection<BranchInspection>> GetBranchInspectionByBranchAsync(int branchId)
         {
-            return _context.BranchInspections.Where(bi => bi.BranchId == BranchId).ToList();
+            return await _context.BranchInspections.Where(bi => bi.BranchId == branchId).ToListAsync();
         }
 
-        public ICollection<BranchInspection> GetAllBranchInspections()
+        public async Task<ICollection<BranchInspection>> GetAllBranchInspectionsAsync()
         {
-            return _context.BranchInspections.ToList();
+            return await _context.BranchInspections.ToListAsync();
         }
 
-        public ICollection<BranchInspection> GetBranchInspectionsByDateRange(DateTime startDate, DateTime endDate)
+        public async Task<ICollection<BranchInspection>> GetBranchInspectionsByDateRangeAsync(DateTime startDate, DateTime endDate)
         {
-            return _context.BranchInspections.Where(bi => bi.ApprovedDate >= startDate && bi.ApprovedDate <= endDate).ToList();
+            return await _context.BranchInspections
+                .Where(bi => bi.ApprovedDate >= startDate && bi.ApprovedDate <= endDate)
+                .ToListAsync();
         }
 
-        public ICollection<BranchInspection> GetBranchInspectionsByMonth(DateTime month)
+        public async Task<ICollection<BranchInspection>> GetBranchInspectionsByMonthAsync(DateTime month)
         {
-            return _context.BranchInspections.Where(bi => bi.ApprovedDate.Value.Month == month.Month).ToList();
+            return await _context.BranchInspections
+                .Where(bi => bi.ApprovedDate.Value.Month == month.Month)
+                .ToListAsync();
         }
 
-        public BranchInspection GetMostRecentBranchInspectionByBranch(int BranchId)
+        public async Task<BranchInspection> GetMostRecentBranchInspectionByBranchAsync(int branchId)
         {
-            return _context.BranchInspections.Where(bi => bi.BranchId == BranchId).OrderByDescending(bi => bi.CreatedDate).FirstOrDefault();
+            return await _context.BranchInspections
+                .Where(bi => bi.BranchId == branchId)
+                .OrderByDescending(bi => bi.CreatedDate)
+                .FirstOrDefaultAsync();
         }
 
-        public bool Save()
+        public async Task<bool> SaveAsync()
         {
-            return _context.SaveChanges() >= 0 ? true : false;
+            return await _context.SaveChangesAsync() >= 0;
         }
 
-        public bool UpdateBranchInspection(BranchInspection branchInspection)
+        public async Task<bool> UpdateBranchInspectionAsync(BranchInspection branchInspection)
         {
             _context.BranchInspections.Update(branchInspection);
-            return Save();
+            return await SaveAsync();
         }
     }
 }

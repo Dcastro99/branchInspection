@@ -1,6 +1,8 @@
 ﻿using genscoSQLProject1.Data;
 using genscoSQLProject1.Interfaces;
 using genscoSQLProject1.Models;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace genscoSQLProject1.Repository
 {
@@ -12,51 +14,52 @@ namespace genscoSQLProject1.Repository
         {
             _context = context;
         }
-        public bool ChecklistItemExists(int checklistItemId)
+       
+
+        public async Task<bool> ChecklistItemExistsAsync(int checklistItemId)
         {
-            return _context.ChecklistItems.Any(c => c.ChecklistItemId == checklistItemId);
+            return await _context.ChecklistItems.AnyAsync(c => c.ChecklistItemId == checklistItemId);
         }
 
-        public bool CreateChecklistItem(ChecklistItem checklistItem)
+        public async Task<bool> CreateChecklistItemAsync(ChecklistItem checklistItem)
         {
             if (checklistItem == null)
                 return false;
 
-            _context.ChecklistItems.Add(checklistItem);
-            return Save();
+            await _context.ChecklistItems.AddAsync(checklistItem);
+            return await SaveAsync();
         }
 
-        public bool DeleteChecklistItem(ChecklistItem checklistItem)
+        public async Task<bool> DeleteChecklistItemAsync(ChecklistItem checklistItem)
         {
             _context.ChecklistItems.Remove(checklistItem);
-            return Save();
+            return await SaveAsync();
         }
 
-        public ICollection<ChecklistItem> GetAllChecklistItems()
+        public async Task<IEnumerable<ChecklistItem>> GetAllChecklistItemsAsync()
         {
-            return _context.ChecklistItems.ToList();
+            return await _context.ChecklistItems.ToListAsync();
         }
 
-
-        public ChecklistItem GetChecklistItem(int checklistItemId)
+        public async Task<ChecklistItem?> GetChecklistItemAsync(int checklistItemId)
         {
-            return _context.ChecklistItems.FirstOrDefault(c => c.ChecklistItemId == checklistItemId);
+            return await _context.ChecklistItems.FirstOrDefaultAsync(c => c.ChecklistItemId == checklistItemId);
         }
 
-        public ICollection<ChecklistItem> GetChecklistItemByCategory(int categoryId)
+        public async Task<IEnumerable<ChecklistItem>> GetChecklistItemsByCategoryAsync(int categoryId)
         {
-            return _context.ChecklistItems.Where(c => c.CategoryId == categoryId).ToList();
+            return await _context.ChecklistItems.Where(c => c.CategoryId == categoryId).ToListAsync();
         }
 
-        public bool Save()
+        public async Task<bool> SaveAsync()
         {
-            return _context.SaveChanges() >= 0 ? true : false;
+            return await _context.SaveChangesAsync() >= 0;
         }
 
-        public bool UpdateChecklistItem(ChecklistItem checklistItem)
+        public async Task<bool> UpdateChecklistItemAsync(ChecklistItem checklistItem)
         {
             _context.ChecklistItems.Update(checklistItem);
-            return Save();
+            return await SaveAsync();
         }
     }
 }

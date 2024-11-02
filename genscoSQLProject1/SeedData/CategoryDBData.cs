@@ -1,11 +1,8 @@
-﻿
-namespace genscoSQLProject1.SeedData
+﻿namespace genscoSQLProject1.SeedData
 {
-    public static class CategoryData
+    public class CategoryDBData
     {
-        public static List<string> GetCategoryNames()
-        {
-            return new List<string>
+        public static List<string> CategoryNames = new List<string>
             {
                 "Employee Bulletin Board Posting",
                 "Safety Posting & Documentation",
@@ -36,6 +33,5 @@ namespace genscoSQLProject1.SeedData
                 "Other Equipment",
                 "Delivery Vehicles",
              };
-        }
-    }
+}
 }

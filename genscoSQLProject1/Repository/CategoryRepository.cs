@@ -1,62 +1,70 @@
 ﻿using genscoSQLProject1.Data;
 using genscoSQLProject1.Interfaces;
 using genscoSQLProject1.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace genscoSQLProject1.Repository
 {
     public class CategoryRepository : ICategoryRepository
     {
-        DataContext _context;
+        private readonly DataContext _context;
 
         public CategoryRepository(DataContext context)
         {
             _context = context;
         }
-        public bool CategoryExists(int categoryId)
+
+        public async Task<ICollection<Category>> GetAllCategoriesAsync()
         {
-            return _context.Categories.Any(c => c.CategoryId == categoryId);
+            return await _context.Categories.ToListAsync();
         }
 
-        public bool CreateCategory(Category category)
+        public async Task<Category> GetCategoryAsync(int categoryId)
         {
-
-            _context.Categories.Add(category);
-            return Save();
+            return await _context.Categories.FindAsync(categoryId);
         }
 
-        public bool DeleteCategory(Category category)
+        public async Task<bool> CategoryExistsAsync(int categoryId)
         {
-            _context.Categories.Remove(category);
-            return Save();
+            return await _context.Categories.AnyAsync(c => c.CategoryId == categoryId);
+        }
+        public async Task<bool> CategoriesExistsAsync(int categoryId, int branchInspectionId)
+        {
+            return _context.Categories.Any(f => f.CategoryId == categoryId && f.BranchInspectionId == branchInspectionId);
         }
 
-        public void CreateCategories(List<Category> categories)
+        public async Task<bool> CreateCategoryAsync(Category category)
         {
-            _context.Categories.AddRange(categories);
-            _context.SaveChanges();
+            if (category == null)
+                return false;
+
+            await _context.Categories.AddAsync(category);
+            return await SaveAsync();
         }
 
-        public ICollection<Category> GetAllCategories()
+        public async Task CreateCategoriesAsync(List<Category> categories)
         {
-            return _context.Categories.ToList();
+            await _context.Categories.AddRangeAsync(categories);
+            await SaveAsync();
         }
 
-        public Category GetCategory(int categoryId)
-        {
-            return _context.Categories.FirstOrDefault(c => c.CategoryId == categoryId);
-        }
-
-    
-
-        public bool Save()
-        {
-            return _context.SaveChanges() >= 0 ? true : false;
-        }
-
-        public bool UpdateCategory(Category category)
+        public async Task<bool> UpdateCategoryAsync(Category category)
         {
             _context.Categories.Update(category);
-            return Save();
+            return await SaveAsync();
         }
+
+        public async Task<bool> DeleteCategoryAsync(Category category)
+        {
+            _context.Categories.Remove(category);
+            return await SaveAsync();
+        }
+
+        public async Task<bool> SaveAsync()
+        {
+            return await _context.SaveChangesAsync() >= 0;
+        }
+
+
     }
 }

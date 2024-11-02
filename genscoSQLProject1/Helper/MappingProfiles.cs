@@ -22,24 +22,27 @@ namespace genscoSQLProject1.Helper
             CreateMap<RoleDto, Role>();
             CreateMap<BranchInspection, BranchInspectionDto>();
             CreateMap<BranchInspectionDto, BranchInspection>();
-            CreateMap<AssetItems, AssetItemsDto>();
-            CreateMap<AssetItemsDto, AssetItems>();
-            CreateMap<FormAssets, FormAssetsDto>();
-            CreateMap<FormAssetsDto, FormAssets>();
-            CreateMap<FormCategory, FormCategoryDto>();
-            CreateMap<FormCategoryDto, FormCategory>();
-            CreateMap<FormItems, FormItemsDto>();
-            CreateMap<FormItemsDto, FormItems>();
+            //CreateMap<AssetItems, AssetItemsDto>();
+            //CreateMap<AssetItemsDto, AssetItems>();
+            //CreateMap<FormAssets, FormAssetsDto>();
+            //CreateMap<FormAssetsDto, FormAssets>();
+            //CreateMap<FormCategory, FormCategoryDto>();
+            //CreateMap<FormCategoryDto, FormCategory>();
+            //CreateMap<FormItems, FormItemsDto>();
+            //CreateMap<FormItemsDto, FormItems>();
             CreateMap<FormDto, BranchInspection>();
             CreateMap<BranchInspection, FormDto>();
 
             CreateMap<FormDto, BranchInspection>()
-           .ForMember(dest => dest.FormItems, opt => opt.MapFrom(src => src.FormItems))
-           .ForMember(dest => dest.FormAssets, opt => opt.MapFrom(src => src.FormAssets));
+                .ForMember(dest => dest.ChecklistItems, opt => opt.MapFrom(src => src.Items)) // Map Items to ChecklistItems
+                .ForMember(dest => dest.Assets, opt => opt.MapFrom(src => src.Assets)) // Map Assets correctly
+                .ForMember(dest => dest.Categories, opt => opt.MapFrom(src => src.Category)); // If Category exists in BranchInspection
 
             CreateMap<BranchInspection, FormDto>()
-                .ForMember(dest => dest.FormItems, opt => opt.MapFrom(src => src.FormItems))
-                .ForMember(dest => dest.FormAssets, opt => opt.MapFrom(src => src.FormAssets));
+                .ForMember(dest => dest.Items, opt => opt.MapFrom(src => src.ChecklistItems)) // Map ChecklistItems to Items
+                .ForMember(dest => dest.Assets, opt => opt.MapFrom(src => src.Assets)) // Map FormAssets to Assets
+                .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Categories)); // If Category exists in FormDto
+
 
 
         }
