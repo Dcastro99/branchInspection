@@ -44,9 +44,9 @@ namespace genscoSQLProject1.Repository
             return await _context.Branches.ToListAsync();
         }
 
-        public async Task<ICollection<Asset>> GetAssetsByBranchAsync(int branchId)
+        public async Task<ICollection<Asset>> GetAssetsByBranchAsync(int branchNumber)
         {
-            return await _context.Assets.Where(a => a.BranchId == branchId).ToListAsync();
+            return await _context.Assets.Where(a => a.BranchId == branchNumber).ToListAsync();
         }
 
         public async Task<bool> SaveAsync()

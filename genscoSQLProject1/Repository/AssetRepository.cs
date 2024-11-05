@@ -21,9 +21,10 @@ namespace genscoSQLProject1.Repository
 
         public async Task<bool> CreateAssetAsync(Asset asset)
         {
-            await _context.AddAsync(asset);
-            return await SaveAsync();
+            await _context.Assets.AddAsync(asset);
+            return await _context.SaveChangesAsync() > 0; 
         }
+
 
         public async Task<bool> DeleteAssetAsync(Asset asset)
         {
@@ -36,9 +37,9 @@ namespace genscoSQLProject1.Repository
             return await _context.Assets.FirstOrDefaultAsync(a => a.AssetId == assetId);
         }
 
-        public async Task<ICollection<Asset>> GetAssetByBranchAsync(int branchId)
+        public async Task<ICollection<Asset>> GetAssetByBranchAsync(int branchNumber)
         {
-            return await _context.Assets.Where(a => a.BranchId == branchId).ToListAsync();
+            return await _context.Assets.Where(a => a.BranchNumber == branchNumber).ToListAsync();
         }
 
         public async Task<ICollection<Asset>> GetAllAssetsAsync()

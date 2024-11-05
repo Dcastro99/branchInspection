@@ -83,9 +83,11 @@ namespace genscoSQLProject1.Controllers
         }
 
         //--------------CREATE ASSET----------------//
+
         [HttpPost]
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
+        [ProducesResponseType(422)]
         [ProducesResponseType(500)]
         public async Task<IActionResult> CreateAsset([FromBody] AssetDto assetToCreate)
         {
@@ -93,10 +95,10 @@ namespace genscoSQLProject1.Controllers
                 return BadRequest(ModelState);
 
             // Check if the asset already exists
-            var asset = (await _assetRepository.GetAllAssetsAsync())
+            var existingAsset = (await _assetRepository.GetAllAssetsAsync())
                 .FirstOrDefault(a => a.AssetNumber == assetToCreate.AssetNumber);
 
-            if (asset != null)
+            if (existingAsset != null)
             {
                 ModelState.AddModelError("", $"Asset {assetToCreate.AssetNumber} already exists");
                 return StatusCode(422, ModelState);
@@ -109,16 +111,14 @@ namespace genscoSQLProject1.Controllers
             if (branch == null)
             {
                 ModelState.AddModelError("", "Branch not found.");
-                return StatusCode(400, ModelState);
-            }
-
-            if (!ModelState.IsValid)
                 return BadRequest(ModelState);
+            }
 
             // Map the AssetDto to the Asset entity
             var assetMap = _mapper.Map<Asset>(assetToCreate);
 
-            // Assign the branch to the asset
+            // Assign the branch's BranchId to the asset
+            assetMap.BranchNumber = branch.BranchNumber;
             assetMap.BranchId = branch.BranchId;
 
             // Save the new asset
@@ -128,8 +128,14 @@ namespace genscoSQLProject1.Controllers
                 return StatusCode(500, ModelState);
             }
 
-            return Ok("Successfully Created");
+            // Map the created Asset entity back to AssetDto
+            var createdAssetDto = _mapper.Map<AssetDto>(assetMap);
+
+            // Return the created asset with 201 status
+            return CreatedAtAction(nameof(CreateAsset), new { id = createdAssetDto.AssetId }, createdAssetDto);
         }
+
+
 
     }
 }

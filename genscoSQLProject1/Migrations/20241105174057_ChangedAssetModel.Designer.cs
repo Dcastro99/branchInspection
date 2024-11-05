@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using genscoSQLProject1.Data;
 
@@ -11,9 +12,11 @@ using genscoSQLProject1.Data;
 namespace genscoSQLProject1.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20241105174057_ChangedAssetModel")]
+    partial class ChangedAssetModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -44,9 +47,6 @@ namespace genscoSQLProject1.Migrations
                     b.Property<int?>("BranchInspectionId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("BranchNumber")
-                        .HasColumnType("int");
-
                     b.Property<int?>("CategoryId")
                         .HasColumnType("int");
 
@@ -55,6 +55,8 @@ namespace genscoSQLProject1.Migrations
                     b.HasIndex("BranchId");
 
                     b.HasIndex("BranchInspectionId");
+
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("Assets");
                 });
@@ -307,7 +309,13 @@ namespace genscoSQLProject1.Migrations
                         .WithMany("Assets")
                         .HasForeignKey("BranchInspectionId");
 
+                    b.HasOne("genscoSQLProject1.Models.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId");
+
                     b.Navigation("Branch");
+
+                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("genscoSQLProject1.Models.BranchInspection", b =>
