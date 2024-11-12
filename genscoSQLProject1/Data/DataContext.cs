@@ -18,6 +18,7 @@ namespace genscoSQLProject1.Data
         public DbSet<ChecklistItem> ChecklistItems { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<FormNote> FormNotes { get; set; }
 
         //-----------ON MODEL CREATING METHOD------------//
 
