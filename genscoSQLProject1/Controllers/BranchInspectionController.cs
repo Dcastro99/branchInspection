@@ -154,98 +154,52 @@ namespace genscoSQLProject1.Controllers
         //--------------HELPER METHODS----------------//
 
         private async Task CreateRelatedFormEntriesAsync(
-            int branchInspectionId,
-            List<ChecklistItemDto> itemsDtos,
-            List<AssetDto> assetsDtos,
-            List<CategoryDto> categoryDtos,
-            int branchId
-        )
+        int branchInspectionId,
+        List<ChecklistItemDto> itemsDtos,
+        List<AssetDto> assetsDtos,
+        List<CategoryDto> categoryDtos,
+        int branchId)
         {
-            //-------------- Get valid category ids --------------//
+            // Temporary to actual CategoryId mapping
+            var categoryIdMap = new Dictionary<int, int>();
 
-            var allCategories = await _categoryRepository.GetAllCategoriesAsync();
-
-            // Filter valid category IDs based on the provided formCategoryDtos
-            var validCategoryIds = allCategories
-                .Where(c => categoryDtos.Select(fc => fc.CategoryId).Contains(c.CategoryId))
-                .Select(c => c.CategoryId)
-                .ToList();
-
-            if (!validCategoryIds.Any())
+            //----------------- Create FormCategory for each CategoryDto -----------------//
+            foreach (var categoryDto in categoryDtos)
             {
-                ModelState.AddModelError("", "No valid categories found.");
-                throw new InvalidOperationException("No valid categories found.");
-            }
-
-            //----------------- Create FormCategory for each valid CategoryId -----------------//
-
-            foreach (var categoryId in validCategoryIds)
-            {
-                // Check if the FormCategory already exists for this BranchInspectionId and CategoryId
-                var existingCategory = await _CategoryRepository.CategoriesExistsAsync(categoryId, branchInspectionId); // Change to async
-
-                if (!existingCategory)
+                var newCategory = new Category
                 {
-                    // Find the comment for this categoryId, if available
-                    var categoryDto = categoryDtos.FirstOrDefault(c => c.CategoryId == categoryId);
-                    var categoryComment = categoryDto?.CategoryComment;
+                    BranchInspectionId = branchInspectionId,
+                    CategoryName = categoryDto.CategoryName,
+                    CategoryComment = categoryDto.CategoryComment
+                };
 
-                    // Create new FormCategory
-                    var newCategory = new Category
-                    {
-                        BranchInspectionId = branchInspectionId,
-                        CategoryId = categoryId,
-                        CategoryComment = categoryComment
-                    };
+                await _CategoryRepository.CreateCategoryAsync(newCategory);
 
-                    await _CategoryRepository.CreateCategoryAsync(newCategory); // Change to async
-                }
+                // Store the actual CategoryId after creation
+                categoryIdMap[categoryDto.CategoryId] = newCategory.CategoryId;
             }
 
-
-
-            //------------- Create FormItems ------------------//
-
+            //----------------- Create FormItems for each ChecklistItemDto -----------------//
             foreach (var itemDto in itemsDtos)
             {
-                // Map DTO to FormItems entity
                 var formItem = _mapper.Map<ChecklistItem>(itemDto);
-                formItem.BranchInspectionId = branchInspectionId; // Assign the current BranchInspectionId
+                formItem.BranchInspectionId = branchInspectionId;
 
-                // Create FormItems
-               await _checklistItemsRepository.CreateChecklistItemAsync(formItem); 
+                // Assign actual CategoryId using the mapping
+                if (categoryIdMap.TryGetValue(itemDto.CategoryId, out var actualCategoryId))
+                {
+                    formItem.CategoryId = actualCategoryId;
+                }
+
+                await _checklistItemsRepository.CreateChecklistItemAsync(formItem);
             }
 
-
-
-            ////----------- Create FormAssets ------------//
-
-            //foreach (var assetDto in assetsDtos)
-
-            //{
-
-            //    var asset = _assetRepository.GetAssetAsync(assetDto.AssetId);
-
-            //    if (asset != null && asset.Bran
-            //    {
-            //        var formAsset = new Asset
-            //        {
-            //            BranchInspectionId = branchInspectionId,
-            //            AssetId = formAssetDto.AssetId
-            //        };
-
-            //       await _assetRepository.CreateAssetAsync(formAsset);
-            //    }
-            //    else
-            //    {
-            //        ModelState.AddModelError("", $"Asset with ID {formAssetDto.AssetId} not found or does not belong to the branch.");
-            //        throw new InvalidOperationException($"Asset with ID {formAssetDto.AssetId} not found or does not belong to the branch.");
-            //    }
-
-            //}
-
+            // No need for an inner transaction since the outer transaction is handling it
         }
-
 
     }
 }
+
+
+
+

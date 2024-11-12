@@ -16,9 +16,6 @@ namespace genscoSQLProject1.Data
         public DbSet<BranchInspection> BranchInspections { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<ChecklistItem> ChecklistItems { get; set; }
-        //public DbSet<FormAssets> FormAssets { get; set; }
-        //public DbSet<FormCategory> FormCategories { get; set; }
-        //public DbSet<FormItems> FormItems { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<User> Users { get; set; }
 
@@ -26,9 +23,19 @@ namespace genscoSQLProject1.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-           
 
-           
+            modelBuilder.Entity<ChecklistItem>()
+                .HasOne(ci => ci.Category)
+                .WithMany(c => c.ChecklistItems)
+                .HasForeignKey(ci => ci.CategoryId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Category>()
+                .HasOne(c => c.BranchInspection)
+                .WithMany(bi => bi.Categories)
+                .HasForeignKey(c => c.BranchInspectionId)
+                .OnDelete(DeleteBehavior.Restrict);
+
 
             modelBuilder.Entity<Role>()
                 .HasOne(r => r.CreatedByUser)

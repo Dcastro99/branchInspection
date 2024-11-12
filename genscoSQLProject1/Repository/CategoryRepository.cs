@@ -36,11 +36,24 @@ namespace genscoSQLProject1.Repository
         public async Task<bool> CreateCategoryAsync(Category category)
         {
             if (category == null)
-                return false;
+                throw new ArgumentNullException(nameof(category), "Category cannot be null");
 
             await _context.Categories.AddAsync(category);
-            return await SaveAsync();
+            var result = await _context.SaveChangesAsync();
+            if (result == 0)
+                throw new InvalidOperationException("Failed to save category to the database.");
+
+            return result > 0;
         }
+
+        //public async Task<bool> CreateCategoryAsync(Category category)
+        //{
+        //    if (category == null)
+        //        return false;
+
+        //    await _context.Categories.AddAsync(category);
+        //    return await SaveAsync();
+        //}
 
         public async Task CreateCategoriesAsync(List<Category> categories)
         {
