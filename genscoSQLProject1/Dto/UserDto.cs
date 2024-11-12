@@ -9,7 +9,6 @@ namespace genscoSQLProject1.Dto
         public string LastName { get; set; } = string.Empty;
         public string? Mi { get; set; }
         public string? Email { get; set; }
-        public string? Password { get; set; }
         public string? DefaultLocationId { get; set; }
         public string? CompanyId { get; set; }
         public int? RoleId { get; set; }

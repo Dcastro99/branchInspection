@@ -3,8 +3,8 @@
     public class FormDto
     {
         public BranchInspectionDto BranchInspection { get; set; }
-        public List<FormItemsDto> FormItems { get; set; }
-        public List<FormAssetsDto> FormAssets { get; set; }
-        public List<FormCategoryDto> FormCategory { get; set; }
+        public List<ChecklistItemDto> Items { get; set; }
+        public List<AssetDto> Assets { get; set; }
+        public List<CategoryDto> Category { get; set; }
     }
 }

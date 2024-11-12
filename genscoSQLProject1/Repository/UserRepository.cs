@@ -54,5 +54,13 @@ namespace genscoSQLProject1.Repository
         {
             return _context.Users.Any(u => u.EmployeeId == empId);
         }
+
+        public User GetUserByEmailAndPassword(string email, string passwordHash)
+        {
+            var user = _context.Users
+                .FirstOrDefault(u => u.Email.ToLower() == email.ToLower() && u.Password == passwordHash);
+
+            return user;
+        }
     }
 }

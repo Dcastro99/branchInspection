@@ -41,35 +41,22 @@ namespace genscoSQLProject1.Migrations
                     b.Property<int?>("BranchId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("BranchInspectionId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("BranchNumber")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("CategoryId")
+                        .HasColumnType("int");
+
                     b.HasKey("AssetId");
 
                     b.HasIndex("BranchId");
 
+                    b.HasIndex("BranchInspectionId");
+
                     b.ToTable("Assets");
-                });
-
-            modelBuilder.Entity("genscoSQLProject1.Models.AssetItems", b =>
-                {
-                    b.Property<int>("ChecklistItemId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("AssetId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("BranchInspectionId")
-                        .HasColumnType("int");
-
-                    b.Property<bool?>("CheckedFlag")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("DotInspectionDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("ChecklistItemId", "AssetId", "BranchInspectionId");
-
-                    b.HasIndex("AssetId", "BranchInspectionId");
-
-                    b.ToTable("AssetItems");
                 });
 
             modelBuilder.Entity("genscoSQLProject1.Models.Branch", b =>
@@ -147,11 +134,19 @@ namespace genscoSQLProject1.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CategoryId"));
 
+                    b.Property<int?>("BranchInspectionId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CategoryComment")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("CategoryName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("CategoryId");
+
+                    b.HasIndex("BranchInspectionId");
 
                     b.ToTable("Categories");
                 });
@@ -164,100 +159,58 @@ namespace genscoSQLProject1.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ChecklistItemId"));
 
-                    b.Property<int>("CategoryId")
+                    b.Property<int?>("AssetId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ChecklistItemId");
-
-                    b.HasIndex("CategoryId");
-
-                    b.ToTable("ChecklistItems");
-                });
-
-            modelBuilder.Entity("genscoSQLProject1.Models.FormAssets", b =>
-                {
-                    b.Property<int>("AssetId")
+                    b.Property<int?>("BranchInspectionId")
                         .HasColumnType("int");
-
-                    b.Property<int>("BranchInspectionId")
-                        .HasColumnType("int");
-
-                    b.HasKey("AssetId", "BranchInspectionId");
-
-                    b.HasIndex("BranchInspectionId");
-
-                    b.ToTable("FormAssets");
-                });
-
-            modelBuilder.Entity("genscoSQLProject1.Models.FormCategory", b =>
-                {
-                    b.Property<int>("FormCategoryId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FormCategoryId"));
-
-                    b.Property<int>("BranchInspectionId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("CategoryComment")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("CategoryId")
-                        .HasColumnType("int");
-
-                    b.HasKey("FormCategoryId");
-
-                    b.HasIndex("BranchInspectionId");
-
-                    b.HasIndex("CategoryId");
-
-                    b.ToTable("FormCategories");
-                });
-
-            modelBuilder.Entity("genscoSQLProject1.Models.FormItems", b =>
-                {
-                    b.Property<int>("FormItemsId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FormItemsId"));
-
-                    b.Property<int>("BranchInspectionId")
-                        .HasColumnType("int");
-
-                    b.Property<bool?>("CheckedFlag")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("ChecklistItemId")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("DateCartridgeInstalled")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("DatePosted")
+                    b.Property<DateTime?>("DotInspectionDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("LastMeetingDate")
+                    b.Property<DateTime?>("FireAlarmDateTested")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool?>("IsChecked")
+                        .HasColumnType("bit");
 
                     b.Property<string>("LoadCapacity")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool?>("NotApplicable")
                         .HasColumnType("bit");
 
-                    b.HasKey("FormItemsId");
+                    b.Property<DateTime?>("SafetyLastMeetingDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("SecurityAlarmDateTested")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("SprinklerSystemDateTested")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("StatePosterDatePosted")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("ChecklistItemId");
+
+                    b.HasIndex("AssetId");
 
                     b.HasIndex("BranchInspectionId");
 
-                    b.HasIndex("ChecklistItemId");
+                    b.HasIndex("CategoryId");
 
-                    b.ToTable("FormItems");
+                    b.ToTable("ChecklistItems");
                 });
 
             modelBuilder.Entity("genscoSQLProject1.Models.Role", b =>
@@ -350,26 +303,11 @@ namespace genscoSQLProject1.Migrations
                         .WithMany("Assets")
                         .HasForeignKey("BranchId");
 
+                    b.HasOne("genscoSQLProject1.Models.BranchInspection", null)
+                        .WithMany("Assets")
+                        .HasForeignKey("BranchInspectionId");
+
                     b.Navigation("Branch");
-                });
-
-            modelBuilder.Entity("genscoSQLProject1.Models.AssetItems", b =>
-                {
-                    b.HasOne("genscoSQLProject1.Models.ChecklistItem", "ChecklistItem")
-                        .WithMany("AssetItems")
-                        .HasForeignKey("ChecklistItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("genscoSQLProject1.Models.FormAssets", "FormAssets")
-                        .WithMany("AssetItems")
-                        .HasForeignKey("AssetId", "BranchInspectionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ChecklistItem");
-
-                    b.Navigation("FormAssets");
                 });
 
             modelBuilder.Entity("genscoSQLProject1.Models.BranchInspection", b =>
@@ -389,72 +327,37 @@ namespace genscoSQLProject1.Migrations
                     b.Navigation("CreatedByUser");
                 });
 
+            modelBuilder.Entity("genscoSQLProject1.Models.Category", b =>
+                {
+                    b.HasOne("genscoSQLProject1.Models.BranchInspection", "BranchInspection")
+                        .WithMany("Categories")
+                        .HasForeignKey("BranchInspectionId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("BranchInspection");
+                });
+
             modelBuilder.Entity("genscoSQLProject1.Models.ChecklistItem", b =>
                 {
+                    b.HasOne("genscoSQLProject1.Models.Asset", "Assets")
+                        .WithMany()
+                        .HasForeignKey("AssetId");
+
+                    b.HasOne("genscoSQLProject1.Models.BranchInspection", "BranchInspection")
+                        .WithMany("ChecklistItems")
+                        .HasForeignKey("BranchInspectionId");
+
                     b.HasOne("genscoSQLProject1.Models.Category", "Category")
                         .WithMany("ChecklistItems")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Category");
-                });
-
-            modelBuilder.Entity("genscoSQLProject1.Models.FormAssets", b =>
-                {
-                    b.HasOne("genscoSQLProject1.Models.Asset", "Assets")
-                        .WithMany("FormAssets")
-                        .HasForeignKey("AssetId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("genscoSQLProject1.Models.BranchInspection", "BranchInspection")
-                        .WithMany("FormAssets")
-                        .HasForeignKey("BranchInspectionId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Assets");
 
                     b.Navigation("BranchInspection");
-                });
-
-            modelBuilder.Entity("genscoSQLProject1.Models.FormCategory", b =>
-                {
-                    b.HasOne("genscoSQLProject1.Models.BranchInspection", "BranchInspection")
-                        .WithMany("FormCategory")
-                        .HasForeignKey("BranchInspectionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("genscoSQLProject1.Models.Category", "Category")
-                        .WithMany("FormCategory")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("BranchInspection");
 
                     b.Navigation("Category");
-                });
-
-            modelBuilder.Entity("genscoSQLProject1.Models.FormItems", b =>
-                {
-                    b.HasOne("genscoSQLProject1.Models.BranchInspection", "BranchInspection")
-                        .WithMany("FormItems")
-                        .HasForeignKey("BranchInspectionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("genscoSQLProject1.Models.ChecklistItem", "ChecklistItem")
-                        .WithMany("FormItems")
-                        .HasForeignKey("ChecklistItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("BranchInspection");
-
-                    b.Navigation("ChecklistItem");
                 });
 
             modelBuilder.Entity("genscoSQLProject1.Models.Role", b =>
@@ -476,11 +379,6 @@ namespace genscoSQLProject1.Migrations
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("genscoSQLProject1.Models.Asset", b =>
-                {
-                    b.Navigation("FormAssets");
-                });
-
             modelBuilder.Entity("genscoSQLProject1.Models.Branch", b =>
                 {
                     b.Navigation("Assets");
@@ -490,30 +388,16 @@ namespace genscoSQLProject1.Migrations
 
             modelBuilder.Entity("genscoSQLProject1.Models.BranchInspection", b =>
                 {
-                    b.Navigation("FormAssets");
+                    b.Navigation("Assets");
 
-                    b.Navigation("FormCategory");
+                    b.Navigation("Categories");
 
-                    b.Navigation("FormItems");
+                    b.Navigation("ChecklistItems");
                 });
 
             modelBuilder.Entity("genscoSQLProject1.Models.Category", b =>
                 {
                     b.Navigation("ChecklistItems");
-
-                    b.Navigation("FormCategory");
-                });
-
-            modelBuilder.Entity("genscoSQLProject1.Models.ChecklistItem", b =>
-                {
-                    b.Navigation("AssetItems");
-
-                    b.Navigation("FormItems");
-                });
-
-            modelBuilder.Entity("genscoSQLProject1.Models.FormAssets", b =>
-                {
-                    b.Navigation("AssetItems");
                 });
 
             modelBuilder.Entity("genscoSQLProject1.Models.Role", b =>

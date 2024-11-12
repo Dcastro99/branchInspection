@@ -15,7 +15,7 @@ namespace genscoSQLProject1.Controllers
         private readonly IBranchRepository _branchRepository;
         private readonly IMapper _mapper;
 
-        public AssetController(IAssetRepository assetRepository,IBranchRepository branchRepository, IMapper mapper)
+        public AssetController(IAssetRepository assetRepository, IBranchRepository branchRepository, IMapper mapper)
         {
             _assetRepository = assetRepository;
             _branchRepository = branchRepository;
@@ -26,10 +26,10 @@ namespace genscoSQLProject1.Controllers
 
         //--------------GET ALL ASSETS----------------//
         [HttpGet]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<Asset>))]
-        public IActionResult GetAssets()
+        [ProducesResponseType(200, Type = typeof(IEnumerable<AssetDto>))]
+        public async Task<IActionResult> GetAssets()
         {
-            var assets = _mapper.Map<List<AssetDto>>(_assetRepository.GetAllAssets());
+            var assets = _mapper.Map<List<AssetDto>>(await _assetRepository.GetAllAssetsAsync());
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -37,18 +37,16 @@ namespace genscoSQLProject1.Controllers
             return Ok(assets);
         }
 
-
         //--------------GET ASSET BY ID----------------//
         [HttpGet("{assetId}")]
-        [ProducesResponseType(200, Type = typeof(Asset))]
+        [ProducesResponseType(200, Type = typeof(AssetDto))]
         [ProducesResponseType(400)]
-
-        public IActionResult GetAsset(int assetId)
+        public async Task<IActionResult> GetAsset(int assetId)
         {
-            if (!_assetRepository.AssetExists(assetId))
+            if (!await _assetRepository.AssetExistsAsync(assetId))
                 return NotFound();
 
-            var asset = _mapper.Map<AssetDto>(_assetRepository.GetAsset(assetId));
+            var asset = _mapper.Map<AssetDto>(await _assetRepository.GetAssetAsync(assetId));
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -58,12 +56,11 @@ namespace genscoSQLProject1.Controllers
 
         //--------------GET ASSET BY BRANCH ID----------------//
         [HttpGet("branchAsset/{branchNumber}")]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<Asset>))]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<AssetDto>))]
         [ProducesResponseType(400)]
-
-        public IActionResult GetAssetByBranch(int branchNumber)
+        public async Task<IActionResult> GetAssetByBranch(int branchNumber)
         {
-            var assets = _mapper.Map<List<AssetDto>>(_assetRepository.GetAssetByBranch(branchNumber));
+            var assets = _mapper.Map<List<AssetDto>>(await _assetRepository.GetAssetByBranchAsync(branchNumber));
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -73,12 +70,11 @@ namespace genscoSQLProject1.Controllers
 
         //--------------GET BRANCH BY ASSET ID----------------//
         [HttpGet("branch/{assetId}")]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<Branch>))]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<BranchDto>))]
         [ProducesResponseType(400)]
-
-        public IActionResult GetBranchByAsset(int assetId)
+        public async Task<IActionResult> GetBranchByAsset(int assetId)
         {
-            var branches = _mapper.Map<List<BranchDto>>(_assetRepository.GetBranchByAsset(assetId));
+            var branches = _mapper.Map<List<BranchDto>>(await _assetRepository.GetBranchByAssetAsync(assetId));
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -87,55 +83,57 @@ namespace genscoSQLProject1.Controllers
         }
 
         //--------------CREATE ASSET----------------//
+
         [HttpPost]
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
+        [ProducesResponseType(422)]
         [ProducesResponseType(500)]
-        public IActionResult CreateAsset([FromBody] AssetDto assetToCreate)
+        public async Task<IActionResult> CreateAsset([FromBody] AssetDto assetToCreate)
         {
             if (assetToCreate == null)
                 return BadRequest(ModelState);
 
             // Check if the asset already exists
-            var asset = _assetRepository.GetAllAssets()
-                .Where(a => a.AssetNumber == assetToCreate.AssetNumber)
-                .FirstOrDefault();
+            var existingAsset = (await _assetRepository.GetAllAssetsAsync())
+                .FirstOrDefault(a => a.AssetNumber == assetToCreate.AssetNumber);
 
-            if (asset != null)
+            if (existingAsset != null)
             {
                 ModelState.AddModelError("", $"Asset {assetToCreate.AssetNumber} already exists");
                 return StatusCode(422, ModelState);
             }
 
             // Check if the branch exists by BranchNumber
-            var branch = _branchRepository.GetAllBranches()
+            var branch = (await _branchRepository.GetAllBranchesAsync())
                 .FirstOrDefault(b => b.BranchNumber == assetToCreate.BranchNumber);
 
             if (branch == null)
             {
                 ModelState.AddModelError("", "Branch not found.");
-                return StatusCode(400, ModelState);
-            }
-
-            if (!ModelState.IsValid)
                 return BadRequest(ModelState);
+            }
 
             // Map the AssetDto to the Asset entity
             var assetMap = _mapper.Map<Asset>(assetToCreate);
 
-            // Assign the branch to the asset
+            // Assign the branch's BranchId to the asset
+            assetMap.BranchNumber = branch.BranchNumber;
             assetMap.BranchId = branch.BranchId;
 
             // Save the new asset
-            if (!_assetRepository.CreateAsset(assetMap))
+            if (!await _assetRepository.CreateAssetAsync(assetMap))
             {
                 ModelState.AddModelError("", $"Something went wrong saving the asset {assetMap.AssetNumber}");
                 return StatusCode(500, ModelState);
             }
 
-            return Ok("Successfully Created");
-        }
+            // Map the created Asset entity back to AssetDto
+            var createdAssetDto = _mapper.Map<AssetDto>(assetMap);
 
+            // Return the created asset with 201 status
+            return CreatedAtAction(nameof(CreateAsset), new { id = createdAssetDto.AssetId }, createdAssetDto);
+        }
 
 
 

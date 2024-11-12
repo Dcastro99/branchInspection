@@ -4,13 +4,14 @@ namespace genscoSQLProject1.Interfaces
 {
     public interface ICategoryRepository
     {
-        ICollection<Category> GetAllCategories();
-        Category GetCategory(int categoryId);
-        bool CategoryExists(int categoryId);
-        bool CreateCategory(Category category);
-        void CreateCategories(List<Category> categories);
-        bool UpdateCategory(Category category);
-        bool DeleteCategory(Category category);
-        bool Save();
+        Task<ICollection<Category>> GetAllCategoriesAsync(); 
+        Task<Category> GetCategoryAsync(int categoryId); 
+        Task<bool> CategoryExistsAsync(int categoryId);
+        Task<bool> CategoriesExistsAsync(int categoryId, int branchInspectionId);
+        Task<bool> CreateCategoryAsync(Category category); 
+        Task CreateCategoriesAsync(List<Category> categories); 
+        Task<bool> UpdateCategoryAsync(Category category); 
+        Task<bool> DeleteCategoryAsync(Category category); 
+        Task<bool> SaveAsync(); 
     }
 }

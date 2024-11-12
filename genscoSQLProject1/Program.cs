@@ -31,10 +31,10 @@ builder.Services.AddScoped<IBranchRepository, BranchRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IBranchInspectionRepository, BranchInspectionRepository>();
-builder.Services.AddScoped<IAssetItemsRepository, AssetItemsRepository>();
-builder.Services.AddScoped<IFormAssetsRepository, FormAssetsRepository>();
-builder.Services.AddScoped<IFormCategoryRepository, FormCategoryRepository>();
-builder.Services.AddScoped<IFormItemsRepository, FormItemsRepository>();
+//builder.Services.AddScoped<IAssetItemsRepository, AssetItemsRepository>();
+//builder.Services.AddScoped<IFormAssetsRepository, FormAssetsRepository>();
+//builder.Services.AddScoped<IFormCategoryRepository, FormCategoryRepository>();
+//builder.Services.AddScoped<IFormItemsRepository, FormItemsRepository>();
 
 builder.Services.AddDbContext<DataContext>(options =>
 {
@@ -68,6 +68,7 @@ void SeedData(IHost app)
 
 if (app.Environment.IsDevelopment())
 {
+    app.UseDeveloperExceptionPage();
     app.UseSwagger();
     app.UseSwaggerUI();
 }
