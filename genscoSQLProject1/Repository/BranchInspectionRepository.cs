@@ -79,5 +79,22 @@ namespace genscoSQLProject1.Repository
             _context.BranchInspections.Update(branchInspection);
             return await SaveAsync();
         }
+
+        public async Task<IEnumerable<BranchInspection>> GetBranchInspectionsNeedingApprovalAsync()
+        {
+            return await _context.BranchInspections
+                                 .Where(bi => bi.NeedsApproval)
+                                 .ToListAsync();
+        }
+        public async Task<BranchInspection?> GetBranchInspectionWithDetailsAsync(int branchInspectionId)
+        {
+            return await _context.BranchInspections
+                .Include(bi => bi.Categories)  // Include related categories
+                    .ThenInclude(c => c.ChecklistItems)  // Include related checklist items
+                .Include(bi => bi.Assets)  // Include related assets
+                .FirstOrDefaultAsync(bi => bi.BranchInspectionId == branchInspectionId);
+        }
+
+
     }
 }

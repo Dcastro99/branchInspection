@@ -18,6 +18,11 @@ public class MappingProfiles : Profile
         CreateMap<RoleDto, Role>();
         CreateMap<BranchInspection, BranchInspectionDto>();
         CreateMap<BranchInspectionDto, BranchInspection>();
+        CreateMap<BranchInspection, BranchInspectionDetailDto>()
+          .ForMember(dest => dest.Assets, opt => opt.MapFrom(src => src.Assets))
+          .ForMember(dest => dest.ChecklistItems, opt => opt.MapFrom(src => src.ChecklistItems))
+          .ForMember(dest => dest.Categories, opt => opt.MapFrom(src => src.Categories));
+
         CreateMap<FormNote, FormNoteDto>();
         CreateMap<FormNoteDto, FormNote>();
 
