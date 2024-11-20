@@ -64,6 +64,26 @@ namespace genscoSQLProject1.Controllers
             return Ok(branchInspections);
         }
 
+        //--------------GET BRANCH INSPECTIONS BY NeedsApprovl----------------//
+        [HttpGet("needsApproval")]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<BranchInspectionDto>))]
+        [ProducesResponseType(400)]
+        public async Task<IActionResult> GetBranchInspectionsNeedingApproval()
+        {
+            var branchInspections = _mapper.Map<List<BranchInspectionDto>>(
+                await _branchInspectionRepository.GetBranchInspectionsNeedingApprovalAsync()
+            );
+
+            if (branchInspections == null || !branchInspections.Any())
+                return NoContent();
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            return Ok(branchInspections);
+        }
+
+
         //--------------GET BRANCH INSPECTION BY ID----------------//
         [HttpGet("{branchInspectionId}")]
         [ProducesResponseType(200, Type = typeof(BranchInspectionDto))]
@@ -80,6 +100,29 @@ namespace genscoSQLProject1.Controllers
 
             return Ok(branchInspection);
         }
+
+        //--------------GET BRANCH INSPECTION DETAILS BY ID----------------//
+        [HttpGet("{branchInspectionId}/details")]
+        [ProducesResponseType(200, Type = typeof(BranchInspectionDetailDto))]
+        [ProducesResponseType(404)]
+        public async Task<IActionResult> GetBranchInspectionWithDetails(int branchInspectionId)
+        {
+            if (branchInspectionId <= 0)
+                return BadRequest("Invalid branch inspection ID.");
+
+            var branchInspection = await _branchInspectionRepository.GetBranchInspectionWithDetailsAsync(branchInspectionId);
+
+            if (branchInspection == null)
+                return NotFound($"Branch inspection with ID {branchInspectionId} not found.");
+
+            var branchInspectionDetailDto = _mapper.Map<BranchInspectionDetailDto>(branchInspection);
+
+            return Ok(branchInspectionDetailDto);
+        }
+
+        
+
+
 
         //--------------CREATE BRANCH INSPECTION----------------// 
         [HttpPost]
@@ -194,7 +237,6 @@ namespace genscoSQLProject1.Controllers
                 await _checklistItemsRepository.CreateChecklistItemAsync(formItem);
             }
 
-            // No need for an inner transaction since the outer transaction is handling it
         }
 
     }

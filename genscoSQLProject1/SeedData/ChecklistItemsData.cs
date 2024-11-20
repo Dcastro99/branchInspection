@@ -615,7 +615,7 @@ namespace genscoSQLProject1.SeedData
                     .Build(),
 
                 new ChecklistItemBuilder("DOT Annual Vehicle Inspection Date", 28)
-                    .SetIsCheckedNeeded(true)
+                    .SetIsCheckedNeeded(false)
                     .SetDotInspectionDateNeeded(true) // Assuming SetDotInspectionDateNeeded method exists
                     .Build(),
 
