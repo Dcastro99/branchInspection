@@ -3,6 +3,7 @@ using genscoSQLProject1.Dto;
 using genscoSQLProject1.Interfaces;
 using genscoSQLProject1.Models;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -32,15 +33,33 @@ namespace genscoSQLProject1.Controllers
 
             return Ok(users);
         }
-
-        //--------------GET USER BY ID----------------//
-        [HttpGet("{empId}")]
+        //--------------GET USER BY EMPLOYEE NUMBER----------------//
+        [HttpGet("byEmpNum/{empNum}")]
         [ProducesResponseType(200, Type = typeof(UserDto))]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
-        public IActionResult GetUser(int empId)
+        public IActionResult GetUserByEmpNum(int empNum)
         {
-            var user = _userRepository.GetUser(empId);
+            var user = _userRepository.GetUserByEmpNum(empNum);
+
+            if (user == null)
+            {
+                return NotFound($"User with Employee Number {empNum} not found.");
+            }
+
+            var userDto = _mapper.Map<UserDto>(user);
+
+            return Ok(userDto);
+        }
+
+        //--------------GET USER BY EMPLOYEE ID----------------//
+        [HttpGet("byEmpId/{empId}")]
+        [ProducesResponseType(200, Type = typeof(UserDto))]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        public IActionResult GetUserById(int empId)
+        {
+            var user = _userRepository.GetUserById(empId);
 
             if (user == null)
             {

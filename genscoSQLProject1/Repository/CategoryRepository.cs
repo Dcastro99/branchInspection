@@ -38,13 +38,13 @@ namespace genscoSQLProject1.Repository
             if (category == null)
                 throw new ArgumentNullException(nameof(category), "Category cannot be null");
 
-            await _context.Categories.AddAsync(category);
+            _context.Categories.Add(category); // Use Add instead of AddAsync for single entities
             var result = await _context.SaveChangesAsync();
-            if (result == 0)
-                throw new InvalidOperationException("Failed to save category to the database.");
 
-            return result > 0;
+            return result > 0; // True if at least one row was affected
         }
+
+
 
         //public async Task<bool> CreateCategoryAsync(Category category)
         //{
