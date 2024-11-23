@@ -24,11 +24,12 @@ namespace genscoSQLProject1.Repository
         public async Task<bool> CreateChecklistItemAsync(ChecklistItem checklistItem)
         {
             if (checklistItem == null)
-                return false;
+                throw new ArgumentNullException(nameof(checklistItem), "Checklist item cannot be null");
 
-            await _context.ChecklistItems.AddAsync(checklistItem);
-            return await SaveAsync();
+            _context.ChecklistItems.Add(checklistItem); 
+            return await SaveAsync(); 
         }
+
 
         public async Task<bool> DeleteChecklistItemAsync(ChecklistItem checklistItem)
         {

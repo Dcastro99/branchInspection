@@ -24,10 +24,15 @@ namespace genscoSQLProject1.Repository
             return Save();
         }
 
-        public User GetUser(int empId)
+        public User GetUserByEmpNum(int empNum)
         {
-            return _context.Users.FirstOrDefault(u => u.EmployeeId == empId);
+            return _context.Users.FirstOrDefault(u => u.EmployeeId == empNum);
         }
+        public User GetUserById(int empId)
+        {
+            return _context.Users.FirstOrDefault(u => u.UserId == empId);
+        }
+
 
         public ICollection<User> GetAllUsers()
         {
