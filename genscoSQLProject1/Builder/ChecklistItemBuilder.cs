@@ -9,7 +9,8 @@ public class ChecklistItemBuilder
         _checklistItem = new ChecklistItem
         {
             Name = name,
-            CategoryId = categoryId
+            CategoryId = categoryId,
+            CatRefId = categoryId
         };
     }
 

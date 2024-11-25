@@ -112,6 +112,7 @@ namespace genscoSQLProject1.Controllers
             foreach (var item in checklistItems)
             {
                 item.ChecklistItemId = startingId;
+                
                 startingId++; 
             }
 
