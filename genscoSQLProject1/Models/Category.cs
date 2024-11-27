@@ -10,7 +10,8 @@
 
 
         //-----------NAVIGATION PROPERTIES------------//
-        public  ICollection<ChecklistItem> ChecklistItems { get; set; }  
+        public  ICollection<ChecklistItem> ChecklistItems { get; set; }
+        public ICollection<FormNote> FormNotes { get; set; }
         public BranchInspection BranchInspection { get; set; }
 
 

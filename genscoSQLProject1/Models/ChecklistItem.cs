@@ -1,4 +1,5 @@
 ﻿
+using genscoSQLProject1.Helper;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace genscoSQLProject1.Models
@@ -22,39 +23,35 @@ namespace genscoSQLProject1.Models
         public string? LoadCapacity { get; set; }
         public bool? NotApplicable { get; set; }
 
-        
-        //-------------------NOT MAPPED PROPERTIES-----------------//
-       
-        [NotMapped]
         public bool? IsCheckedNeeded { get; set; }
-        [NotMapped]
+        
         public bool? NotApplicableNeeded { get; set; }
-        [NotMapped]
+        
         public bool? LoadCapacityNeeded { get; set; }
-        [NotMapped]
+        
         public bool? DateCartridgeNeeded { get; set; }
-        [NotMapped]
+        
         public bool? SafetyLastMeetingDateNeeded { get; set; }
-        [NotMapped]
+        
         public bool? StatePosterDatePostedNeeded { get; set; }
-        [NotMapped]
+        
         public bool? FireAlarmDateTestedNeeded { get; set; }
-        [NotMapped]
+        
         public bool? SprinklerSystemDateTestedNeeded { get; set; }
-        [NotMapped]
+        
         public bool? SecurityAlarmDateTestedNeeded { get; set; }
-        [NotMapped]
+        
         public bool? DotInspectionDateNeeded { get; set; }
 
 
         //---------NAVIGATION PROPERTIES-----------//
-      
+
         public Category Category { get; set; }
-      
+
         public BranchInspection BranchInspection { get; set; }
         public Asset Assets { get; set; }
 
     }
+
 }
 
-   

@@ -209,7 +209,7 @@ namespace genscoSQLProject1.Controllers
             // Create FormCategory for each CategoryDto
             foreach (var categoryDto in categoryDtos)
             {
-                //Console.WriteLine($"CategoryDto.CatRefId: {categoryDto.CatRefId}");
+                Console.WriteLine($"CategoryDto.CatRefId: {categoryDto.CatRefId}");
               
 
                 var newCategory = new Category
@@ -220,14 +220,14 @@ namespace genscoSQLProject1.Controllers
                     CategoryComment = categoryDto.CategoryComment
                 };
 
-                //Console.WriteLine($"newCategory.CatRefId: {newCategory.CatRefId}");
+                Console.WriteLine($"newCategory.CatRefId: {newCategory.CatRefId}");
 
                 await _CategoryRepository.CreateCategoryAsync(newCategory);
 
-              
+
 
                 // Log and store the actual CategoryId after creation
-                //Console.WriteLine($"Created Category: OldId={categoryDto.CategoryId}, NewId={newCategory.CategoryId}");
+                Console.WriteLine($"Created Category: OldId={categoryDto.CategoryId}, NewId={newCategory.CategoryId}");
                 categoryIdMap[categoryDto.CategoryId] = newCategory.CategoryId;
             }
 
@@ -241,7 +241,7 @@ namespace genscoSQLProject1.Controllers
                 if (categoryIdMap.TryGetValue(itemDto.CategoryId, out var actualCategoryId))
                 {
                     formItem.CategoryId = actualCategoryId;
-                    //Console.WriteLine($"Assigned New CategoryId {actualCategoryId} to ChecklistItem {formItem.ChecklistItemId}");
+                    Console.WriteLine($"Assigned New CategoryId {actualCategoryId} to ChecklistItem {formItem.ChecklistItemId}");
                 }
                 else
                 {
