@@ -6,6 +6,7 @@ using genscoSQLProject1.Dto;
 using genscoSQLProject1.SeedData;
 using genscoSQLProject1.Builder;
 using genscoSQLProject1.Repository;
+using genscoSQLProject1.Helper;
 
 
 namespace genscoSQLProject1.Controllers
@@ -97,6 +98,7 @@ namespace genscoSQLProject1.Controllers
 
         //--------------GENERATE CHECKLIST ITEMS USING BUILDER----------------//
 
+
         [HttpGet("generateChecklistItems")]
         public async Task<IActionResult> GenerateChecklistItems()
 
@@ -105,14 +107,15 @@ namespace genscoSQLProject1.Controllers
 
             var checklistItems = ChecklistItemsData.GetChecklistItems();
 
-            
+
             int startingId = 1;
 
-            
+
             foreach (var item in checklistItems)
             {
                 item.ChecklistItemId = startingId;
-                startingId++; 
+
+                startingId++;
             }
 
 

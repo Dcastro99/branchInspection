@@ -209,14 +209,22 @@ namespace genscoSQLProject1.Controllers
             // Create FormCategory for each CategoryDto
             foreach (var categoryDto in categoryDtos)
             {
+                Console.WriteLine($"CategoryDto.CatRefId: {categoryDto.CatRefId}");
+              
+
                 var newCategory = new Category
                 {
                     BranchInspectionId = branchInspectionId,
+                    CatRefId = categoryDto.CatRefId,
                     CategoryName = categoryDto.CategoryName,
                     CategoryComment = categoryDto.CategoryComment
                 };
 
+                Console.WriteLine($"newCategory.CatRefId: {newCategory.CatRefId}");
+
                 await _CategoryRepository.CreateCategoryAsync(newCategory);
+
+
 
                 // Log and store the actual CategoryId after creation
                 Console.WriteLine($"Created Category: OldId={categoryDto.CategoryId}, NewId={newCategory.CategoryId}");
@@ -240,7 +248,7 @@ namespace genscoSQLProject1.Controllers
                     throw new Exception($"CategoryId {itemDto.CategoryId} does not exist in the mapping!");
                 }
 
-                //await _checklistItemsRepository.CreateChecklistItemAsync(formItem);
+                await _checklistItemsRepository.CreateChecklistItemAsync(formItem);
             }
         }
 

@@ -10,6 +10,12 @@ public class MappingProfiles : Profile
         CreateMap<CategoryDto, Category>();
         CreateMap<ChecklistItem, ChecklistItemDto>();
         CreateMap<ChecklistItemDto, ChecklistItem>();
+        //CreateMap<ChecklistItem, ChecklistItemDto>()
+        //.ForMember(dest => dest.ItemType, opt => opt.MapFrom(src => src.ItemType));
+
+        //CreateMap<ChecklistItemDto, ChecklistItem>()
+        //.ForMember(dest => dest.ItemType, opt => opt.MapFrom(src => src.ItemType));
+
         CreateMap<Branch, BranchDto>();
         CreateMap<BranchDto, Branch>();
         CreateMap<User, UserDto>();

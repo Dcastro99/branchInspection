@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "fotshzryonE=",
+  "dgSpecHash": "3k1vxoGbswA=",
   "success": true,
-  "projectFilePath": "C:\\Users\\dcastro\\source\\repos\\genscoSQLProject1\\genscoSQLProject1\\genscoSQLProject1.csproj",
+  "projectFilePath": "C:\\users\\dcastro\\source\\repos\\genscoSQLProject1\\genscoSQLProject1\\genscoSQLProject1.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\dcastro\\.nuget\\packages\\automapper\\13.0.1\\automapper.13.0.1.nupkg.sha512",
     "C:\\Users\\dcastro\\.nuget\\packages\\azure.core\\1.44.1\\azure.core.1.44.1.nupkg.sha512",

@@ -24,6 +24,7 @@
         public ICollection<Asset> Assets { get; set; }
         public ICollection<ChecklistItem> ChecklistItems { get; set; }
         public ICollection<Category> Categories { get; set; }
+        public ICollection<FormNote> FormNotes { get; set; }
 
     }
 }

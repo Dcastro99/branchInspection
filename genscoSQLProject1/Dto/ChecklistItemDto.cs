@@ -7,6 +7,7 @@ namespace genscoSQLProject1.Dto
         public int ChecklistItemId { get; set; }
         public required string Name { get; set; }
         public int CategoryId { get; set; }
+        public int? CatRefId { get; set; }
         public int? BranchInspectionId { get; set; }
         public int? AssetId { get; set; }
         public bool? IsChecked { get; set; }
@@ -19,6 +20,27 @@ namespace genscoSQLProject1.Dto
         public DateTime? DotInspectionDate { get; set; }
         public string? LoadCapacity { get; set; }
         public bool? NotApplicable { get; set; }
+
+        public bool? IsCheckedNeeded { get; set; }
+
+        public bool? NotApplicableNeeded { get; set; }
+
+        public bool? LoadCapacityNeeded { get; set; }
+
+        public bool? DateCartridgeNeeded { get; set; }
+
+        public bool? SafetyLastMeetingDateNeeded { get; set; }
+
+        public bool? StatePosterDatePostedNeeded { get; set; }
+
+        public bool? FireAlarmDateTestedNeeded { get; set; }
+
+        public bool? SprinklerSystemDateTestedNeeded { get; set; }
+
+        public bool? SecurityAlarmDateTestedNeeded { get; set; }
+
+        public bool? DotInspectionDateNeeded { get; set; }
+
 
     }
 }

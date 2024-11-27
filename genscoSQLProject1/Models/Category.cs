@@ -3,13 +3,15 @@
     public class Category
     {
         public int CategoryId { get; set; }
+        public int? CatRefId { get; set; }
         public  string CategoryName { get; set; }
         public int? BranchInspectionId { get; set; }
         public string? CategoryComment { get; set; }
 
 
         //-----------NAVIGATION PROPERTIES------------//
-        public  ICollection<ChecklistItem> ChecklistItems { get; set; }  
+        public  ICollection<ChecklistItem> ChecklistItems { get; set; }
+        public ICollection<FormNote> FormNotes { get; set; }
         public BranchInspection BranchInspection { get; set; }
 
 

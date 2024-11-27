@@ -11,7 +11,7 @@ namespace genscoSQLProject1.SeedData
             return new List<ChecklistItem>
             {
                 new ChecklistItemBuilder("Posting should be in an area accessible to all Team Members, (e.g. - lunch room, time clock station,etc.)", 1)
-                    .SetIsCheckedNeeded(true)
+                    .SetIsCheckedNeeded(false)
                     .Build(),
 
                 new ChecklistItemBuilder("State and Federal Law Posters", 1)

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using genscoSQLProject1.Data;
 
@@ -11,9 +12,11 @@ using genscoSQLProject1.Data;
 namespace genscoSQLProject1.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20241126181721_addedChecklistBooleans")]
+    partial class addedChecklistBooleans
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -266,26 +269,19 @@ namespace genscoSQLProject1.Migrations
                     b.Property<int>("BranchInspectionId")
                         .HasColumnType("int");
 
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("CreatedByUserId")
                         .HasColumnType("int");
 
-                    b.Property<string>("SectionNote")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("generalNotes")
+                    b.Property<string>("Note")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("FormNoteId");
 
                     b.HasIndex("BranchInspectionId");
-
-                    b.HasIndex("CategoryId");
 
                     b.HasIndex("CreatedByUserId");
 
@@ -442,14 +438,8 @@ namespace genscoSQLProject1.Migrations
             modelBuilder.Entity("genscoSQLProject1.Models.FormNote", b =>
                 {
                     b.HasOne("genscoSQLProject1.Models.BranchInspection", "BranchInspection")
-                        .WithMany("FormNotes")
+                        .WithMany()
                         .HasForeignKey("BranchInspectionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("genscoSQLProject1.Models.Category", "Category")
-                        .WithMany("FormNotes")
-                        .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -460,8 +450,6 @@ namespace genscoSQLProject1.Migrations
                         .IsRequired();
 
                     b.Navigation("BranchInspection");
-
-                    b.Navigation("Category");
 
                     b.Navigation("CreatedByUser");
                 });
@@ -499,15 +487,11 @@ namespace genscoSQLProject1.Migrations
                     b.Navigation("Categories");
 
                     b.Navigation("ChecklistItems");
-
-                    b.Navigation("FormNotes");
                 });
 
             modelBuilder.Entity("genscoSQLProject1.Models.Category", b =>
                 {
                     b.Navigation("ChecklistItems");
-
-                    b.Navigation("FormNotes");
                 });
 
             modelBuilder.Entity("genscoSQLProject1.Models.Role", b =>

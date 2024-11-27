@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using genscoSQLProject1.Data;
 
@@ -11,9 +12,11 @@ using genscoSQLProject1.Data;
 namespace genscoSQLProject1.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20241125050514_AddCatRefId")]
+    partial class AddCatRefId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -183,32 +186,17 @@ namespace genscoSQLProject1.Migrations
                     b.Property<DateTime?>("DateCartridgeInstalled")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool?>("DateCartridgeNeeded")
-                        .HasColumnType("bit");
-
                     b.Property<DateTime?>("DotInspectionDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<bool?>("DotInspectionDateNeeded")
-                        .HasColumnType("bit");
 
                     b.Property<DateTime?>("FireAlarmDateTested")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool?>("FireAlarmDateTestedNeeded")
-                        .HasColumnType("bit");
-
                     b.Property<bool?>("IsChecked")
-                        .HasColumnType("bit");
-
-                    b.Property<bool?>("IsCheckedNeeded")
                         .HasColumnType("bit");
 
                     b.Property<string>("LoadCapacity")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool?>("LoadCapacityNeeded")
-                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -217,32 +205,17 @@ namespace genscoSQLProject1.Migrations
                     b.Property<bool?>("NotApplicable")
                         .HasColumnType("bit");
 
-                    b.Property<bool?>("NotApplicableNeeded")
-                        .HasColumnType("bit");
-
                     b.Property<DateTime?>("SafetyLastMeetingDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<bool?>("SafetyLastMeetingDateNeeded")
-                        .HasColumnType("bit");
 
                     b.Property<DateTime?>("SecurityAlarmDateTested")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool?>("SecurityAlarmDateTestedNeeded")
-                        .HasColumnType("bit");
-
                     b.Property<DateTime?>("SprinklerSystemDateTested")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool?>("SprinklerSystemDateTestedNeeded")
-                        .HasColumnType("bit");
-
                     b.Property<DateTime?>("StatePosterDatePosted")
                         .HasColumnType("datetime2");
-
-                    b.Property<bool?>("StatePosterDatePostedNeeded")
-                        .HasColumnType("bit");
 
                     b.HasKey("ChecklistItemId");
 
@@ -266,26 +239,19 @@ namespace genscoSQLProject1.Migrations
                     b.Property<int>("BranchInspectionId")
                         .HasColumnType("int");
 
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("CreatedByUserId")
                         .HasColumnType("int");
 
-                    b.Property<string>("SectionNote")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("generalNotes")
+                    b.Property<string>("Note")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("FormNoteId");
 
                     b.HasIndex("BranchInspectionId");
-
-                    b.HasIndex("CategoryId");
 
                     b.HasIndex("CreatedByUserId");
 
@@ -442,14 +408,8 @@ namespace genscoSQLProject1.Migrations
             modelBuilder.Entity("genscoSQLProject1.Models.FormNote", b =>
                 {
                     b.HasOne("genscoSQLProject1.Models.BranchInspection", "BranchInspection")
-                        .WithMany("FormNotes")
+                        .WithMany()
                         .HasForeignKey("BranchInspectionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("genscoSQLProject1.Models.Category", "Category")
-                        .WithMany("FormNotes")
-                        .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -460,8 +420,6 @@ namespace genscoSQLProject1.Migrations
                         .IsRequired();
 
                     b.Navigation("BranchInspection");
-
-                    b.Navigation("Category");
 
                     b.Navigation("CreatedByUser");
                 });
@@ -499,15 +457,11 @@ namespace genscoSQLProject1.Migrations
                     b.Navigation("Categories");
 
                     b.Navigation("ChecklistItems");
-
-                    b.Navigation("FormNotes");
                 });
 
             modelBuilder.Entity("genscoSQLProject1.Models.Category", b =>
                 {
                     b.Navigation("ChecklistItems");
-
-                    b.Navigation("FormNotes");
                 });
 
             modelBuilder.Entity("genscoSQLProject1.Models.Role", b =>

@@ -105,8 +105,8 @@ namespace genscoSQLProject1.Controllers
                 categoriesDto.Add(new CategoryDto
                 {
                     CategoryName = category.CategoryName,
-                    CategoryId = startCatId
-
+                    CategoryId = startCatId,
+                    CatRefId = startCatId
                 });
                 startCatId++;
 
