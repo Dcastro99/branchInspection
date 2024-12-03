@@ -54,7 +54,7 @@ namespace genscoSQLProject1.Controllers
             return Ok(asset);
         }
 
-        //--------------GET ASSET BY BRANCH ID----------------//
+        //--------------GET ASSET BY BRANCH NUMBER----------------//
         [HttpGet("branchAsset/{branchNumber}")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<AssetDto>))]
         [ProducesResponseType(400)]

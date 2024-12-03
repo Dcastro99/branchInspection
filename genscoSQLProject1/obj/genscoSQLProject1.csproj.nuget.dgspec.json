@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\users\\dcastro\\source\\repos\\genscoSQLProject1\\genscoSQLProject1\\genscoSQLProject1.csproj": {}
+    "C:\\Users\\dcastro\\source\\repos\\genscoSQLProject1\\genscoSQLProject1\\genscoSQLProject1.csproj": {}
   },
   "projects": {
-    "C:\\users\\dcastro\\source\\repos\\genscoSQLProject1\\genscoSQLProject1\\genscoSQLProject1.csproj": {
+    "C:\\Users\\dcastro\\source\\repos\\genscoSQLProject1\\genscoSQLProject1\\genscoSQLProject1.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\users\\dcastro\\source\\repos\\genscoSQLProject1\\genscoSQLProject1\\genscoSQLProject1.csproj",
+        "projectUniqueName": "C:\\Users\\dcastro\\source\\repos\\genscoSQLProject1\\genscoSQLProject1\\genscoSQLProject1.csproj",
         "projectName": "genscoSQLProject1",
-        "projectPath": "C:\\users\\dcastro\\source\\repos\\genscoSQLProject1\\genscoSQLProject1\\genscoSQLProject1.csproj",
+        "projectPath": "C:\\Users\\dcastro\\source\\repos\\genscoSQLProject1\\genscoSQLProject1\\genscoSQLProject1.csproj",
         "packagesPath": "C:\\Users\\dcastro\\.nuget\\packages\\",
-        "outputPath": "C:\\users\\dcastro\\source\\repos\\genscoSQLProject1\\genscoSQLProject1\\obj\\",
+        "outputPath": "C:\\Users\\dcastro\\source\\repos\\genscoSQLProject1\\genscoSQLProject1\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
