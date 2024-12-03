@@ -8,6 +8,7 @@
         public int? BranchNumber { get; set; }
         public int? CreatedByUserId { get; set; }
         public int? ApprovedByUserId { get; set; }
+        public DateTime? DateLastMaintained { get; set; }
         public DateTime? RevisedDate { get; set; }
         public DateTime? CreatedDate { get; set; }
         public DateTime? SubmittedDate { get; set; }
