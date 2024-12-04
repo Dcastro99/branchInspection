@@ -66,30 +66,57 @@ namespace genscoSQLProject1.Controllers
         }
 
         //--------------CREATE FORM NOTE----------------//
-        [HttpPost]
-        [ProducesResponseType(201, Type = typeof(FormNoteDto))]
+        [HttpPost("addFormNotes")]
+        [ProducesResponseType(201, Type = typeof(IEnumerable<FormNoteDto>))]
         [ProducesResponseType(400)]
-        public async Task<IActionResult> CreateFormNote([FromBody] FormNoteDto formNoteDto)
+        public async Task<IActionResult> CreateFormNotes([FromBody] List<FormNoteDto> formNoteDtos)
         {
-            if (formNoteDto == null)
-                return BadRequest("Form note data is null.");
+            if (formNoteDtos == null || formNoteDtos.Count == 0)
+                return BadRequest("Form note data is null or empty.");
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var formNote = _mapper.Map<FormNote>(formNoteDto);
+            var formNotes = _mapper.Map<List<FormNote>>(formNoteDtos);
 
-            if (!await _formNoteRepository.CreateFormNoteAsync(formNote))
-                return StatusCode(500, "An error occurred while saving the form note.");
+            foreach (var formNote in formNotes)
+            {
+                formNote.CreatedAt = DateTime.UtcNow; // Ensure consistency in timestamp
+                var success = await _formNoteRepository.CreateFormNoteAsync(formNote);
+                if (!success)
+                    return StatusCode(500, "An error occurred while saving one of the form notes.");
+            }
 
-            var createdFormNoteDto = _mapper.Map<FormNoteDto>(formNote);
+            var createdFormNoteDtos = _mapper.Map<List<FormNoteDto>>(formNotes);
 
-            return CreatedAtAction(
-                "GetFormNote",
-                new { formNoteId = createdFormNoteDto.FormNoteId },
-                createdFormNoteDto
-            );
+            return CreatedAtAction(nameof(GetFormNotesByBranchInspectionId),
+                new { branchInspectionId = formNotes[0].BranchInspectionId }, createdFormNoteDtos);
         }
+
+        //[HttpPost]
+        //[ProducesResponseType(201, Type = typeof(FormNoteDto))]
+        //[ProducesResponseType(400)]
+        //public async Task<IActionResult> CreateFormNote([FromBody] FormNoteDto formNoteDto)
+        //{
+        //    if (formNoteDto == null)
+        //        return BadRequest("Form note data is null.");
+
+        //    if (!ModelState.IsValid)
+        //        return BadRequest(ModelState);
+
+        //    var formNote = _mapper.Map<FormNote>(formNoteDto);
+
+        //    if (!await _formNoteRepository.CreateFormNoteAsync(formNote))
+        //        return StatusCode(500, "An error occurred while saving the form note.");
+
+        //    var createdFormNoteDto = _mapper.Map<FormNoteDto>(formNote);
+
+        //    return CreatedAtAction(
+        //        "GetFormNote",
+        //        new { formNoteId = createdFormNoteDto.FormNoteId },
+        //        createdFormNoteDto
+        //    );
+        //}
 
     }
 }
