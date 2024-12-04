@@ -4,6 +4,7 @@
 # Ignore all user-specific files
 **/*.user
 *.csproj.user
+genscoSQLProject1.csproj.user
 
 # Ignore build output directories
 **/bin/
