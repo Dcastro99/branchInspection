@@ -6,5 +6,7 @@
         public List<ChecklistItemDto> Items { get; set; }
         public List<AssetDto> Assets { get; set; }
         public List<CategoryDto> Category { get; set; }
+      
+
     }
 }

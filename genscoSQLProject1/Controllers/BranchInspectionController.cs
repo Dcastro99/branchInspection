@@ -252,6 +252,43 @@ namespace genscoSQLProject1.Controllers
             }
         }
 
+        //-------------------UPDATE BRANCH INSPECTION----------------//
+        [HttpPut("update-status")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        public async Task<IActionResult> UpdateBranchInspectionStatus([FromBody] UpdateBranchInspectionStatusDto updateDto)
+        {
+            if (updateDto == null)
+                return BadRequest("Data is null.");
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            // Fetch the existing BranchInspection
+            var branchInspection = await _branchInspectionRepository.GetBranchInspectionAsync(updateDto.BranchInspectionId);
+
+            if (branchInspection == null)
+                return NotFound($"BranchInspection with ID {updateDto.BranchInspectionId} not found.");
+
+            // Handle denial
+            if (!updateDto.IsApproved)
+            {
+                branchInspection.NeedsApproval = false;
+            }
+            else
+            {
+                // Handle approval
+                branchInspection.NeedsApproval = false;
+                branchInspection.ApprovedByUserId = updateDto.ApprovedByUserId ?? branchInspection.ApprovedByUserId;
+                branchInspection.ApprovedDate = updateDto.ApprovedDate ?? DateTime.UtcNow;
+            }
+
+            if (!await _branchInspectionRepository.UpdateBranchInspectionAsync(branchInspection))
+                return StatusCode(500, "An error occurred while updating the Branch Inspection.");
+
+            return Ok("Branch Inspection status updated successfully.");
+        }
+
 
 
     }
