@@ -89,9 +89,9 @@ namespace genscoSQLProject1.Repository
         public async Task<BranchInspection?> GetBranchInspectionWithDetailsAsync(int branchInspectionId)
         {
             return await _context.BranchInspections
-                .Include(bi => bi.Categories)  // Include related categories
-                    .ThenInclude(c => c.ChecklistItems)  // Include related checklist items
-                .Include(bi => bi.Assets)  // Include related assets
+                .Include(bi => bi.Categories)  
+                    .ThenInclude(c => c.ChecklistItems) 
+                .Include(bi => bi.Assets)  
                 .FirstOrDefaultAsync(bi => bi.BranchInspectionId == branchInspectionId);
         }
 
