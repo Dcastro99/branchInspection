@@ -83,6 +83,26 @@ namespace genscoSQLProject1.Controllers
             return Ok(branchInspections);
         }
 
+        //--------------GET BRANCH INSPECTIONS BY PENDING APPROVAL----------------//
+        [HttpGet("pendingApproval/{branchNumber}")]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<BranchInspectionDto>))]
+        [ProducesResponseType(400)]
+        public async Task<IActionResult> GetBranchInspectionsPendingApproval([FromRoute] int branchNumber)
+        {
+            var branchInspections = _mapper.Map<List<BranchInspectionDto>>(
+                await _branchInspectionRepository.GetBranchInspectionsPendingApprovalAsync(branchNumber)
+            );
+
+            if (branchInspections == null || !branchInspections.Any())
+                return NoContent();
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            return Ok(branchInspections);
+        }
+
+
 
         //--------------GET BRANCH INSPECTION BY ID----------------//
         [HttpGet("{branchInspectionId}")]
@@ -253,7 +273,7 @@ namespace genscoSQLProject1.Controllers
         }
 
         //-------------------UPDATE BRANCH INSPECTION----------------//
-        [HttpPut("update-status")]
+        [HttpPut("updateStatus")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         public async Task<IActionResult> UpdateBranchInspectionStatus([FromBody] UpdateBranchInspectionStatusDto updateDto)
