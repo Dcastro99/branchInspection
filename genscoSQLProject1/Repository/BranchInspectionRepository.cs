@@ -83,9 +83,20 @@ namespace genscoSQLProject1.Repository
         public async Task<IEnumerable<BranchInspection>> GetBranchInspectionsNeedingApprovalAsync()
         {
             return await _context.BranchInspections
-                                 .Where(bi => bi.NeedsApproval)
+                                 .Where(bi => bi.NeedsApproval && bi.ApprovedByUserId == null)
                                  .ToListAsync();
         }
+
+        public async Task<IEnumerable<BranchInspection>> GetBranchInspectionsPendingApprovalAsync(int branchNumber)
+        {
+            return await _context.BranchInspections
+                                 .Where(bi => bi.NeedsApproval == false
+                                           && bi.ApprovedByUserId == null
+                                           && bi.BranchNumber == branchNumber)
+                                 .ToListAsync();
+        }
+
+
         public async Task<BranchInspection?> GetBranchInspectionWithDetailsAsync(int branchInspectionId)
         {
             return await _context.BranchInspections

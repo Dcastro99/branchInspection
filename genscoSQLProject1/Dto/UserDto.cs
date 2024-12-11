@@ -13,6 +13,7 @@ namespace genscoSQLProject1.Dto
         public string? CompanyId { get; set; }
         public int? RoleId { get; set; }
         public int? CreatedByUserId { get; set; }
+        public DateTime? CreatedDate { get; set; } = DateTime.Now;
         public string? ActiveInd { get; set; }
         public int EmployeeId { get; set; }
     }
