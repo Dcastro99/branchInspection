@@ -2,6 +2,7 @@
 using genscoSQLProject1.Dto;
 using genscoSQLProject1.Interfaces;
 using genscoSQLProject1.Models;
+using genscoSQLProject1.Repository;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Security.Cryptography;
@@ -15,11 +16,13 @@ namespace genscoSQLProject1.Controllers
     {
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
+        private readonly IBranchRepository _branchRepository;
 
-        public UserController(IUserRepository userRepository, IMapper mapper)
+        public UserController(IUserRepository userRepository, IMapper mapper, IBranchRepository branchRepository)
         {
             _userRepository = userRepository;
             _mapper = mapper;
+            _branchRepository = branchRepository;
         }
 
         //--------------GET ALL USERS----------------//
@@ -35,11 +38,12 @@ namespace genscoSQLProject1.Controllers
         }
         //--------------GET USER BY EMPLOYEE NUMBER----------------//
         [HttpGet("byEmpNum/{empNum}")]
-        [ProducesResponseType(200, Type = typeof(UserDto))]
+        [ProducesResponseType(200, Type = typeof(UserWithBranchDto))]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
-        public IActionResult GetUserByEmpNum(int empNum)
+        public async Task<IActionResult> GetUserByEmpNum(int empNum)
         {
+            // Retrieve user by employee number
             var user = _userRepository.GetUserByEmpNum(empNum);
 
             if (user == null)
@@ -47,10 +51,47 @@ namespace genscoSQLProject1.Controllers
                 return NotFound($"User with Employee Number {empNum} not found.");
             }
 
+            // Map user to DTO
             var userDto = _mapper.Map<UserDto>(user);
 
-            return Ok(userDto);
+            // Retrieve branch information based on DefaultLocationId
+            BranchDto? branchDto = null;
+            if (!string.IsNullOrEmpty(userDto.DefaultLocationId) && int.TryParse(userDto.DefaultLocationId, out int branchNumber))
+            {
+                if (await _branchRepository.BranchExistsAsync(branchNumber))
+                {
+                    var branch = await _branchRepository.GetBranchAsync(branchNumber);
+                    branchDto = _mapper.Map<BranchDto>(branch);
+                }
+            }
+
+            // Prepare the combined response
+            var response = new UserWithBranchDto
+            {
+                User = userDto,
+                Branch = branchDto
+            };
+
+            return Ok(response);
         }
+
+        //[HttpGet("byEmpNum/{empNum}")]
+        //[ProducesResponseType(200, Type = typeof(UserDto))]
+        //[ProducesResponseType(400)]
+        //[ProducesResponseType(404)]
+        //public IActionResult GetUserByEmpNum(int empNum)
+        //{
+        //    var user = _userRepository.GetUserByEmpNum(empNum);
+
+        //    if (user == null)
+        //    {
+        //        return NotFound($"User with Employee Number {empNum} not found.");
+        //    }
+
+        //    var userDto = _mapper.Map<UserDto>(user);
+
+        //    return Ok(userDto);
+        //}
 
         //--------------GET USER BY EMPLOYEE ID----------------//
         [HttpGet("byEmpId/{empId}")]
@@ -141,6 +182,53 @@ namespace genscoSQLProject1.Controllers
             return Ok(userDto);
         }
 
+        [HttpPost("loginWithBranch")]
+        [ProducesResponseType(200, Type = typeof(LoginWithBranchResponseDto))]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public async Task<IActionResult> LoginWithBranch([FromBody] LoginDto loginDto)
+        {
+            // Validate login input
+            if (loginDto == null || string.IsNullOrWhiteSpace(loginDto.Email) || string.IsNullOrWhiteSpace(loginDto.Password))
+            {
+                return BadRequest("Invalid login credentials");
+            }
+
+            // Hash the incoming password for comparison
+            var hashedPassword = HashPassword(loginDto.Password);
+
+            // Authenticate user
+            var user = _userRepository.GetUserByEmailAndPassword(loginDto.Email, hashedPassword);
+            if (user == null)
+            {
+                return Unauthorized("Email or password is incorrect");
+            }
+
+            // Map user to DTO
+            var userDto = _mapper.Map<UserDto>(user);
+
+            // Retrieve branch information based on DefaultLocationId
+            if (string.IsNullOrEmpty(userDto.DefaultLocationId) || !int.TryParse(userDto.DefaultLocationId, out int branchNumber))
+            {
+                return BadRequest("DefaultLocationId is invalid or missing for the user.");
+            }
+
+            if (!await _branchRepository.BranchExistsAsync(branchNumber))
+            {
+                return NotFound($"Branch with number {branchNumber} does not exist.");
+            }
+
+            var branch = _mapper.Map<BranchDto>(await _branchRepository.GetBranchAsync(branchNumber));
+
+            // Return combined response
+            var response = new LoginWithBranchResponseDto
+            {
+                User = userDto,
+                Branch = branch
+            };
+
+            return Ok(response);
+        }
 
 
 
