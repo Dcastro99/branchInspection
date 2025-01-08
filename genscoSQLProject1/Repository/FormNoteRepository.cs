@@ -1,4 +1,4 @@
-﻿using genscoSQLProject1.Controllers;
+﻿
 using genscoSQLProject1.Data;
 using genscoSQLProject1.Interfaces;
 using genscoSQLProject1.Models;
