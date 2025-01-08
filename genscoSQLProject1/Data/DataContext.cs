@@ -19,6 +19,7 @@ namespace genscoSQLProject1.Data
         public DbSet<Role> Roles { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<FormNote> FormNotes { get; set; }
+        public DbSet<FormComment> FormComments { get; set; }
 
         //-----------ON MODEL CREATING METHOD------------//
 
@@ -48,6 +49,11 @@ namespace genscoSQLProject1.Data
             // BranchInspection
             modelBuilder.Entity<BranchInspection>()
                 .Ignore(bi => bi.ApprovedByUser);
+
+            //modelBuilder.Entity<FormComment>(entity =>
+            //{
+            //    entity.HasKey(fc => fc.FormCommentId); 
+            //});
         }
 
 

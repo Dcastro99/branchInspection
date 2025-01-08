@@ -39,5 +39,7 @@ public class MappingProfiles : Profile
         CreateMap<Asset, AssetDto>()
             .ForMember(dest => dest.CategoryId, opt => opt.MapFrom(src => src.CategoryId))
             .ForMember(dest => dest.BranchNumber, opt => opt.MapFrom(src => src.BranchNumber));
+        CreateMap<FormComment, FormCommentDto>();
+        CreateMap<FormCommentDto, FormComment>();
     }
 }

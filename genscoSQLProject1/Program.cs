@@ -32,6 +32,7 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IBranchInspectionRepository, BranchInspectionRepository>();
 builder.Services.AddScoped<IFormNoteRepository, FormNoteRepository>();
+builder.Services.AddScoped<IFormCommentRepository, FormCommentRepository>();
 //builder.Services.AddScoped<IAssetItemsRepository, AssetItemsRepository>();
 //builder.Services.AddScoped<IFormAssetsRepository, FormAssetsRepository>();
 //builder.Services.AddScoped<IFormCategoryRepository, FormCategoryRepository>();
