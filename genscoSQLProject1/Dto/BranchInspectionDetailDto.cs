@@ -17,7 +17,7 @@
 
         // Related entities
         public ICollection<AssetDto> Assets { get; set; }
-        public ICollection<ChecklistItemDto> ChecklistItems { get; set; }
-        public ICollection<CategoryDto> Categories { get; set; }
+        public ICollection<FormChecklistItemsDto> FormChecklistItems { get; set; }
+       
     }
 }

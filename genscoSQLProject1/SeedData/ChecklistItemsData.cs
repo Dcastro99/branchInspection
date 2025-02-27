@@ -443,9 +443,9 @@ namespace genscoSQLProject1.SeedData
                     .SetIsCheckedNeeded(true)
                     .Build(),
 
-                new ChecklistItemBuilder("", 19)
-                    .SetIsCheckedNeeded(true)
-                    .Build(),
+                //new ChecklistItemBuilder("", 19)
+                //    .SetIsCheckedNeeded(true)
+                //    .Build(),
 
                 new ChecklistItemBuilder("Product on shelves are clean and organized", 19)
                     .SetIsCheckedNeeded(true)
@@ -558,7 +558,8 @@ namespace genscoSQLProject1.SeedData
                 new ChecklistItemBuilder("Batteries are watered regularly", 25)
                     .SetIsCheckedNeeded(true)
                     .Build(),
-                         new ChecklistItemBuilder("Paint and appearance is in good condition", 25)
+
+                new ChecklistItemBuilder("Paint and appearance is in good condition", 25)
                     .SetIsCheckedNeeded(true)
                     .Build(),
 

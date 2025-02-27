@@ -61,6 +61,24 @@ namespace genscoSQLProject1.Controllers
             return Ok(checklistItemDto);
         }
 
+        //--------------GET CATEGORY BY CHECKLISTITEM ID----------------//
+
+        [HttpGet("getCategory/{checklistItemId}")]
+        public async Task<IActionResult> GetCategory(int checklistItemId)
+        {
+            var category = await _checklistItemRepository.GetCategoryByChecklistItemIdAsync(checklistItemId);
+
+            if (category == null)
+            {
+                return NotFound($"Category for Checklist Item ID {checklistItemId} not found.");
+            }
+
+            return Ok(category);
+        }
+
+
+
+
         //--------------CREATE CHECKLIST ITEM----------------//
         [HttpPost]
         [ProducesResponseType(201, Type = typeof(ChecklistItemDto))]
@@ -88,6 +106,7 @@ namespace genscoSQLProject1.Controllers
             var checklistItemMap = _mapper.Map<ChecklistItem>(checklistItemToCreate);
 
             if (!await _checklistItemRepository.CreateChecklistItemAsync(checklistItemMap))
+
             {
                 ModelState.AddModelError("", $"Something went wrong saving the checklist item {checklistItemMap.Name}");
                 return StatusCode(500, ModelState);
@@ -99,28 +118,65 @@ namespace genscoSQLProject1.Controllers
         //--------------GENERATE CHECKLIST ITEMS USING BUILDER----------------//
 
 
+        //[HttpGet("generateChecklistItems")]
+        //public async Task<IActionResult> GenerateChecklistItems()
+
+
+        //{
+
+        //    var checklistItems = ChecklistItemsData.GetChecklistItems();
+
+
+        //    int startingId = 1;
+
+
+        //    foreach (var item in checklistItems)
+        //    {
+        //        item.ChecklistItemId = startingId;
+
+        //        startingId++;
+        //    }
+
+
+
+        //    return Ok(checklistItems);
+        //}
+
         [HttpGet("generateChecklistItems")]
         public async Task<IActionResult> GenerateChecklistItems()
-
-
         {
+            var checklistItemsData = ChecklistItemsData.GetChecklistItems();
+            var createdChecklistItems = new List<ChecklistItemDto>();
 
-            var checklistItems = ChecklistItemsData.GetChecklistItems();
-
-
-            int startingId = 1;
-
-
-            foreach (var item in checklistItems)
+            foreach (var item in checklistItemsData)
             {
-                item.ChecklistItemId = startingId;
+                // Check if an item with the same Name and CategoryId already exists in DB
+                var existingChecklistItem = await _checklistItemRepository.GetByNameAndCategoryAsync(item.Name, item.CategoryId);
 
-                startingId++;
+                if (existingChecklistItem == null)
+                {
+                    // Map DTO to entity
+                    var checklistItemEntity = _mapper.Map<ChecklistItem>(item);
+
+                    // Save to DB
+                    var created = await _checklistItemRepository.CreateChecklistItemAsync(checklistItemEntity);
+
+                    if (!created)
+                    {
+                        return StatusCode(500, $"Error occurred while creating checklist item {item.Name}");
+                    }
+
+                    // Add the newly created item to the response list
+                    createdChecklistItems.Add(_mapper.Map<ChecklistItemDto>(checklistItemEntity));
+                }
+                else
+                {
+                    // Add existing item to the response list
+                    createdChecklistItems.Add(_mapper.Map<ChecklistItemDto>(existingChecklistItem));
+                }
             }
 
-
-
-            return Ok(checklistItems);
+            return Ok(createdChecklistItems);
         }
 
 

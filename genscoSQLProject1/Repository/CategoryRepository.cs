@@ -28,9 +28,9 @@ namespace genscoSQLProject1.Repository
         {
             return await _context.Categories.AnyAsync(c => c.CategoryId == categoryId);
         }
-        public async Task<bool> CategoriesExistsAsync(int categoryId, int branchInspectionId)
+        public async Task<bool> CategoriesExistsAsync(int categoryId)
         {
-            return _context.Categories.Any(f => f.CategoryId == categoryId && f.BranchInspectionId == branchInspectionId);
+            return  _context.Categories.Any(f => f.CategoryId == categoryId );
         }
 
         public async Task<bool> CreateCategoryAsync(Category category)

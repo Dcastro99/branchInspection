@@ -82,37 +82,91 @@ namespace genscoSQLProject1.Controllers
                 return StatusCode(500, ModelState);
             }
 
-            return CreatedAtAction(nameof(GetCategory), new { categoryId = categoryMap.CategoryId }, categoryMap);
+            return CreatedAtAction(nameof(GetCategory), categoryMap);
         }
 
         //------------------GENERATE CATEGORIES----------------//
+        //[HttpGet("generateCategories")]
+        //public async Task<IActionResult> GenerateCategories()
+
+
+        //{
+        //    var categoryNames = CategoryData.GetCategoryNames();
+        //    var categoriesDto = new List<CategoryDto>();
+        //    int startCatId = 1;
+
+        //    foreach (var name in categoryNames)
+        //    {
+        //        var category = new CategoryBuilder(name).Build();
+
+
+
+
+        //        categoriesDto.Add(new CategoryDto
+        //        {
+        //            CategoryName = category.CategoryName,
+        //            CategoryId = startCatId,
+        //            //CatRefId = startCatId
+        //        });
+        //        startCatId++;
+
+        //    }
+
+        //    return Ok(categoriesDto);
+        //}
+
         [HttpGet("generateCategories")]
         public async Task<IActionResult> GenerateCategories()
-
-
         {
             var categoryNames = CategoryData.GetCategoryNames();
-            var categoriesDto = new List<CategoryDto>();
-            int startCatId = 1;
+            var createdCategories = new List<CategoryDto>();
 
             foreach (var name in categoryNames)
             {
                 var category = new CategoryBuilder(name).Build();
 
-
-               
-
-                categoriesDto.Add(new CategoryDto
+                // Create a DTO for the new category
+                var categoryDto = new CategoryDto
                 {
-                    CategoryName = category.CategoryName,
-                    CategoryId = startCatId,
-                    CatRefId = startCatId
-                });
-                startCatId++;
+                    CategoryName = category.CategoryName
+                };
 
+                // Check if category already exists
+                var existingCategory = (await _categoryRepository.GetAllCategoriesAsync())
+                    .FirstOrDefault(c => c.CategoryName.Trim().ToUpper() == categoryDto.CategoryName.Trim().ToUpper());
+
+                if (existingCategory == null)
+                {
+                    // Map DTO to Entity
+                    var categoryEntity = _mapper.Map<Category>(categoryDto);
+
+                    // Save to DB
+                    var created = await _categoryRepository.CreateCategoryAsync(categoryEntity);
+
+                    if (!created)
+                    {
+                        return StatusCode(500, $"Error occurred while creating category {categoryDto.CategoryName}");
+                    }
+
+                    // Retrieve the newly created category with the assigned ID
+                    var savedCategory = (await _categoryRepository.GetAllCategoriesAsync())
+                        .FirstOrDefault(c => c.CategoryName.Trim().ToUpper() == categoryDto.CategoryName.Trim().ToUpper());
+
+                    if (savedCategory != null)
+                    {
+                        createdCategories.Add(_mapper.Map<CategoryDto>(savedCategory));
+                    }
+                }
+                else
+                {
+                    // If category already exists, return its existing ID
+                    createdCategories.Add(_mapper.Map<CategoryDto>(existingCategory));
+                }
             }
 
-            return Ok(categoriesDto);
+            return Ok(createdCategories);
         }
+
+
     }
 }

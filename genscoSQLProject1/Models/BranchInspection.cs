@@ -21,10 +21,12 @@
         public Branch Branch { get; set; }
         public User CreatedByUser { get; set; }  
         public User ApprovedByUser { get; set; }
-        public ICollection<Asset> Assets { get; set; }
-        public ICollection<ChecklistItem> ChecklistItems { get; set; }
-        public ICollection<Category> Categories { get; set; }
-        public ICollection<FormNote> FormNotes { get; set; }
+        public ICollection<Asset> Assets { get; set; } = new List<Asset>();
+        public ICollection<FormChecklistItems> FormChecklistItems { get; set; } = new List<FormChecklistItems>();
+        //public ICollection<ChecklistItem> ChecklistItems { get; set; }
+        //public ICollection<Category> Categories { get; set; } = new List<Category>();
+        public ICollection<FormNote> FormNotes { get; set; } = new List<FormNote>();
+        public ICollection<FormComment> FormComments { get; set; } = new List<FormComment>();
 
     }
 }

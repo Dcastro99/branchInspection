@@ -26,11 +26,14 @@ public class MappingProfiles : Profile
         CreateMap<BranchInspectionDto, BranchInspection>();
         CreateMap<BranchInspection, BranchInspectionDetailDto>()
           .ForMember(dest => dest.Assets, opt => opt.MapFrom(src => src.Assets))
-          .ForMember(dest => dest.ChecklistItems, opt => opt.MapFrom(src => src.ChecklistItems))
-          .ForMember(dest => dest.Categories, opt => opt.MapFrom(src => src.Categories));
+          .ForMember(dest => dest.FormChecklistItems, opt => opt.MapFrom(src => src.FormChecklistItems));
 
         CreateMap<FormNote, FormNoteDto>();
         CreateMap<FormNoteDto, FormNote>();
+        CreateMap<FormChecklistItems, FormChecklistItemsDto>();
+        CreateMap<FormChecklistItemsDto, FormChecklistItems>()
+        .ForMember(dest => dest.BranchInspectionId, opt => opt.MapFrom(src => src.BranchInspectionId));
+
 
         CreateMap<AssetDto, Asset>()
             .ForMember(dest => dest.CategoryId, opt => opt.MapFrom(src => src.CategoryId))
