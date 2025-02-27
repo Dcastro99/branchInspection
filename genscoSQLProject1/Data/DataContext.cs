@@ -20,6 +20,7 @@ namespace genscoSQLProject1.Data
         public DbSet<User> Users { get; set; }
         public DbSet<FormNote> FormNotes { get; set; }
         public DbSet<FormComment> FormComments { get; set; }
+        public DbSet<FormChecklistItems> FormChecklistItems { get; set; }
 
         //-----------ON MODEL CREATING METHOD------------//
 
@@ -32,18 +33,31 @@ namespace genscoSQLProject1.Data
                 .HasForeignKey(ci => ci.CategoryId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<Category>()
-                .HasOne(c => c.BranchInspection)
-                .WithMany(bi => bi.Categories)
-                .HasForeignKey(c => c.BranchInspectionId)
-                .OnDelete(DeleteBehavior.Restrict);
-
 
             modelBuilder.Entity<Role>()
                 .HasOne(r => r.CreatedByUser)
                 .WithMany(u => u.CreatedRoles)
                 .HasForeignKey(r => r.CreatedByUserId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<FormChecklistItems>()
+                .HasKey(fci => fci.FormChecklistItemId); 
+
+
+            modelBuilder.Entity<FormChecklistItems>()
+                .HasOne(fci => fci.ChecklistItem)
+                .WithMany(ci => ci.FormChecklistItems)
+                .HasForeignKey(fci => fci.ChecklistItemId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<FormChecklistItems>()
+                .HasOne(fci => fci.BranchInspection)
+                .WithMany(bi => bi.FormChecklistItems)
+                .HasForeignKey(fci => fci.BranchInspectionId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+
+         
 
 
             // BranchInspection

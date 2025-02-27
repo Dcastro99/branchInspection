@@ -7,7 +7,7 @@ namespace genscoSQLProject1.Interfaces
         Task<ICollection<Category>> GetAllCategoriesAsync(); 
         Task<Category> GetCategoryAsync(int categoryId); 
         Task<bool> CategoryExistsAsync(int categoryId);
-        Task<bool> CategoriesExistsAsync(int categoryId, int branchInspectionId);
+        Task<bool> CategoriesExistsAsync(int categoryId);
         Task<bool> CreateCategoryAsync(Category category); 
         Task CreateCategoriesAsync(List<Category> categories); 
         Task<bool> UpdateCategoryAsync(Category category); 

@@ -10,7 +10,7 @@ public class ChecklistItemBuilder
         {
             Name = name,
             CategoryId = categoryId,
-            CatRefId = categoryId
+            //CatRefId = categoryId
         };
     }
 

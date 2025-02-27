@@ -140,22 +140,11 @@ namespace genscoSQLProject1.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CategoryId"));
 
-                    b.Property<int?>("BranchInspectionId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("CatRefId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("CategoryComment")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("CategoryName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("CategoryId");
-
-                    b.HasIndex("BranchInspectionId");
 
                     b.ToTable("Categories");
                 });
@@ -168,44 +157,20 @@ namespace genscoSQLProject1.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ChecklistItemId"));
 
-                    b.Property<int?>("AssetId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("BranchInspectionId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("CatRefId")
-                        .HasColumnType("int");
-
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
-
-                    b.Property<DateTime?>("DateCartridgeInstalled")
-                        .HasColumnType("datetime2");
 
                     b.Property<bool?>("DateCartridgeNeeded")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime?>("DotInspectionDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<bool?>("DotInspectionDateNeeded")
                         .HasColumnType("bit");
-
-                    b.Property<DateTime?>("FireAlarmDateTested")
-                        .HasColumnType("datetime2");
 
                     b.Property<bool?>("FireAlarmDateTestedNeeded")
                         .HasColumnType("bit");
 
-                    b.Property<bool?>("IsChecked")
-                        .HasColumnType("bit");
-
                     b.Property<bool?>("IsCheckedNeeded")
                         .HasColumnType("bit");
-
-                    b.Property<string>("LoadCapacity")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool?>("LoadCapacityNeeded")
                         .HasColumnType("bit");
@@ -214,45 +179,84 @@ namespace genscoSQLProject1.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool?>("NotApplicable")
-                        .HasColumnType("bit");
-
                     b.Property<bool?>("NotApplicableNeeded")
                         .HasColumnType("bit");
-
-                    b.Property<DateTime?>("SafetyLastMeetingDate")
-                        .HasColumnType("datetime2");
 
                     b.Property<bool?>("SafetyLastMeetingDateNeeded")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime?>("SecurityAlarmDateTested")
-                        .HasColumnType("datetime2");
-
                     b.Property<bool?>("SecurityAlarmDateTestedNeeded")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime?>("SprinklerSystemDateTested")
-                        .HasColumnType("datetime2");
-
                     b.Property<bool?>("SprinklerSystemDateTestedNeeded")
                         .HasColumnType("bit");
-
-                    b.Property<DateTime?>("StatePosterDatePosted")
-                        .HasColumnType("datetime2");
 
                     b.Property<bool?>("StatePosterDatePostedNeeded")
                         .HasColumnType("bit");
 
                     b.HasKey("ChecklistItemId");
 
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("ChecklistItems");
+                });
+
+            modelBuilder.Entity("genscoSQLProject1.Models.FormChecklistItems", b =>
+                {
+                    b.Property<int>("FormChecklistItemId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FormChecklistItemId"));
+
+                    b.Property<int?>("AssetId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("BranchInspectionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ChecklistItemId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DateCartridgeInstalled")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DotInspectionDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("FireAlarmDateTested")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool?>("IsChecked")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LoadCapacity")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("NotApplicable")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("SafetyLastMeetingDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("SecurityAlarmDateTested")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("SprinklerSystemDateTested")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("StatePosterDatePosted")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("FormChecklistItemId");
+
                     b.HasIndex("AssetId");
 
                     b.HasIndex("BranchInspectionId");
 
-                    b.HasIndex("CategoryId");
+                    b.HasIndex("ChecklistItemId");
 
-                    b.ToTable("ChecklistItems");
+                    b.ToTable("FormChecklistItems");
                 });
 
             modelBuilder.Entity("genscoSQLProject1.Models.FormComment", b =>
@@ -432,37 +436,40 @@ namespace genscoSQLProject1.Migrations
                     b.Navigation("CreatedByUser");
                 });
 
-            modelBuilder.Entity("genscoSQLProject1.Models.Category", b =>
-                {
-                    b.HasOne("genscoSQLProject1.Models.BranchInspection", "BranchInspection")
-                        .WithMany("Categories")
-                        .HasForeignKey("BranchInspectionId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.Navigation("BranchInspection");
-                });
-
             modelBuilder.Entity("genscoSQLProject1.Models.ChecklistItem", b =>
                 {
-                    b.HasOne("genscoSQLProject1.Models.Asset", "Assets")
-                        .WithMany()
-                        .HasForeignKey("AssetId");
-
-                    b.HasOne("genscoSQLProject1.Models.BranchInspection", "BranchInspection")
-                        .WithMany("ChecklistItems")
-                        .HasForeignKey("BranchInspectionId");
-
                     b.HasOne("genscoSQLProject1.Models.Category", "Category")
                         .WithMany("ChecklistItems")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("Assets");
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("genscoSQLProject1.Models.FormChecklistItems", b =>
+                {
+                    b.HasOne("genscoSQLProject1.Models.Asset", "Asset")
+                        .WithMany()
+                        .HasForeignKey("AssetId");
+
+                    b.HasOne("genscoSQLProject1.Models.BranchInspection", "BranchInspection")
+                        .WithMany("FormChecklistItems")
+                        .HasForeignKey("BranchInspectionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("genscoSQLProject1.Models.ChecklistItem", "ChecklistItem")
+                        .WithMany("FormChecklistItems")
+                        .HasForeignKey("ChecklistItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Asset");
 
                     b.Navigation("BranchInspection");
 
-                    b.Navigation("Category");
+                    b.Navigation("ChecklistItem");
                 });
 
             modelBuilder.Entity("genscoSQLProject1.Models.FormComment", b =>
@@ -474,7 +481,7 @@ namespace genscoSQLProject1.Migrations
                         .IsRequired();
 
                     b.HasOne("genscoSQLProject1.Models.Category", "Category")
-                        .WithMany()
+                        .WithMany("FormComments")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -541,9 +548,7 @@ namespace genscoSQLProject1.Migrations
                 {
                     b.Navigation("Assets");
 
-                    b.Navigation("Categories");
-
-                    b.Navigation("ChecklistItems");
+                    b.Navigation("FormChecklistItems");
 
                     b.Navigation("FormNotes");
                 });
@@ -552,7 +557,14 @@ namespace genscoSQLProject1.Migrations
                 {
                     b.Navigation("ChecklistItems");
 
+                    b.Navigation("FormComments");
+
                     b.Navigation("FormNotes");
+                });
+
+            modelBuilder.Entity("genscoSQLProject1.Models.ChecklistItem", b =>
+                {
+                    b.Navigation("FormChecklistItems");
                 });
 
             modelBuilder.Entity("genscoSQLProject1.Models.Role", b =>

@@ -1,4 +1,5 @@
 ﻿using genscoSQLProject1.Data;
+using genscoSQLProject1.Dto;
 using genscoSQLProject1.Interfaces;
 using genscoSQLProject1.Models;
 using Microsoft.EntityFrameworkCore;
@@ -62,5 +63,27 @@ namespace genscoSQLProject1.Repository
             _context.ChecklistItems.Update(checklistItem);
             return await SaveAsync();
         }
+
+        public async Task<ChecklistItem?> GetByNameAndCategoryAsync(string name, int categoryId)
+        {
+            return await _context.ChecklistItems
+                .FirstOrDefaultAsync(c => c.Name.ToUpper() == name.ToUpper() && c.CategoryId == categoryId);
+        }
+
+
+        public async Task<CategoryDto?> GetCategoryByChecklistItemIdAsync(int checklistItemId)
+        {
+            return await _context.ChecklistItems
+                .Where(c => c.ChecklistItemId == checklistItemId)
+                .Select(c => new CategoryDto
+                {
+                    CategoryId = c.Category.CategoryId,
+                    CategoryName = c.Category.CategoryName
+                })
+                .FirstOrDefaultAsync();
+        }
+
+
+
     }
 }

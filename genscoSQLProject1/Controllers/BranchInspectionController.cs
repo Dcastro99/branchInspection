@@ -20,6 +20,7 @@ namespace genscoSQLProject1.Controllers
         private readonly IBranchInspectionRepository _branchInspectionRepository;
         private readonly ICategoryRepository _CategoryRepository;
         private readonly IChecklistItemRepository _checklistItemsRepository;
+        private readonly IFormChecklistItemsRepository _formChecklistItemsRepository;
         private readonly IAssetRepository _AssetRepository;
         private readonly ICategoryRepository _categoryRepository;
         private readonly IAssetRepository _assetRepository;
@@ -31,6 +32,7 @@ namespace genscoSQLProject1.Controllers
             IBranchInspectionRepository branchInspectionRepository,
             ICategoryRepository CategoryRepository,
             IChecklistItemRepository checklistItemsRepository,
+            IFormChecklistItemsRepository formChecklistItemsRepository,
             IAssetRepository AssetRepository,
             ICategoryRepository categoryRepository,
             IAssetRepository assetRepository,
@@ -42,6 +44,7 @@ namespace genscoSQLProject1.Controllers
             _branchInspectionRepository = branchInspectionRepository;
             _CategoryRepository = CategoryRepository;
             _checklistItemsRepository = checklistItemsRepository;
+            _formChecklistItemsRepository = formChecklistItemsRepository;
             _AssetRepository = AssetRepository;
             _categoryRepository = categoryRepository;
             _assetRepository = assetRepository;
@@ -132,6 +135,8 @@ namespace genscoSQLProject1.Controllers
 
             var branchInspection = await _branchInspectionRepository.GetBranchInspectionWithDetailsAsync(branchInspectionId);
 
+            _logger.LogInformation($"Branch Inspection:::::: {branchInspectionId}");
+
             if (branchInspection == null)
                 return NotFound($"Branch inspection with ID {branchInspectionId} not found.");
 
@@ -140,75 +145,96 @@ namespace genscoSQLProject1.Controllers
             return Ok(branchInspectionDetailDto);
         }
 
-        
+
 
 
 
         //--------------CREATE BRANCH INSPECTION----------------// 
         [HttpPost]
-        [ProducesResponseType(201, Type = typeof(BranchInspectionDto))]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(422)]
-        [ProducesResponseType(500)]
         public async Task<IActionResult> CreateBranchInspection([FromBody] FormDto formDto)
         {
-            if (formDto == null || formDto.Items == null || !formDto.Items.Any() || formDto.Assets == null || formDto.Category == null)
-                return BadRequest(ModelState);
+            _logger.LogInformation("CreateBranchInspection method started.");
 
-            DateTime currentMonth = DateTime.Now;
-            var branchId = formDto.BranchInspection.BranchId;
-
-            // Check if an inspection for the current month already exists for the given branch
-            var existingInspection = (await _branchInspectionRepository.GetAllBranchInspectionsAsync())
-                .Where(bi => bi.BranchId == branchId
-                              && bi.SubmittedDate.HasValue
-                              && bi.SubmittedDate.Value.Year == currentMonth.Year
-                              && bi.SubmittedDate.Value.Month == currentMonth.Month)
-                .OrderByDescending(bi => bi.SubmittedDate)
-                .FirstOrDefault();
-
-            if (existingInspection != null)
+            if (formDto == null)
             {
-                ModelState.AddModelError("", $"Branch Inspection already exists for this month.");
-                return StatusCode(422, ModelState);
+                _logger.LogWarning("Request body is null.");
+                return BadRequest("Request body is null.");
             }
 
-            // Ensure model state is valid before proceeding 
+            _logger.LogInformation($"Received BranchId: {formDto.BranchInspection?.BranchId}");
+            _logger.LogInformation($"Received Items Count: {formDto.Items?.Count}");
+            _logger.LogInformation($"Received Assets Count: {formDto.Assets?.Count}");
+
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            // Start a transaction
-            using (var transaction = await _context.Database.BeginTransactionAsync()) // Change to async
             {
-                try
-                {
-                    // Map the DTO to the BranchInspection entity 
-                    var branchInspection = _mapper.Map<BranchInspection>(formDto.BranchInspection);
+                var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage);
+                _logger.LogWarning("ModelState is invalid: {Errors}", string.Join(", ", errors));
+                return BadRequest(new { message = "Invalid request", errors });
+            }
 
-                    // Attempt to create the branch inspection in the repository 
-                    if (!await _branchInspectionRepository.CreateBranchInspectionAsync(branchInspection))
+            try
+            {
+                _logger.LogInformation("Checking if a branch inspection already exists for this month.");
+
+                DateTime currentMonth = DateTime.Now;
+                var branchId = formDto.BranchInspection.BranchId;
+
+                var existingInspection = (await _branchInspectionRepository.GetAllBranchInspectionsAsync())
+                    .Where(bi => bi.BranchId == branchId
+                                && bi.SubmittedDate.HasValue
+                                && bi.SubmittedDate.Value.Year == currentMonth.Year
+                                && bi.SubmittedDate.Value.Month == currentMonth.Month)
+                    .OrderByDescending(bi => bi.SubmittedDate)
+                    .FirstOrDefault();
+
+                if (existingInspection != null)
+                {
+                    _logger.LogWarning("Branch Inspection already exists for this month.");
+                    ModelState.AddModelError("", "Branch Inspection already exists for this month.");
+                    return StatusCode(422, ModelState);
+                }
+
+                // Start transaction
+                using (var transaction = await _context.Database.BeginTransactionAsync())
+                {
+                    try
                     {
-                        ModelState.AddModelError("", $"Something went wrong saving the branch inspection {branchInspection.BranchInspectionId}");
-                        return StatusCode(500, ModelState);
+                        _logger.LogInformation("Creating a new BranchInspection entry.");
+
+                        var branchInspection = _mapper.Map<BranchInspection>(formDto.BranchInspection);
+                        if (!await _branchInspectionRepository.CreateBranchInspectionAsync(branchInspection))
+                        {
+                            _logger.LogError("Error saving branch inspection.");
+                            ModelState.AddModelError("", "Something went wrong saving the branch inspection.");
+                            return StatusCode(500, ModelState);
+                        }
+
+                        var branchInspectionId = branchInspection.BranchInspectionId;
+                        _logger.LogInformation($"BranchInspection created successfully with ID: {branchInspectionId}");
+
+                        //Create related FormChecklistItems
+                        await CreateRelatedFormEntriesAsync(branchInspectionId, formDto.Items, formDto.Assets, branchId);
+                        _logger.LogInformation("FormChecklistItems created successfully.");
+
+                        // Commit transaction
+                        await transaction.CommitAsync();
+                        _logger.LogInformation("Transaction committed successfully.");
+
+                        return Ok(branchInspectionId);
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex, "Error occurred while saving branch inspection. Message: {Message}", ex.Message);
+                        await transaction.RollbackAsync();
+                        return StatusCode(500, $"An error occurred while saving the branch inspection: {ex.Message}");
                     }
 
-                    var branchInspectionId = branchInspection.BranchInspectionId;
-
-                    // Create related entities, including FormItems
-                    await CreateRelatedFormEntriesAsync(branchInspectionId, formDto.Items, formDto.Assets, formDto.Category, branchId); // Change to async
-
-                    // If everything is successful, commit the transaction 
-                    await transaction.CommitAsync(); // Change to async
-
-                    return Ok(branchInspectionId);
                 }
-                catch (Exception ex)
-                {
-                    // If something goes wrong, rollback the transaction 
-                    await transaction.RollbackAsync(); // Change to async
-                    ModelState.AddModelError("", "An error occurred while saving the branch inspection and related entries.");
-                    return StatusCode(500, ModelState);
-                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Unhandled exception in CreateBranchInspection.");
+                return StatusCode(500, "An unexpected error occurred.");
             }
         }
 
@@ -218,58 +244,45 @@ namespace genscoSQLProject1.Controllers
 
         private async Task CreateRelatedFormEntriesAsync(
             int branchInspectionId,
-            List<ChecklistItemDto> itemsDtos,
-            List<AssetDto> assetsDtos,
-            List<CategoryDto> categoryDtos,
+            List<FormChecklistItemsDto> items,
+            List<AssetDto> assets,
             int branchId)
         {
-            // Temporary to actual CategoryId mapping
-            var categoryIdMap = new Dictionary<int, int>();
-
-            // Create FormCategory for each CategoryDto
-            foreach (var categoryDto in categoryDtos)
+            // Check if the items list is null or empty
+            if (items == null || !items.Any())
             {
-                Console.WriteLine($"CategoryDto.CatRefId: {categoryDto.CatRefId}");
-              
-
-                var newCategory = new Category
-                {
-                    BranchInspectionId = branchInspectionId,
-                    CatRefId = categoryDto.CatRefId,
-                    CategoryName = categoryDto.CategoryName,
-                    CategoryComment = categoryDto.CategoryComment
-                };
-
-                Console.WriteLine($"newCategory.CatRefId: {newCategory.CatRefId}");
-
-                await _CategoryRepository.CreateCategoryAsync(newCategory);
-
-
-
-                // Log and store the actual CategoryId after creation
-                Console.WriteLine($"Created Category: OldId={categoryDto.CategoryId}, NewId={newCategory.CategoryId}");
-                categoryIdMap[categoryDto.CategoryId] = newCategory.CategoryId;
+                //_logger.LogInformation("No form checklist items to add.");
+                return;  // No items to add, exit early
             }
 
-            // Create FormItems for each ChecklistItemDto
-            foreach (var itemDto in itemsDtos)
-            {
-                var formItem = _mapper.Map<ChecklistItem>(itemDto);
-                formItem.BranchInspectionId = branchInspectionId;
-
-                // Assign actual CategoryId using the mapping
-                if (categoryIdMap.TryGetValue(itemDto.CategoryId, out var actualCategoryId))
+            var formChecklistItems = items.ToList();
+            //if (formChecklistItems.Any())
+            //{
+                //_logger.LogInformation("Checklist items after filtering:");
+                foreach (var item in formChecklistItems)
                 {
-                    formItem.CategoryId = actualCategoryId;
-                    Console.WriteLine($"Assigned New CategoryId {actualCategoryId} to ChecklistItem {formItem.ChecklistItemId}");
-                }
-                else
-                {
-                    throw new Exception($"CategoryId {itemDto.CategoryId} does not exist in the mapping!");
-                }
+                    item.BranchInspectionId = branchInspectionId;  // Ensure BranchInspectionId is set manually
+                    var checklistItemEntity = _mapper.Map<FormChecklistItems>(item);
+                    checklistItemEntity.BranchInspectionId = branchInspectionId; // Ensure BranchInspectionId is set
 
-                await _checklistItemsRepository.CreateChecklistItemAsync(formItem);
-            }
+                    //_logger.LogInformation($"Item: {item.FormChecklistItemId}, BranchInspectionId: {item.BranchInspectionId}");
+
+                    _context.FormChecklistItems.Add(checklistItemEntity);
+                }
+                await _context.SaveChangesAsync();
+
+                // Log after SaveChangesAsync to capture the generated IDs
+                //foreach (var item in formChecklistItems)
+                //{
+                //    _logger.LogInformation($"Inserted Item: {item.FormChecklistItemId}, BranchInspectionId: {branchInspectionId}");
+                //}
+
+            //}
+            //else
+            //{
+            //    _logger.LogInformation("No checklist items found after filtering.");
+            //}
+
         }
 
         //-------------------UPDATE BRANCH INSPECTION----------------//
