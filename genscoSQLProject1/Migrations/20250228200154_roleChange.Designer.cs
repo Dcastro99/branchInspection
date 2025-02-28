@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using genscoSQLProject1.Data;
 
@@ -11,9 +12,11 @@ using genscoSQLProject1.Data;
 namespace genscoSQLProject1.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20250228200154_roleChange")]
+    partial class roleChange
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -364,8 +367,8 @@ namespace genscoSQLProject1.Migrations
                     b.Property<string>("ActiveInd")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Contact_id")
-                        .HasColumnType("int");
+                    b.Property<string>("CompanyId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("CreatedByUserId")
                         .HasColumnType("int");
@@ -373,14 +376,14 @@ namespace genscoSQLProject1.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Default_Branch")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Default_Company")
+                    b.Property<string>("DefaultLocationId")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
 
                     b.Property<string>("FirstName")
                         .IsRequired()

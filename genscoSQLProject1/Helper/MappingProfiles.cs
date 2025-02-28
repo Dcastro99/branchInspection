@@ -20,8 +20,8 @@ public class MappingProfiles : Profile
         CreateMap<BranchDto, Branch>();
         CreateMap<User, UserDto>();
         CreateMap<UserDto, User>();
-        CreateMap<Role, RoleDto>();
-        CreateMap<RoleDto, Role>();
+        CreateMap<RoleModel, RoleDto>();
+        CreateMap<RoleDto, RoleModel>();
         CreateMap<BranchInspection, BranchInspectionDto>();
         CreateMap<BranchInspectionDto, BranchInspection>();
         CreateMap<BranchInspection, BranchInspectionDetailDto>()

@@ -1,5 +1,5 @@
 ﻿
-using genscoSQLProject1.Helper;
+
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace genscoSQLProject1.Models

@@ -11,16 +11,16 @@ namespace genscoSQLProject1.Data
         }
 
         public DbSet<Asset> Assets { get; set; }
-        //public DbSet<AssetItems> AssetItems { get; set; }
         public DbSet<Branch> Branches { get; set; }
         public DbSet<BranchInspection> BranchInspections { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<ChecklistItem> ChecklistItems { get; set; }
-        public DbSet<Role> Roles { get; set; }
+        public DbSet<RoleModel> Roles { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<FormNote> FormNotes { get; set; }
         public DbSet<FormComment> FormComments { get; set; }
         public DbSet<FormChecklistItems> FormChecklistItems { get; set; }
+
 
         //-----------ON MODEL CREATING METHOD------------//
 
@@ -33,8 +33,12 @@ namespace genscoSQLProject1.Data
                 .HasForeignKey(ci => ci.CategoryId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder.Entity<RoleModel>()
+                .HasKey(r => r.RoleId);
 
-            modelBuilder.Entity<Role>()
+
+            modelBuilder.Entity<RoleModel>()
+                
                 .HasOne(r => r.CreatedByUser)
                 .WithMany(u => u.CreatedRoles)
                 .HasForeignKey(r => r.CreatedByUserId)
@@ -42,7 +46,6 @@ namespace genscoSQLProject1.Data
 
             modelBuilder.Entity<FormChecklistItems>()
                 .HasKey(fci => fci.FormChecklistItemId); 
-
 
             modelBuilder.Entity<FormChecklistItems>()
                 .HasOne(fci => fci.ChecklistItem)
@@ -56,18 +59,10 @@ namespace genscoSQLProject1.Data
                 .HasForeignKey(fci => fci.BranchInspectionId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-
-         
-
-
-            // BranchInspection
             modelBuilder.Entity<BranchInspection>()
                 .Ignore(bi => bi.ApprovedByUser);
 
-            //modelBuilder.Entity<FormComment>(entity =>
-            //{
-            //    entity.HasKey(fc => fc.FormCommentId); 
-            //});
+           
         }
 
 

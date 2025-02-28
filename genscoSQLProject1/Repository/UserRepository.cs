@@ -26,7 +26,7 @@ namespace genscoSQLProject1.Repository
 
         public User GetUserByEmpNum(int empNum)
         {
-            return _context.Users.FirstOrDefault(u => u.EmployeeId == empNum);
+            return _context.Users.FirstOrDefault(u => u.Contact_id == empNum);
         }
         public User GetUserById(int empId)
         {
@@ -57,7 +57,7 @@ namespace genscoSQLProject1.Repository
 
         public bool UserExists(int empId)
         {
-            return _context.Users.Any(u => u.EmployeeId == empId);
+            return _context.Users.Any(u => u.Contact_id == empId);
         }
 
         public User GetUserByEmailAndPassword(string email, string passwordHash)

@@ -22,7 +22,7 @@ namespace genscoSQLProject1.Controllers
 
         //--------------GET ALL ROLES----------------//
         [HttpGet]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<Role>))]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<RoleModel>))]
         public IActionResult GetRoles()
         {
             var roles = _mapper.Map<List<RoleDto>>(_roleRepository.GetRoles());
@@ -45,7 +45,7 @@ namespace genscoSQLProject1.Controllers
 
             // Fetch the role by the description
             var role = _roleRepository.GetRoles()
-                .FirstOrDefault(r => r.RoleDescription.Trim().ToLower() == roleDescription.Trim().ToLower());
+                .FirstOrDefault(r => r.Role.Trim().ToLower() == roleDescription.Trim().ToLower());
 
             // Check if the role exists
             if (role == null || !_roleRepository.RoleExists(role.RoleId))
@@ -64,7 +64,7 @@ namespace genscoSQLProject1.Controllers
         //--------------CREATE ROLE----------------//
 
         [HttpPost]
-        [ProducesResponseType(201, Type = typeof(Role))]
+        [ProducesResponseType(201, Type = typeof(RoleModel))]
         [ProducesResponseType(400)]
         [ProducesResponseType(422)]
         [ProducesResponseType(500)]
@@ -75,7 +75,7 @@ namespace genscoSQLProject1.Controllers
                 return BadRequest(ModelState);
 
             var role = _roleRepository.GetRoles()
-                .Where(r => r.RoleDescription.Trim().ToLower() == roleToCreate.RoleDescription.Trim().ToLower())
+                .Where(r => r.Role.Trim().ToLower() == roleToCreate.RoleDescription.Trim().ToLower())
                 .FirstOrDefault();
 
             if (role != null)
@@ -87,11 +87,11 @@ namespace genscoSQLProject1.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var roleMap = _mapper.Map<Role>(roleToCreate);
+            var roleMap = _mapper.Map<RoleModel>(roleToCreate);
 
             if (!_roleRepository.CreateRole(roleMap))
             {
-                ModelState.AddModelError("", $"Something went wrong saving the role {roleMap.RoleDescription}");
+                ModelState.AddModelError("", $"Something went wrong saving the role {roleMap.Role}");
                 return StatusCode(500, ModelState);
             }
 
