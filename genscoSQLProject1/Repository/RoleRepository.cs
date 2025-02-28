@@ -15,24 +15,24 @@ namespace genscoSQLProject1.Repository
         }
 
 
-        public bool CreateRole(Role role)
+        public bool CreateRole(RoleModel role)
         {
             _context.Roles.Add(role);
             return Save();
         }
 
-        public bool DeleteRole(Role role)
+        public bool DeleteRole(RoleModel role)
         {
             _context.Roles.Remove(role);
             return Save();
         }
 
-        public Role GetRole(string roleDescription)
+        public RoleModel GetRole(string roleDescription)
         {
-            return _context.Roles.FirstOrDefault(r => r.RoleDescription == roleDescription);
+            return _context.Roles.FirstOrDefault(r => r.Role == roleDescription);
         }
 
-        public ICollection<Role> GetRoles()
+        public ICollection<RoleModel> GetRoles()
         {
             return _context.Roles.ToList();
         }
@@ -47,7 +47,7 @@ namespace genscoSQLProject1.Repository
             return _context.SaveChanges() >= 0 ? true : false;
         }
 
-        public bool UpdateRole(Role role)
+        public bool UpdateRole(RoleModel role)
         {
             _context.Roles.Update(role);
             return Save();

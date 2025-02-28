@@ -17,12 +17,19 @@ namespace genscoSQLProject1.Controllers
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
         private readonly IBranchRepository _branchRepository;
+        private readonly ILogger<UserController> _logger;
 
-        public UserController(IUserRepository userRepository, IMapper mapper, IBranchRepository branchRepository)
+
+        public UserController(
+            IUserRepository userRepository, 
+            IMapper mapper,
+            IBranchRepository branchRepository,
+            ILogger<UserController> logger)
         {
             _userRepository = userRepository;
             _mapper = mapper;
             _branchRepository = branchRepository;
+            _logger = logger;
         }
 
         //--------------GET ALL USERS----------------//
@@ -54,9 +61,11 @@ namespace genscoSQLProject1.Controllers
             // Map user to DTO
             var userDto = _mapper.Map<UserDto>(user);
 
-            // Retrieve branch information based on DefaultLocationId
+            Console.WriteLine($"Default_branch: {userDto.Default_branch}");
+
+            // Retrieve branch information based on Default_Branch
             BranchDto? branchDto = null;
-            if (!string.IsNullOrEmpty(userDto.DefaultLocationId) && int.TryParse(userDto.DefaultLocationId, out int branchNumber))
+            if (!string.IsNullOrEmpty(userDto.Default_branch) && int.TryParse(userDto.Default_branch, out int branchNumber))
             {
                 if (await _branchRepository.BranchExistsAsync(branchNumber))
                 {
@@ -74,24 +83,6 @@ namespace genscoSQLProject1.Controllers
 
             return Ok(response);
         }
-
-        //[HttpGet("byEmpNum/{empNum}")]
-        //[ProducesResponseType(200, Type = typeof(UserDto))]
-        //[ProducesResponseType(400)]
-        //[ProducesResponseType(404)]
-        //public IActionResult GetUserByEmpNum(int empNum)
-        //{
-        //    var user = _userRepository.GetUserByEmpNum(empNum);
-
-        //    if (user == null)
-        //    {
-        //        return NotFound($"User with Employee Number {empNum} not found.");
-        //    }
-
-        //    var userDto = _mapper.Map<UserDto>(user);
-
-        //    return Ok(userDto);
-        //}
 
         //--------------GET USER BY EMPLOYEE ID----------------//
         [HttpGet("byEmpId/{empId}")]
@@ -126,12 +117,12 @@ namespace genscoSQLProject1.Controllers
                 return BadRequest(ModelState);
 
             var existingUser = _userRepository.GetAllUsers()
-                .Where(u => u.EmployeeId == userToCreate.User.EmployeeId)
+                .Where(u => u.Contact_id == userToCreate.User.Contact_id)
                 .FirstOrDefault();
 
             if (existingUser != null)
             {
-                ModelState.AddModelError("", $"A User with employee number {userToCreate.User.EmployeeId} already exists");
+                ModelState.AddModelError("", $"A User with employee number {userToCreate.User.Contact_id} already exists");
                 return StatusCode(400, ModelState);
             }
 
@@ -207,8 +198,8 @@ namespace genscoSQLProject1.Controllers
             // Map user to DTO
             var userDto = _mapper.Map<UserDto>(user);
 
-            // Retrieve branch information based on DefaultLocationId
-            if (string.IsNullOrEmpty(userDto.DefaultLocationId) || !int.TryParse(userDto.DefaultLocationId, out int branchNumber))
+            // Retrieve branch information based on Default_Branch
+            if (string.IsNullOrEmpty(userDto.Default_branch) || !int.TryParse(userDto.Default_branch, out int branchNumber))
             {
                 return BadRequest("DefaultLocationId is invalid or missing for the user.");
             }

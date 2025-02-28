@@ -4,12 +4,12 @@ namespace genscoSQLProject1.Interfaces
 {
     public interface IRoleRepository
     {
-        ICollection<Role> GetRoles();
-        Role GetRole(string roleDescription);
+        ICollection<RoleModel> GetRoles();
+        RoleModel GetRole(string roleDescription);
         bool RoleExists(int roleId);
-        bool CreateRole(Role role);
-        bool UpdateRole(Role role);
-        bool DeleteRole(Role role);
+        bool CreateRole(RoleModel role);
+        bool UpdateRole(RoleModel role);
+        bool DeleteRole(RoleModel role);
         bool Save();
     }
 }
