@@ -149,8 +149,8 @@ namespace genscoSQLProject1.SeedData
 
                 new ChecklistItemBuilder("Security Alarm maintained regularly", 5)
                     .SetIsCheckedNeeded(true)
-                    .SetNotApplicableNeeded(true) // Assuming this is implemented in your builder
-                    .SetSecurityAlarmDateTestedNeeded(true) // Assuming this is implemented in your builder
+                    .SetNotApplicableNeeded(true) 
+                    .SetSecurityAlarmDateTestedNeeded(true) 
                     .Build(),
 
                 new ChecklistItemBuilder("All team members know where to meet in the case of an emergency", 6)
@@ -187,17 +187,17 @@ namespace genscoSQLProject1.SeedData
 
                 new ChecklistItemBuilder("Load Capacity of mezzanine is clearly Marked", 7)
                     .SetIsCheckedNeeded(true)
-                    .SetloadCapacityNeeded(true) // Assuming this is implemented in your builder
+                    .SetloadCapacityNeeded(true) 
                     .Build(),
 
                 new ChecklistItemBuilder("Standard guardrails provided on surfaces 4' or more above the ground", 7)
                     .SetIsCheckedNeeded(true)
-                    .SetNotApplicableNeeded(true) // Assuming this is implemented in your builder
+                    .SetNotApplicableNeeded(true) 
                     .Build(),
 
                 new ChecklistItemBuilder("Toe boards installed on openings on elevated surfaces", 7)
                     .SetIsCheckedNeeded(true)
-                    .SetNotApplicableNeeded(true) // Assuming this is implemented in your builder
+                    .SetNotApplicableNeeded(true) 
                     .Build(),
 
                 new ChecklistItemBuilder("Dock boards or bridge plates are used and secured between docks and trucks", 7)
@@ -226,42 +226,42 @@ namespace genscoSQLProject1.SeedData
 
                 new ChecklistItemBuilder("Standard guardrails provided wherever surfaces are elevated more than 4 feet", 8)
                     .SetIsCheckedNeeded(true)
-                    .SetNotApplicableNeeded(true) // Assuming this is implemented in your builder
+                    .SetNotApplicableNeeded(true) 
                     .Build(),
 
                 new ChecklistItemBuilder("Guardrails 36\"-42\" high are capable of withstanding 200 lbs of force in any direction", 8)
                     .SetIsCheckedNeeded(true)
-                    .SetNotApplicableNeeded(true) // Assuming this is implemented in your builder
+                    .SetNotApplicableNeeded(true) 
                     .Build(),
 
                 new ChecklistItemBuilder("Toe boards installed to prevent debris from falling below", 8)
                     .SetIsCheckedNeeded(true)
-                    .SetNotApplicableNeeded(true) // Assuming this is implemented in your builder
+                    .SetNotApplicableNeeded(true) 
                     .Build(),
 
                 new ChecklistItemBuilder("Cylinders located and/or stored in protected areas (covered from above)", 9)
                     .SetIsCheckedNeeded(true)
-                    .SetNotApplicableNeeded(true) // Assuming this is implemented in your builder
+                    .SetNotApplicableNeeded(true) 
                     .Build(),
 
                 new ChecklistItemBuilder("Cylinders transported in a manner to prevent them from rolling, tipping, or falling", 9)
                     .SetIsCheckedNeeded(true)
-                    .SetNotApplicableNeeded(true) // Assuming this is implemented in your builder
+                    .SetNotApplicableNeeded(true) 
                     .Build(),
 
                 new ChecklistItemBuilder("Valve protector placed on cylinders when not in use (125 lbs cylinders)", 9)
                     .SetIsCheckedNeeded(true)
-                    .SetNotApplicableNeeded(true) // Assuming this is implemented in your builder
+                    .SetNotApplicableNeeded(true) 
                     .Build(),
 
                 new ChecklistItemBuilder("Acetylene and Oxygen cylinders MUST be stored a minimum of 20 feet apart", 9)
                     .SetIsCheckedNeeded(true)
-                    .SetNotApplicableNeeded(true) // Assuming this is implemented in your builder
+                    .SetNotApplicableNeeded(true) 
                     .Build(),
 
                  new ChecklistItemBuilder("Cylinders legibly marked to clearly identify the contents as FULL or EMPTY", 9)
                     .SetIsCheckedNeeded(true)
-                    .SetNotApplicableNeeded(true) // Assuming this is implemented in your builder
+                    .SetNotApplicableNeeded(true) 
                     .Build(),
 
                 new ChecklistItemBuilder("Breaker boxes are kept clear and can be accessed when needed", 10)
@@ -508,7 +508,7 @@ namespace genscoSQLProject1.SeedData
 
                 new ChecklistItemBuilder("Pallets, cradles, and skids are organized", 23)
                     .SetIsCheckedNeeded(true)
-                    .SetNotApplicableNeeded(true) // Assuming SetNotApplicable method exists
+                    .SetNotApplicableNeeded(true) 
                     .Build(),
 
                 new ChecklistItemBuilder("No weeds or vegetation within 15 ft of items stored outside", 23)
@@ -617,7 +617,7 @@ namespace genscoSQLProject1.SeedData
 
                 new ChecklistItemBuilder("DOT Annual Vehicle Inspection Date", 28)
                     .SetIsCheckedNeeded(false)
-                    .SetDotInspectionDateNeeded(true) // Assuming SetDotInspectionDateNeeded method exists
+                    .SetDotInspectionDateNeeded(true) 
                     .Build(),
 
                 new ChecklistItemBuilder("Current registration for vehicle", 28)

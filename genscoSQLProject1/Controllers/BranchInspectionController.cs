@@ -163,7 +163,7 @@ namespace genscoSQLProject1.Controllers
 
             _logger.LogInformation($"Received BranchId: {formDto.BranchInspection?.BranchId}");
             _logger.LogInformation($"Received Items Count: {formDto.Items?.Count}");
-            _logger.LogInformation($"Received Assets Count: {formDto.Assets?.Count}");
+            //_logger.LogInformation($"Received Assets Count: {formDto.Assets?.Count}");
 
             if (!ModelState.IsValid)
             {
@@ -213,7 +213,7 @@ namespace genscoSQLProject1.Controllers
                         _logger.LogInformation($"BranchInspection created successfully with ID: {branchInspectionId}");
 
                         //Create related FormChecklistItems
-                        await CreateRelatedFormEntriesAsync(branchInspectionId, formDto.Items, formDto.Assets, branchId);
+                        await CreateRelatedFormEntriesAsync(branchInspectionId, formDto.Items, formDto.Comments, branchId);
                         _logger.LogInformation("FormChecklistItems created successfully.");
 
                         // Commit transaction
@@ -245,9 +245,12 @@ namespace genscoSQLProject1.Controllers
         private async Task CreateRelatedFormEntriesAsync(
             int branchInspectionId,
             List<FormChecklistItemsDto> items,
-            List<AssetDto> assets,
+            //List<AssetDto> assets,
+            List<FormCommentDto> comments,
             int branchId)
         {
+
+            _logger.LogInformation($"Creating related FormChecklistItems and FormComments. BranchInsoectionId:: {branchInspectionId}");
             // Check if the items list is null or empty
             if (items == null || !items.Any())
             {
@@ -271,17 +274,35 @@ namespace genscoSQLProject1.Controllers
                 }
                 await _context.SaveChangesAsync();
 
-                // Log after SaveChangesAsync to capture the generated IDs
-                //foreach (var item in formChecklistItems)
-                //{
-                //    _logger.LogInformation($"Inserted Item: {item.FormChecklistItemId}, BranchInspectionId: {branchInspectionId}");
-                //}
 
-            //}
-            //else
-            //{
-            //    _logger.LogInformation("No checklist items found after filtering.");
-            //}
+            if (comments != null && comments.Any())
+            {
+                _logger.LogInformation("Comments found. Adding to database.");
+
+                foreach (var commentDto in comments)
+                {
+                    if (string.IsNullOrWhiteSpace(commentDto.Comment))
+                    {
+                        _logger.LogInformation($"Skipping empty comment for CategoryId {commentDto.CategoryId}");
+                        continue; 
+                    }
+
+                    commentDto.BranchInspectionId = branchInspectionId;
+                    _logger.LogInformation($"Comment before mapping: {commentDto.Comment}, BranchInspectionId: {commentDto.BranchInspectionId}");
+
+                    var commentEntity = _mapper.Map<FormComment>(commentDto);
+                    commentEntity.BranchInspectionId = branchInspectionId;
+                    _logger.LogInformation($"Comment after mapping: {commentEntity.Comment}, BranchInspectionId: {commentEntity.BranchInspectionId}");
+
+                    _context.FormComments.Add(commentEntity);
+                }
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                _logger.LogInformation("No comments to add.");
+            }
+
 
         }
 

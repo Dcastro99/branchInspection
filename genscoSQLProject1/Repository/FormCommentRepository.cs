@@ -56,6 +56,23 @@ namespace genscoSQLProject1.Repository
                                  .Where(fc => fc.BranchInspectionId == branchInspectionId)
                                  .ToListAsync();
         }
+        public async Task<FormComment> GetFormCommentByBranchInspectionAndCategoryAsync(int branchInspectionId, int categoryId)
+        {
+            return await _context.FormComments
+                .FirstOrDefaultAsync(fn => fn.BranchInspectionId == branchInspectionId && fn.CategoryId == categoryId);
+        }
+        public async Task<bool> UpdateFormCommentAsync(FormComment formComment)
+        {
+            // Check if the entity is detached
+            if (_context.Entry(formComment).State == EntityState.Detached)
+            {
+                // Re-attach the entity
+                _context.FormComments.Attach(formComment);
+            }
+
+            _context.FormComments.Update(formComment);  // Update the entity
+            return await SaveAsync();  // Save changes
+        }
 
         public async Task<bool> SaveAsync()
         {
