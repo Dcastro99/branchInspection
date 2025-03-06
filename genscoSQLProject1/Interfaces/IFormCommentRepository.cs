@@ -10,6 +10,8 @@ namespace genscoSQLProject1.Interfaces
         Task<IEnumerable<FormComment>> GetAllFormCommentsAsync();
         Task<FormComment?> GetFormCommentByIdAsync(int formCommentId);
         Task<IEnumerable<FormComment>> GetFormCommentsByBranchInspectionIdAsync(int branchInspectionId);
+        Task<FormComment> GetFormCommentByBranchInspectionAndCategoryAsync(int branchInspectionId, int categoryId);
+        Task<bool> UpdateFormCommentAsync(FormComment formComment);
         Task<bool> SaveAsync();
     }
 }

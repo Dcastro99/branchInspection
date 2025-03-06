@@ -105,5 +105,91 @@ namespace genscoSQLProject1.Controllers
             return CreatedAtAction("GetFormCommentById", new { formCommentId = formComment.FormCommentId }, formComment);
         }
 
+        //-----------------UPDATE FORM COMMENT-----------------//
+
+        [HttpPost("upsertFormComments")]
+        [ProducesResponseType(201, Type = typeof(IEnumerable<FormCommentDto>))]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> UpsertFormComments([FromBody] List<FormCommentDto> formCommentDtos)
+        {
+            if (formCommentDtos == null || formCommentDtos.Count == 0)
+            {
+                _logger.LogWarning("Form comment data is null or empty.");
+                return BadRequest("Form comment data is null or empty.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                _logger.LogWarning("ModelState is not valid.");
+                return BadRequest(ModelState);
+            }
+
+            _logger.LogInformation("Received FormCommentDto list:");
+            foreach (var comment in formCommentDtos)
+            {
+                _logger.LogInformation($"BranchInspectionId: {comment.BranchInspectionId}, CategoryId: {comment.CategoryId}, Comment: {comment.Comment}");
+            }
+
+            var formComments = _mapper.Map<List<FormComment>>(formCommentDtos);
+
+            foreach (var formComment in formComments)
+            {
+                _logger.LogInformation($"Processing FormComment: BranchInspectionId: {formComment.BranchInspectionId}, CategoryId: {formComment.CategoryId}, Comment: {formComment.Comment}");
+
+                var existingFormComment = await _formCommentRepository.GetFormCommentByBranchInspectionAndCategoryAsync(
+                    formComment.BranchInspectionId, formComment.CategoryId);
+
+                if (existingFormComment != null)
+                {
+                    _logger.LogInformation("Form comment found. Checking for changes...");
+
+                    bool commentChanged = existingFormComment.Comment != formComment.Comment;
+
+                    if (commentChanged)
+                    {
+                        _logger.LogInformation("Change detected. Updating FormComment...");
+                        existingFormComment.Comment = formComment.Comment;
+
+                        var updateSuccess = await _formCommentRepository.UpdateFormCommentAsync(existingFormComment);
+                        if (!updateSuccess)
+                        {
+                            _logger.LogError("An error occurred while updating a form comment.");
+                            return StatusCode(500, "An error occurred while updating a form comment.");
+                        }
+                    }
+                    else
+                    {
+                        _logger.LogInformation("No changes detected. Skipping update.");
+                    }
+                }
+                else
+                {
+                    // Skip creating empty comments
+                    if (string.IsNullOrWhiteSpace(formComment.Comment))
+                    {
+                        _logger.LogInformation("Comment is empty. Skipping creation.");
+                        continue;
+                    }
+
+                   
+
+                    var createSuccess = await _formCommentRepository.CreateFormCommentAsync(formComment);
+                    if (!createSuccess)
+                    {
+                        _logger.LogError("An error occurred while creating a form comment.");
+                        return StatusCode(500, "An error occurred while creating a form comment.");
+                    }
+                }
+            }
+
+            var upsertedFormCommentDtos = _mapper.Map<List<FormCommentDto>>(formComments);
+            _logger.LogInformation("Form comments upserted successfully. Returning response...");
+
+            return CreatedAtAction(nameof(GetFormCommentsByBranchInspectionId),
+                new { branchInspectionId = formComments[0].BranchInspectionId }, upsertedFormCommentDtos);
+        }
+
+
     }
 }
