@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using genscoSQLProject1.Data;
 
@@ -11,9 +12,11 @@ using genscoSQLProject1.Data;
 namespace genscoSQLProject1.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20250310213639_commentUpgrade")]
+    partial class commentUpgrade
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -281,6 +284,8 @@ namespace genscoSQLProject1.Migrations
 
                     b.HasKey("FormCommentId");
 
+                    b.HasIndex("AssetId");
+
                     b.HasIndex("BranchInspectionId");
 
                     b.HasIndex("CategoryId");
@@ -477,6 +482,10 @@ namespace genscoSQLProject1.Migrations
 
             modelBuilder.Entity("genscoSQLProject1.Models.FormComment", b =>
                 {
+                    b.HasOne("genscoSQLProject1.Models.Asset", "Asset")
+                        .WithMany()
+                        .HasForeignKey("AssetId");
+
                     b.HasOne("genscoSQLProject1.Models.BranchInspection", "BranchInspection")
                         .WithMany("FormComments")
                         .HasForeignKey("BranchInspectionId")
@@ -488,6 +497,8 @@ namespace genscoSQLProject1.Migrations
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Asset");
 
                     b.Navigation("BranchInspection");
 
