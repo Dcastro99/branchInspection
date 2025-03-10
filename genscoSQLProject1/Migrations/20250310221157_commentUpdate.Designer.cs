@@ -12,8 +12,8 @@ using genscoSQLProject1.Data;
 namespace genscoSQLProject1.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20250228211443_userModelChanged")]
-    partial class userModelChanged
+    [Migration("20250310221157_commentUpdate")]
+    partial class commentUpdate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -270,6 +270,9 @@ namespace genscoSQLProject1.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FormCommentId"));
 
+                    b.Property<int?>("AssetId")
+                        .HasColumnType("int");
+
                     b.Property<int>("BranchInspectionId")
                         .HasColumnType("int");
 
@@ -376,10 +379,10 @@ namespace genscoSQLProject1.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Default_Branch")
+                    b.Property<string>("Default_branch")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Default_Company")
+                    b.Property<string>("Default_company")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")

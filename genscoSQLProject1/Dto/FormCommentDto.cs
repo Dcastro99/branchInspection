@@ -5,6 +5,7 @@
         public int FormCommentId { get; set; }
         public int BranchInspectionId { get; set; }
         public int CategoryId { get; set; }
+        public int? AssetId { get; set; }
         public string? Comment { get; set; }
     }
 }
