@@ -105,6 +105,25 @@ namespace genscoSQLProject1.Controllers
             return Ok(branchInspections);
         }
 
+        //--------------GET BRANCH ISNPECTIONS BY BRANCH ID----------------//
+        [HttpGet("history/{branchNumber}")]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<BranchInspectionDto>))]
+        [ProducesResponseType(400)]
+        public async Task<IActionResult> GetAllBranchinspectionsByBranchId([FromRoute] int branchNumber)
+        {
+            var branchInspections = _mapper.Map<List<BranchInspectionDto>>(
+                await _branchInspectionRepository.GetAllBranchInspectionByBranchIdAsync(branchNumber)
+            );
+
+            if (branchInspections == null || !branchInspections.Any())
+                return NoContent();
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            return Ok(branchInspections);
+        }
+
 
 
         //--------------GET BRANCH INSPECTION BY ID----------------//

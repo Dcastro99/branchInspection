@@ -68,6 +68,14 @@ namespace genscoSQLProject1.Repository
                 .OrderByDescending(bi => bi.CreatedDate)
                 .FirstOrDefaultAsync();
         }
+        public async Task<ICollection<BranchInspection>> GetAllBranchInspectionByBranchIdAsync(int branchNumber)
+        {
+            return await _context.BranchInspections
+                .Where(bi => bi.BranchNumber == branchNumber)
+                .OrderByDescending(bi => bi.SubmittedDate) 
+                .Take(3)
+                .ToListAsync();
+        }
 
         public async Task<bool> SaveAsync()
         {
