@@ -106,13 +106,13 @@ namespace genscoSQLProject1.Controllers
         }
 
         //--------------GET BRANCH ISNPECTIONS BY BRANCH ID----------------//
-        [HttpGet("history/{branchNumber}")]
+        [HttpGet("history/{branchNumber}/{count}")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<BranchInspectionDto>))]
         [ProducesResponseType(400)]
-        public async Task<IActionResult> GetAllBranchinspectionsByBranchId([FromRoute] int branchNumber)
+        public async Task<IActionResult> GetAllBranchinspectionsByBranchId([FromRoute] int branchNumber, [FromRoute] int count)
         {
             var branchInspections = _mapper.Map<List<BranchInspectionDto>>(
-                await _branchInspectionRepository.GetAllBranchInspectionByBranchIdAsync(branchNumber)
+                await _branchInspectionRepository.GetAllBranchInspectionByBranchIdAsync(branchNumber, count)
             );
 
             if (branchInspections == null || !branchInspections.Any())

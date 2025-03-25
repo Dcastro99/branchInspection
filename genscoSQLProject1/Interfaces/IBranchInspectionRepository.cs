@@ -11,7 +11,7 @@ namespace genscoSQLProject1.Interfaces
         Task<IEnumerable<BranchInspection>> GetBranchInspectionsPendingApprovalAsync(int BrnachNumber);
         Task<BranchInspection?> GetBranchInspectionWithDetailsAsync(int branchInspectionId);
         Task<BranchInspection> GetBranchInspectionAsync(int branchInspectionId);
-        Task<ICollection<BranchInspection>> GetAllBranchInspectionByBranchIdAsync(int branchNumber);
+        Task<ICollection<BranchInspection>> GetAllBranchInspectionByBranchIdAsync(int branchNumber, int count);
         Task<ICollection<BranchInspection>> GetBranchInspectionByBranchAsync(int branchNumber);
         Task<ICollection<BranchInspection>> GetBranchInspectionsByMonthAsync(DateTime month);
         Task<ICollection<BranchInspection>> GetBranchInspectionsByDateRangeAsync(DateTime startDate, DateTime endDate);
