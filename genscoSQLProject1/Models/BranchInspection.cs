@@ -1,4 +1,6 @@
-﻿namespace genscoSQLProject1.Models
+﻿using genscoSQLProject1.Enums;
+
+namespace genscoSQLProject1.Models
 {
     public class BranchInspection
     {
@@ -17,14 +19,17 @@
         public bool NeedsApproval { get; set; } = true;
 
 
-        //-----------Navigation Properties-------------//
+
+        public BranchInspectionStatus Status { get; set; } = BranchInspectionStatus.Submitted;
+
+
+
+        //---------NAVIGATION PROPERTIES-----------///
         public Branch Branch { get; set; }
         public User CreatedByUser { get; set; }  
         public User ApprovedByUser { get; set; }
         public ICollection<Asset> Assets { get; set; } = new List<Asset>();
         public ICollection<FormChecklistItems> FormChecklistItems { get; set; } = new List<FormChecklistItems>();
-        //public ICollection<ChecklistItem> ChecklistItems { get; set; }
-        //public ICollection<Category> Categories { get; set; } = new List<Category>();
         public ICollection<FormNote> FormNotes { get; set; } = new List<FormNote>();
         public ICollection<FormComment> FormComments { get; set; } = new List<FormComment>();
 

@@ -64,15 +64,14 @@ namespace genscoSQLProject1.Repository
 
         public async Task<bool> UpdateFormNoteAsync(FormNote formNote)
         {
-            // Check if the entity is detached
+            
             if (_context.Entry(formNote).State == EntityState.Detached)
             {
-                // Re-attach the entity
                 _context.FormNotes.Attach(formNote);
             }
 
-            _context.FormNotes.Update(formNote);  // Update the entity
-            return await SaveAsync();  // Save changes
+            _context.FormNotes.Update(formNote);  
+            return await SaveAsync(); 
         }
 
         public async Task<FormNote> GetFormNoteByBranchInspectionAndCategoryAsync(int branchInspectionId, int categoryId)

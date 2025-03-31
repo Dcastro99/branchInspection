@@ -104,7 +104,7 @@ namespace genscoSQLProject1.Controllers
                 return StatusCode(422, ModelState);
             }
 
-            // Check if the branch exists by BranchNumber
+           
             var branch = (await _branchRepository.GetAllBranchesAsync())
                 .FirstOrDefault(b => b.BranchNumber == assetToCreate.BranchNumber);
 
@@ -114,24 +114,24 @@ namespace genscoSQLProject1.Controllers
                 return BadRequest(ModelState);
             }
 
-            // Map the AssetDto to the Asset entity
+            
             var assetMap = _mapper.Map<Asset>(assetToCreate);
 
             // Assign the branch's BranchId to the asset
             assetMap.BranchNumber = branch.BranchNumber;
             assetMap.BranchId = branch.BranchId;
 
-            // Save the new asset
+          
             if (!await _assetRepository.CreateAssetAsync(assetMap))
             {
                 ModelState.AddModelError("", $"Something went wrong saving the asset {assetMap.AssetNumber}");
                 return StatusCode(500, ModelState);
             }
 
-            // Map the created Asset entity back to AssetDto
+           
             var createdAssetDto = _mapper.Map<AssetDto>(assetMap);
 
-            // Return the created asset with 201 status
+           
             return CreatedAtAction(nameof(CreateAsset), new { id = createdAssetDto.AssetId }, createdAssetDto);
         }
 

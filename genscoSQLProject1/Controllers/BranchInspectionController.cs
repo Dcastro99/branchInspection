@@ -196,6 +196,12 @@ namespace genscoSQLProject1.Controllers
                 _logger.LogInformation("Checking if a branch inspection already exists for this month.");
 
                 DateTime currentMonth = DateTime.Now;
+                if (formDto?.BranchInspection == null)
+                {
+                    _logger.LogWarning("BranchInspection is null.");
+                    return BadRequest("BranchInspection is null.");
+                }
+
                 var branchId = formDto.BranchInspection.BranchId;
 
                 var existingInspection = (await _branchInspectionRepository.GetAllBranchInspectionsAsync())
@@ -270,22 +276,21 @@ namespace genscoSQLProject1.Controllers
         {
 
             _logger.LogInformation($"Creating related FormChecklistItems and FormComments. BranchInsoectionId:: {branchInspectionId}");
-            // Check if the items list is null or empty
+           
             if (items == null || !items.Any())
             {
                 //_logger.LogInformation("No form checklist items to add.");
-                return;  // No items to add, exit early
+                return;  
             }
 
             var formChecklistItems = items.ToList();
-            //if (formChecklistItems.Any())
-            //{
+         
                 //_logger.LogInformation("Checklist items after filtering:");
                 foreach (var item in formChecklistItems)
                 {
-                    item.BranchInspectionId = branchInspectionId;  // Ensure BranchInspectionId is set manually
+                    item.BranchInspectionId = branchInspectionId;
                     var checklistItemEntity = _mapper.Map<FormChecklistItems>(item);
-                    checklistItemEntity.BranchInspectionId = branchInspectionId; // Ensure BranchInspectionId is set
+                    checklistItemEntity.BranchInspectionId = branchInspectionId;
 
                     //_logger.LogInformation($"Item: {item.FormChecklistItemId}, BranchInspectionId: {item.BranchInspectionId}");
 
@@ -337,20 +342,20 @@ namespace genscoSQLProject1.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            // Fetch the existing BranchInspection
+           
             var branchInspection = await _branchInspectionRepository.GetBranchInspectionAsync(updateDto.BranchInspectionId);
 
             if (branchInspection == null)
                 return NotFound($"BranchInspection with ID {updateDto.BranchInspectionId} not found.");
 
-            // Handle denial
+           
             if (!updateDto.IsApproved)
             {
                 branchInspection.NeedsApproval = false;
             }
             else
             {
-                // Handle approval
+               
                 branchInspection.NeedsApproval = false;
                 branchInspection.ApprovedByUserId = updateDto.ApprovedByUserId ?? branchInspection.ApprovedByUserId;
                 branchInspection.ApprovedDate = updateDto.ApprovedDate ?? DateTime.UtcNow;

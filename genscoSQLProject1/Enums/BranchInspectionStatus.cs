@@ -1,6 +1,11 @@
 ﻿namespace genscoSQLProject1.Enums
 {
-    public class BranchInspectionStatus
+    public enum BranchInspectionStatus
     {
+        Submitted,
+        ManagerReview,
+        OperationsReview,
+        CorrectionsNeeded,
+        Approved
     }
 }

@@ -150,15 +150,12 @@ namespace genscoSQLProject1.Controllers
 
             foreach (var item in checklistItemsData)
             {
-                // Check if an item with the same Name and CategoryId already exists in DB
                 var existingChecklistItem = await _checklistItemRepository.GetByNameAndCategoryAsync(item.Name, item.CategoryId);
 
                 if (existingChecklistItem == null)
                 {
-                    // Map DTO to entity
                     var checklistItemEntity = _mapper.Map<ChecklistItem>(item);
 
-                    // Save to DB
                     var created = await _checklistItemRepository.CreateChecklistItemAsync(checklistItemEntity);
 
                     if (!created)
@@ -166,12 +163,10 @@ namespace genscoSQLProject1.Controllers
                         return StatusCode(500, $"Error occurred while creating checklist item {item.Name}");
                     }
 
-                    // Add the newly created item to the response list
                     createdChecklistItems.Add(_mapper.Map<ChecklistItemDto>(checklistItemEntity));
                 }
                 else
                 {
-                    // Add existing item to the response list
                     createdChecklistItems.Add(_mapper.Map<ChecklistItemDto>(existingChecklistItem));
                 }
             }

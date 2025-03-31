@@ -43,15 +43,12 @@ namespace genscoSQLProject1.Controllers
             if (string.IsNullOrEmpty(roleDescription))
                 return BadRequest("Role description cannot be empty.");
 
-            // Fetch the role by the description
             var role = _roleRepository.GetRoles()
                 .FirstOrDefault(r => r.Role.Trim().ToLower() == roleDescription.Trim().ToLower());
 
-            // Check if the role exists
             if (role == null || !_roleRepository.RoleExists(role.RoleId))
                 return NotFound($"Role with description '{roleDescription}' not found.");
 
-            // Map the role to a DTO
             var roleMap = _mapper.Map<RoleDto>(role);
 
             if (!ModelState.IsValid)

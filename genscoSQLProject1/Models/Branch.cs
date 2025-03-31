@@ -7,7 +7,7 @@
         public int BranchNumber { get; set; }
 
 
-        //----------------Navigation Properties-----------------//
+        //---------NAVIGATION PROPERTIES-----------//
         public ICollection<BranchInspection> BranchInspections { get; set; } 
         public ICollection<Asset> Assets { get; set; }  
     }

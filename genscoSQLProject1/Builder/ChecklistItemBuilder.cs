@@ -69,7 +69,7 @@ public class ChecklistItemBuilder
 
 
 
-    // Build method to retrieve the ChecklistItem object
+   
     public ChecklistItem Build()
     {
         return _checklistItem;

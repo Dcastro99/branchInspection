@@ -7,9 +7,9 @@
         public int CategoryId { get; set; }
         public int? AssetId { get; set; }
         public string? Comment { get; set; }
-        
 
-        // Navigation Properties
+
+        //---------NAVIGATION PROPERTIES-----------//
         public BranchInspection BranchInspection { get; set; }
         public Category Category { get; set; }
         //public Asset Asset { get; set; }
