@@ -165,7 +165,6 @@ namespace genscoSQLProject1.Controllers
                 }
                 else
                 {
-                    // Skip creating empty comments
                     if (string.IsNullOrWhiteSpace(formComment.Comment))
                     {
                         _logger.LogInformation("Comment is empty. Skipping creation.");

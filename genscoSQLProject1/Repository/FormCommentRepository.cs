@@ -63,15 +63,15 @@ namespace genscoSQLProject1.Repository
         }
         public async Task<bool> UpdateFormCommentAsync(FormComment formComment)
         {
-            // Check if the entity is detached
+            
             if (_context.Entry(formComment).State == EntityState.Detached)
             {
-                // Re-attach the entity
+                
                 _context.FormComments.Attach(formComment);
             }
 
-            _context.FormComments.Update(formComment);  // Update the entity
-            return await SaveAsync();  // Save changes
+            _context.FormComments.Update(formComment);  
+            return await SaveAsync();  
         }
 
         public async Task<bool> SaveAsync()

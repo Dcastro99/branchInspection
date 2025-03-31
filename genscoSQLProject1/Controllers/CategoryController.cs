@@ -125,22 +125,18 @@ namespace genscoSQLProject1.Controllers
             {
                 var category = new CategoryBuilder(name).Build();
 
-                // Create a DTO for the new category
                 var categoryDto = new CategoryDto
                 {
                     CategoryName = category.CategoryName
                 };
 
-                // Check if category already exists
                 var existingCategory = (await _categoryRepository.GetAllCategoriesAsync())
                     .FirstOrDefault(c => c.CategoryName.Trim().ToUpper() == categoryDto.CategoryName.Trim().ToUpper());
 
                 if (existingCategory == null)
                 {
-                    // Map DTO to Entity
                     var categoryEntity = _mapper.Map<Category>(categoryDto);
 
-                    // Save to DB
                     var created = await _categoryRepository.CreateCategoryAsync(categoryEntity);
 
                     if (!created)
@@ -148,7 +144,6 @@ namespace genscoSQLProject1.Controllers
                         return StatusCode(500, $"Error occurred while creating category {categoryDto.CategoryName}");
                     }
 
-                    // Retrieve the newly created category with the assigned ID
                     var savedCategory = (await _categoryRepository.GetAllCategoriesAsync())
                         .FirstOrDefault(c => c.CategoryName.Trim().ToUpper() == categoryDto.CategoryName.Trim().ToUpper());
 
@@ -159,7 +154,6 @@ namespace genscoSQLProject1.Controllers
                 }
                 else
                 {
-                    // If category already exists, return its existing ID
                     createdCategories.Add(_mapper.Map<CategoryDto>(existingCategory));
                 }
             }

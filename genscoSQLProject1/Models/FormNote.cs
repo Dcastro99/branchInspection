@@ -10,7 +10,7 @@
         public string? generalNotes { get; set; }
         public int CategoryId { get; set; }
 
-        // Navigation Properties
+        //---------NAVIGATION PROPERTIES-----------//
         public BranchInspection BranchInspection { get; set; }
         public Category Category { get; set; }
         public User CreatedByUser { get; set; }

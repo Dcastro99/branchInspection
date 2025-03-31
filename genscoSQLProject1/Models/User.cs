@@ -16,7 +16,7 @@
         public string? ActiveInd { get; set; }
         public int Contact_id { get; set; }
 
-        //----------------Navigation Properties-----------------//
+        //---------NAVIGATION PROPERTIES-----------//
         public RoleModel? Role { get; set; }
         public ICollection<BranchInspection> BranchInspections { get; set; }
         public ICollection<RoleModel> CreatedRoles { get; set; }  // Roles created by this user

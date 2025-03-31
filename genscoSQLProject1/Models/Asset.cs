@@ -9,7 +9,7 @@
         public int? BranchNumber { get; set; }
         public int? CategoryId { get; set; }
 
-        //----------------Navigation Properties-----------------//
+        //---------NAVIGATION PROPERTIES-----------//
         public Branch Branch { get; set; }
         
     }

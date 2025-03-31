@@ -50,7 +50,6 @@ namespace genscoSQLProject1.Controllers
         [ProducesResponseType(404)]
         public async Task<IActionResult> GetUserByEmpNum(int empNum)
         {
-            // Retrieve user by employee number
             var user = _userRepository.GetUserByEmpNum(empNum);
 
             if (user == null)
@@ -58,12 +57,10 @@ namespace genscoSQLProject1.Controllers
                 return NotFound($"User with Employee Number {empNum} not found.");
             }
 
-            // Map user to DTO
             var userDto = _mapper.Map<UserDto>(user);
 
             Console.WriteLine($"Default_branch: {userDto.Default_branch}");
 
-            // Retrieve branch information based on Default_Branch
             BranchDto? branchDto = null;
             if (!string.IsNullOrEmpty(userDto.Default_branch) && int.TryParse(userDto.Default_branch, out int branchNumber))
             {
@@ -74,7 +71,6 @@ namespace genscoSQLProject1.Controllers
                 }
             }
 
-            // Prepare the combined response
             var response = new UserWithBranchDto
             {
                 User = userDto,
@@ -159,7 +155,6 @@ namespace genscoSQLProject1.Controllers
                 return BadRequest("Invalid login credentials");
             }
 
-            // Hash the incoming password for comparison
             var hashedPassword = HashPassword(loginDto.Password);
 
             var user = _userRepository.GetUserByEmailAndPassword(loginDto.Email, hashedPassword);
@@ -179,26 +174,21 @@ namespace genscoSQLProject1.Controllers
         [ProducesResponseType(401)]
         public async Task<IActionResult> LoginWithBranch([FromBody] LoginDto loginDto)
         {
-            // Validate login input
             if (loginDto == null || string.IsNullOrWhiteSpace(loginDto.Email) || string.IsNullOrWhiteSpace(loginDto.Password))
             {
                 return BadRequest("Invalid login credentials");
             }
 
-            // Hash the incoming password for comparison
             var hashedPassword = HashPassword(loginDto.Password);
 
-            // Authenticate user
             var user = _userRepository.GetUserByEmailAndPassword(loginDto.Email, hashedPassword);
             if (user == null)
             {
                 return Unauthorized("Email or password is incorrect");
             }
 
-            // Map user to DTO
             var userDto = _mapper.Map<UserDto>(user);
 
-            // Retrieve branch information based on Default_Branch
             if (string.IsNullOrEmpty(userDto.Default_branch) || !int.TryParse(userDto.Default_branch, out int branchNumber))
             {
                 return BadRequest("DefaultLocationId is invalid or missing for the user.");
@@ -211,7 +201,6 @@ namespace genscoSQLProject1.Controllers
 
             var branch = _mapper.Map<BranchDto>(await _branchRepository.GetBranchAsync(branchNumber));
 
-            // Return combined response
             var response = new LoginWithBranchResponseDto
             {
                 User = userDto,

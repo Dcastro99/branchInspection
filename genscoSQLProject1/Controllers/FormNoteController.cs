@@ -83,7 +83,7 @@ namespace genscoSQLProject1.Controllers
 
             foreach (var formNote in formNotes)
             {
-                formNote.CreatedAt = DateTime.UtcNow; // Ensure consistency in timestamp
+                formNote.CreatedAt = DateTime.UtcNow;
                 var success = await _formNoteRepository.CreateFormNoteAsync(formNote);
                 if (!success)
                     return StatusCode(500, "An error occurred while saving one of the form notes.");
@@ -104,30 +104,24 @@ namespace genscoSQLProject1.Controllers
         [ProducesResponseType(500)]
         public async Task<IActionResult> UpdateFormNote(int id, [FromBody] FormNoteDto formNoteDto)
         {
-            // Check if the incoming data is valid
             if (formNoteDto == null)
                 return BadRequest("Form note data is null.");
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            // Retrieve the existing form note from the database by ID
             var existingFormNote = await _formNoteRepository.GetFormNoteByIdAsync(id);
             if (existingFormNote == null)
                 return NotFound($"Form note with ID {id} not found.");
 
-            // Map the updates from the formNoteDto to the existing form note
             _mapper.Map(formNoteDto, existingFormNote);
 
-            // Optionally, set the 'CreatedAt' value to ensure it doesn't change on update
             existingFormNote.CreatedAt = existingFormNote.CreatedAt;
 
-            // Update the record in the database
             var success = await _formNoteRepository.UpdateFormNoteAsync(existingFormNote);
             if (!success)
                 return StatusCode(500, "An error occurred while updating the form note.");
 
-            // Return the updated form note
             var updatedFormNoteDto = _mapper.Map<FormNoteDto>(existingFormNote);
             return Ok(updatedFormNoteDto);
         }
@@ -197,7 +191,6 @@ namespace genscoSQLProject1.Controllers
                 }
                 else
                 {
-                    // Check if both SectionNote and generalNotes are empty
                     if (string.IsNullOrWhiteSpace(formNote.SectionNote) && string.IsNullOrWhiteSpace(formNote.generalNotes))
                     {
                         _logger.LogInformation("Both SectionNote and generalNotes are empty. Skipping creation.");
