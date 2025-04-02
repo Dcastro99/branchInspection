@@ -4,6 +4,8 @@
     {
         public int TestModelId { get; set; }
         public string TestModelName { get; set; }
-        public string TestModelDescription { get; set;
+        public string TestModelDescription { get; set; }
+        public string TestModelType { get; set; }
     }
 }
+
