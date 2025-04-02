@@ -1,0 +1,54 @@
+# Ignore Visual Studio Code temporary files, build results, and
+# common output folders
+
+# Ignore all user-specific files
+**/*.user
+*.csproj.user
+genscoSQLProject1.csproj.user
+
+# Ignore build output directories
+**/bin/
+**/obj/
+
+# Ignore Visual Studio and IDE-specific files
+**/*.suo
+**/*.cache
+**/*.log
+.vscode/
+.idea/
+*.sln.docstates
+*.userosscache
+
+# Environment variables and secrets
+.env
+.env.*
+
+# Ignore configuration files with sensitive data
+appsettings.json
+appsettings.*.json
+
+# Temporary or runtime files
+*.tmp
+*.pid
+*.swp
+*.bak
+*.orig
+
+# Ignore compiled files
+*.dll
+*.exe
+*.pdb
+*.db
+
+# Ignore generated files and packages
+**/node_modules/
+**/dist/
+**/.vs/
+**/packages/
+**/.nuget/
+
+# Rider and JetBrains IDEs
+.idea/
+*.iml
+
+
